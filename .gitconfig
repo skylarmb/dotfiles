@@ -1,0 +1,44 @@
+[core]
+  excludesfile = ~/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[user]
+  name = Skylar Brown
+  email = skylarmb@gmail.com
+[alias]
+  c = commit
+  d = diff
+  dc = diff --cached
+  r = rebase
+  p = push
+  a = add
+  s = status
+  co = checkout
+  l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+  g = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
+  zmerge = merge --no-ff
+  last = diff HEAD^ HEAD
+  yolo = "!f() { \
+            curr_branch=$(git rev-parse --abbrev-ref HEAD); \
+            if [ "$curr_branch" = "master" ]; then \
+              echo "~~ cant yolo on master..." && return; \
+            fi; \
+            echo "~~ force pushing origin head"; \
+            git push -f origin head; \
+          }; f"
+  reup = "!f() { \
+            curr_branch=$(git rev-parse --abbrev-ref HEAD); \
+            echo "~~ checking out master"; \
+            git checkout master; \
+            echo "~~ pulling master"; \
+            git pull; \
+            echo "~~ checking out $curr_branch"; \
+            git checkout $curr_branch; \
+            echo "~~ rebasing $curr_branch on origin/master"; \
+            git rebase origin/master; \
+            echo "~~ done"; \
+          }; f"
