@@ -26,8 +26,7 @@ source $ZSH/oh-my-zsh.sh
 
 export EDITOR='vim'
 export GIT_EDITOR='vim'
-DEFAULT_USER=skylarbrown
-
+export DEFAULT_USER="$(whoami)"
 alias workspace='cd ~/workspace'
 alias cls='clear;ls'
 alias bi='bundle install --binstubs .bundle/bin'
