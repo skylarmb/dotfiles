@@ -1,6 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-
+export GPG_TTY=`tty`
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -20,13 +20,16 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(git)
 
 # export MANPATH="/usr/local/man:$MANPATH"
-export PATH="$HOME/bin:/usr/local/bin:$HOME/.rbenv/bin:$HOME/.rbenv/shims/:$PATH"
+export ANDROID_HOME="~/Library/Android/sdk"
+export PATH="$HOME/bin:/usr/local/bin:$HOME/.rbenv/bin:$HOME/.rbenv/shims/:$PATH:$ANDROID_HOME"
 
 source $ZSH/oh-my-zsh.sh
 
 export EDITOR='vim'
 export GIT_EDITOR='vim'
 export DEFAULT_USER="$(whoami)"
+export LESS='-FXr'
+
 alias workspace='cd ~/workspace'
 alias cls='clear;ls'
 alias bi='bundle install --binstubs .bundle/bin'
@@ -36,6 +39,7 @@ alias killrails='rm ~/**/tmp/pids/server.pid; sudo lsof -iTCP -sTCP:LISTEN -P | 
 alias killmail='sudo lsof -iTCP -sTCP:LISTEN -P | grep :1080; sudo lsof -iTCP -sTCP:LISTEN -P | grep :1025'
 eval "$(rbenv init -)"
 alias zozi='cd ~/workspace/zozi'
+alias mobile='cd ~/workspace/ZoziMobile'
 alias cms='cd ~/workspace/cms'
 alias chef='cd ~/workspace/chef'
 alias comfy='cd ~/workspace/gems/comfortable-mexican-sofa'
@@ -53,8 +57,5 @@ findfile() {
   find . -name "*$1*"
 }
 alias ff='findfile'
-rgrep() {
-  grep -Irn --include="*.${2-*}" --exclude={\*.min.js,\*.log,\*.cache} "$1" .
-}
-alias gg='rgrep'
+alias gg='ag'
 workspace
