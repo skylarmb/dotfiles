@@ -18,10 +18,10 @@
   a = add
   s = status
   co = checkout
-  l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
   g = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
   zmerge = merge --no-ff
-  last = diff HEAD^ HEAD
+  l = diff HEAD^ HEAD
+  lf = diff HEAD^  HEAD --name-only
   yolo = "!f() { \
             curr_branch=$(git rev-parse --abbrev-ref HEAD); \
             if [ "$curr_branch" = "master" ]; then \
@@ -42,3 +42,5 @@
             git rebase origin/master; \
             echo "~~ done"; \
           }; f"
+[commit]
+	gpgsign = true
