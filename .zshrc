@@ -21,9 +21,12 @@ plugins=(git)
 
 # export MANPATH="/usr/local/man:$MANPATH"
 export ANDROID_HOME="~/Library/Android/sdk"
-export PATH="$HOME/bin:/usr/local/bin:$HOME/.rbenv/bin:$HOME/.rbenv/shims/:$PATH:$ANDROID_HOME"
+export PATH="$HOME/bin:/usr/local/bin:$HOME/.rbenv/bin:$HOME/.rbenv/shims/:$PATH:$ANDROID_HOME:$(yarn global bin)"
 
 source $ZSH/oh-my-zsh.sh
+
+# increase the number of files a terminal session can have open
+ulimit -n 2560
 
 export EDITOR='vim'
 export GIT_EDITOR='vim'
