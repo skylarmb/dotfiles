@@ -59,3 +59,5 @@ findfile() {
 alias ff='findfile'
 alias gg='ag'
 workspace
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
