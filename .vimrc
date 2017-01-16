@@ -7,10 +7,12 @@ endif
 
 call plug#begin('~/.vim/plugged')
 set clipboard=unnamed
-
+Plug 'xolox/vim-colorscheme-switcher'
+Plug 'xolox/vim-misc'
 " Colors
 Plug 'altercation/vim-colors-solarized'
 Plug 'crusoexia/vim-monokai'
+Plug 'flazz/vim-colorschemes'
 
 " Tools
 Plug 'bling/vim-airline'
@@ -135,13 +137,15 @@ set linebreak
 
 " colorscheme
 set background=dark
-let g:solarized_contrast="high"
-let g:solarized_visibility="high"
-colorscheme solarized
+" let g:solarized_contrast="high"
+" let g:solarized_visibility="high"
+"colorscheme solarized
 
-" colorscheme monokai
+colorscheme crayon
 " set t_Co=256
 syntax on
+highlight LineNr ctermfg=white ctermbg=green
+highlight CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
 
 " make cursor move by visual lines instead of file lines (when wrapping)
 map k gk

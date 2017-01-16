@@ -19,10 +19,14 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
+# NVM
+export NVM_DIR="$HOME/.nvm"
+. "/usr/local/opt/nvm/nvm.sh"
+
 # export MANPATH="/usr/local/man:$MANPATH"
 export ANDROID_HOME="~/Library/Android/sdk"
 export PATH="$HOME/bin:/usr/local/bin:$HOME/.rbenv/bin:$HOME/.rbenv/shims/:$PATH:$ANDROID_HOME:$(yarn global bin)"
-
+export GOPATH="$HOME/workspace/go"
 source $ZSH/oh-my-zsh.sh
 
 # increase the number of files a terminal session can have open
@@ -34,6 +38,7 @@ export DEFAULT_USER="$(whoami)"
 export LESS='-FXr'
 
 alias workspace='cd ~/workspace'
+alias ws=workspace
 alias cls='clear;ls'
 alias bi='bundle install --binstubs .bundle/bin'
 alias clsa='clear;ls -a'
@@ -51,11 +56,14 @@ alias wordpress='cd ~/workspace/wordpress-heroku'
 alias sitebuilder='cd ~/workspace/sitebuilder'
 alias comfy='cd ~/workspace/gems/comfortable-mexican-sofa'
 alias fortress='cd ~/workspace/gems/cms-fortress'
+alias galaxy='cd ~/workspace/galaxy'
 alias sr='spring rails s'
 alias sc='spring rails c'
 alias g='git'
 alias rake='noglob bundle exec rake'
 alias zshup='source ~/.zshrc'
+alias goproj='cd ~/workspace/go/src/github.com/skylarmb/goplay'
+
 findfile() {
   find . -name "*$1*"
 }
