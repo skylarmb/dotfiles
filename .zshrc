@@ -20,8 +20,8 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(git)
 
 # NVM
-export NVM_DIR="$HOME/.nvm"
-. "/usr/local/opt/nvm/nvm.sh"
+#export NVM_DIR="$HOME/.nvm"
+#. "/usr/local/opt/nvm/nvm.sh"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 export ANDROID_HOME="~/Library/Android/sdk"
