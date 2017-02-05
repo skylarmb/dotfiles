@@ -19,6 +19,9 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
+# thefuck
+eval $(thefuck --alias)
+
 # NVM
 export NVM_DIR="/home/skylar/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -65,6 +68,8 @@ alias zshup='source ~/.zshrc'
 alias goproj='cd ~/workspace/go/src/github.com/skylarmb/goplay'
 alias killaccel='defaults write .GlobalPreferences com.apple.mouse.scaling -1'
 alias reaccel='defaults write .GlobalPreferences com.apple.mouse.scaling 2'
+alias ai='sudo apt install -y'
+alias au='sudo apt update'
 
 findfile() {
   find . -name "*$1*"
