@@ -1,6 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-export GPG_TTY=`tty`
+export GPG_TTY=$(tty)
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -63,12 +63,13 @@ alias g='git'
 alias rake='noglob bundle exec rake'
 alias zshup='source ~/.zshrc'
 alias goproj='cd ~/workspace/go/src/github.com/skylarmb/goplay'
+alias killaccel='defaults write .GlobalPreferences com.apple.mouse.scaling -1'
+alias reaccel='defaults write .GlobalPreferences com.apple.mouse.scaling 2'
 
 findfile() {
   find . -name "*$1*"
 }
 alias ff='findfile'
 alias gg='ag'
-workspace
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

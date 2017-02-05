@@ -9,6 +9,7 @@
 [user]
   name = Skylar Brown
   email = skylarmb@gmail.com
+	signingkey = 83BDBEB0
 [alias]
   c = commit
   d = diff
@@ -21,7 +22,9 @@
   g = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
   zmerge = merge --no-ff
   l = diff HEAD^ HEAD
+  ll = diff HEAD^^ HEAD^
   lf = diff HEAD^  HEAD --name-only
+  llf = diff HEAD^^  HEAD^ --name-only
   yolo = "!f() { \
             curr_branch=$(git rev-parse --abbrev-ref HEAD); \
             if [ "$curr_branch" = "master" ]; then \
@@ -44,3 +47,5 @@
           }; f"
 [commit]
 	gpgsign = true
+[gpg]
+	program = gpg
