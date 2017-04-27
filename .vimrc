@@ -136,16 +136,16 @@ nnoremap <leader><space> :noh<cr>
 set linebreak
 
 " colorscheme
-set background=dark
+" set background=dark
 " let g:solarized_contrast="high"
 " let g:solarized_visibility="high"
-"colorscheme solarized
+colorscheme monokai-chris
 
-colorscheme crayon
+"colorscheme crayon
 " set t_Co=256
 syntax on
-highlight LineNr ctermfg=white ctermbg=green
-highlight CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
+" highlight LineNr ctermfg=white ctermbg=green
+" highlight CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
 
 " make cursor move by visual lines instead of file lines (when wrapping)
 map k gk
