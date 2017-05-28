@@ -31,7 +31,7 @@ ulimit -n 2560
 export EDITOR='vim'
 export GIT_EDITOR='vim'
 export DEFAULT_USER="$(whoami)"
-export LESS='-FXr'
+# export LESS='-FXr'
 
 alias workspace='cd ~/workspace'
 alias ws=workspace
@@ -45,14 +45,9 @@ eval "$(rbenv init -)"
 alias zozi='cd ~/workspace/zozi'
 alias mobile='cd ~/workspace/ZoziMobile'
 alias cms='cd ~/workspace/cms'
-alias chef='cd ~/workspace/chef'
-alias comfy='cd ~/workspace/gems/comfortable-mexican-sofa'
-alias fortress='cd ~/workspace/cms-fortress'
-alias wordpress='cd ~/workspace/wordpress-heroku'
-alias sitebuilder='cd ~/workspace/sitebuilder'
-alias comfy='cd ~/workspace/gems/comfortable-mexican-sofa'
-alias fortress='cd ~/workspace/gems/cms-fortress'
-alias galaxy='cd ~/workspace/galaxy'
+alias web='cd ~/workspace/web'
+alias web2='cd ~/workspace/web2'
+alias api='cd ~/workspace/api'
 alias sr='spring rails s'
 alias sc='spring rails c'
 alias g='git'
@@ -70,3 +65,6 @@ alias gg='ag'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+
+
+#. /Users/skylar/workspace/distro/install/bin/torch-activate

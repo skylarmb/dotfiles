@@ -12,6 +12,7 @@
 	signingkey = 83BDBEB0
 [alias]
   c = commit
+  ca = commit -a
   d = diff
   dc = diff --cached
   r = rebase
