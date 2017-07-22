@@ -26,6 +26,7 @@
   ll = diff HEAD^^ HEAD^
   lf = diff HEAD^  HEAD --name-only
   llf = diff HEAD^^  HEAD^ --name-only
+  nuke = reset --hard origin/master
   yolo = "!f() { \
             curr_branch=$(git rev-parse --abbrev-ref HEAD); \
             if [ "$curr_branch" = "master" ]; then \
@@ -50,3 +51,10 @@
 	gpgsign = true
 [gpg]
 	program = gpg
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[rerere]
+	enabled = true

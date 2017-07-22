@@ -35,6 +35,9 @@ export DEFAULT_USER="$(whoami)"
 
 alias workspace='cd ~/workspace'
 alias ws=workspace
+alias gs='grunt serve'
+alias gss='grunt serve:staging'
+alias gsp='grunt serve:prod'
 alias cls='clear;ls'
 alias bi='bundle install --binstubs .bundle/bin'
 alias clsa='clear;ls -a'
@@ -48,6 +51,7 @@ alias cms='cd ~/workspace/cms'
 alias web='cd ~/workspace/web'
 alias web2='cd ~/workspace/web2'
 alias api='cd ~/workspace/api'
+alias sl='cd ~/workspace/serverless'
 alias sr='spring rails s'
 alias sc='spring rails c'
 alias g='git'
@@ -68,3 +72,10 @@ export NVM_DIR="$HOME/.nvm"
 
 
 #. /Users/skylar/workspace/distro/install/bin/torch-activate
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
