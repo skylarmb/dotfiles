@@ -61,6 +61,12 @@ alias goproj='cd ~/workspace/go/src/github.com/skylarmb/goplay'
 alias killaccel='defaults write .GlobalPreferences com.apple.mouse.scaling -1'
 alias reaccel='defaults write .GlobalPreferences com.apple.mouse.scaling 2'
 
+sem() {
+  branch=$(git rev-parse --abbrev-ref HEAD | sed "s#/#\-#g")
+  directory="${PWD##*/}"
+  open https://semaphoreci.com/headnote/$directory/branches/$branch
+}
+
 findfile() {
   find . -name "*$1*"
 }
