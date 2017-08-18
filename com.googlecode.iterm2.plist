@@ -12,6 +12,8 @@
 	<integer>1</integer>
 	<key>Coprocess MRU</key>
 	<array>
+		<string>echo vim /Users/work/workspace/web/_build/view/time-tracker/time-tracker.html</string>
+		<string>echo vim /Users/work/workspace/web/app/view/time-tracker/time-tracker.component.js</string>
 		<string>echo vim /Users/work/workspace/web/app/view/time-tracker/time-tracker.html</string>
 		<string>echo vim /Users/work/workspace/web/app/index.html</string>
 		<string>echo vim /Users/work/workspace/web/_build/index.html</string>
@@ -278,11 +280,11 @@
 	<key>NSWindow Frame ProfilesPanel</key>
 	<string>345 735 735 382 0 0 1920 1177 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>437 757 918 381 0 0 1920 1177 </string>
+	<string>437 627 918 512 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>1975 1170 890 665 1920 263 1200 1897 </string>
+	<string>0 6 1913 1171 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>0 600 890 577 0 0 1920 1177 </string>
+	<string>0 579 890 598 0 0 1920 1177 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -889,7 +891,7 @@
 				<key>editor</key>
 				<string>com.sublimetext.3</string>
 				<key>text</key>
-				<string>echo vim \1</string>
+				<string>echo mvim \1</string>
 			</dict>
 			<key>Send Code When Idle</key>
 			<false/>
@@ -1619,7 +1621,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-08-15T23:29:21Z</date>
+	<date>2017-08-18T01:18:23Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SwitchPaneModifier</key>

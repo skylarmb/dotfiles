@@ -131,6 +131,7 @@ set ignorecase
 set smartcase
 set incsearch
 nnoremap <leader><space> :noh<cr>
+nnoremap f *
 
 " wrap at word
 set linebreak
@@ -154,6 +155,8 @@ map J <C-f>
 inoremap jj <ESC>
 nnoremap <bs> i<bs>
 nnoremap qq :q<CR>
+nnoremap ww :w<CR>
+
 " save when focus lost
 au FocusLost * :wa
 
