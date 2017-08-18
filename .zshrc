@@ -1,3 +1,4 @@
+#!/bin/bash
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 export GPG_TTY=$(tty)
@@ -60,7 +61,8 @@ alias zshup='source ~/.zshrc'
 alias goproj='cd ~/workspace/go/src/github.com/skylarmb/goplay'
 alias killaccel='defaults write .GlobalPreferences com.apple.mouse.scaling -1'
 alias reaccel='defaults write .GlobalPreferences com.apple.mouse.scaling 2'
-
+alias s='subl'
+alias v='gvim'
 sem() {
   branch=$(git rev-parse --abbrev-ref HEAD | sed "s#/#\-#g")
   directory="${PWD##*/}"

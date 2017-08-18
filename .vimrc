@@ -9,10 +9,10 @@ call plug#begin('~/.vim/plugged')
 set clipboard=unnamed
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
+Plug 'mattn/emmet-vim/'
 " Colors
-Plug 'altercation/vim-colors-solarized'
-Plug 'crusoexia/vim-monokai'
 Plug 'flazz/vim-colorschemes'
+Plug 'curist/vim-angular-template'
 
 " Tools
 Plug 'bling/vim-airline'
@@ -135,43 +135,25 @@ nnoremap <leader><space> :noh<cr>
 " wrap at word
 set linebreak
 
-" colorscheme
-" set background=dark
-" let g:solarized_contrast="high"
-" let g:solarized_visibility="high"
-colorscheme monokai-chris
-
-"colorscheme crayon
-" set t_Co=256
+colorscheme hybrid_material
 syntax on
-" highlight LineNr ctermfg=white ctermbg=green
-" highlight CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
+set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h14
 
 " make cursor move by visual lines instead of file lines (when wrapping)
 map k gk
 map j gj
 map E ge
 
-" force hjkl
-" nnoremap <up> <nop>
-" nnoremap <down> <nop>
-" nnoremap <left> <nop>
-" nnoremap <right> <nop>
-" inoremap <up> <nop>
-" inoremap <down> <nop>
-" inoremap <left> <nop>
-" inoremap <right> <nop>
-" inoremap <D-s> <c-o>:Update<CR>
-
 " start/end of line
 map H ^
 map L $
+map K <C-b>
+map J <C-f>
 
 " shorcuts
-nnoremap ; :
 inoremap jj <ESC>
 nnoremap <bs> i<bs>
-
+nnoremap qq :q<CR>
 " save when focus lost
 au FocusLost * :wa
 
@@ -267,7 +249,7 @@ map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 
 " global search for word under cursor
-nnoremap K :Ack "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap F :Ack "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " highlight cap files
 au BufRead,BufNewFile *.cap set filetype=ruby
@@ -314,4 +296,22 @@ let g:jsx_ext_required = 0
 " editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
-nnoremap ` :NERDTreeToggle <CR>
+" Always show the current file when opening NERDTree
+function! NERDTreeToggleInCurDir()
+  " If NERDTree is open in the current buffer
+  if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+    exe ":NERDTreeClose"
+  else
+    exe ":NERDTreeFind"
+  endif
+endfunction
+nnoremap ` :call NERDTreeToggleInCurDir()<CR>
+
+let g:syntastic_html_tidy_ignore_errors = [
+    \"trimming empty <i>",
+    \"trimming empty <span>",
+    \"<input> proprietary attribute \"autocomplete\"",
+    \"proprietary attribute \"role\"",
+    \"proprietary attribute \"hidden\"",
+    \"proprietary attribute \"ng-",
+\]
