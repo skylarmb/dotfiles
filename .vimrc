@@ -18,7 +18,7 @@ Plug 'curist/vim-angular-template'
 Plug 'bling/vim-airline'
 " Plug 'skammer/vim-css-color'
 Plug 'tpope/vim-dispatch'
-Plug 'nathanaelkane/vim-indent-guides'
+Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-rbenv'
 Plug 'vim-scripts/Rename2'
 Plug 'scrooloose/syntastic'
@@ -139,6 +139,7 @@ set linebreak
 colorscheme hybrid_material
 syntax on
 set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h14
+let g:indentLine_char="⎸"
 
 " make cursor move by visual lines instead of file lines (when wrapping)
 map k gk
@@ -151,11 +152,19 @@ map L $
 map K <C-b>
 map J <C-f>
 
-" shorcuts
+" shortcuts
+" exit insert mode with jj
 inoremap jj <ESC>
+" enter insert mode when pressing backspace from normal mode
 nnoremap <bs> i<bs>
+" qq to quit from normal mode
 nnoremap qq :q<CR>
+" ww to write from normal mode
 nnoremap ww :w<CR>
+" tab to trigger emmet
+imap ,, <C-y>,<CR>
+" redo with U
+nnoremap U <C-r>
 
 " save when focus lost
 au FocusLost * :wa
@@ -318,3 +327,4 @@ let g:syntastic_html_tidy_ignore_errors = [
     \"proprietary attribute \"hidden\"",
     \"proprietary attribute \"ng-",
 \]
+
