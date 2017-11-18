@@ -10,8 +10,15 @@
 	<integer>0</integer>
 	<key>AppleSmoothFixedFontsSizeThreshold</key>
 	<integer>1</integer>
+	<key>AppleWindowTabbingMode</key>
+	<string>manual</string>
 	<key>Coprocess MRU</key>
 	<array>
+		<string>echo mvim /Users/work/workspace/web/app/assets/bower_components/angular-input-masks/angular-input-masks.us.js</string>
+		<string>echo mvim /Users/work/workspace/web/app/assets/bower_components/angular-input-masks/angular-input-masks-standalone.js</string>
+		<string>echo mvim /Users/work/workspace/web/app/assets/bower_components/angular-input-masks/angular-input-masks-dependencies.js</string>
+		<string>echo mvim /Users/work/workspace/web/_build/view/company/company-info/company-info-view.html</string>
+		<string>echo mvim /Users/work/dotfiles/com.googlecode.iterm2.plist</string>
 		<string>echo vim /Users/work/workspace/web/_build/view/time-tracker/time-tracker.html</string>
 		<string>echo vim /Users/work/workspace/web/app/view/time-tracker/time-tracker.component.js</string>
 		<string>echo vim /Users/work/workspace/web/app/view/time-tracker/time-tracker.html</string>
@@ -235,6 +242,8 @@
 	<string>DEF63D44-1DCD-48B4-A451-4927DEA3EF58</string>
 	<key>DimInactiveSplitPanes</key>
 	<false/>
+	<key>HotkeyMigratedFromSingleToMulti</key>
+	<true/>
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
 	<key>NSNavLastRootDirectory</key>
@@ -279,10 +288,14 @@
 	</dict>
 	<key>NSWindow Frame ProfilesPanel</key>
 	<string>345 735 735 382 0 0 1920 1177 </string>
+	<key>NSWindow Frame SUStatusFrame</key>
+	<string>481 548 400 129 0 0 1440 877 </string>
+	<key>NSWindow Frame SUUpdateAlert</key>
+	<string>410 364 620 392 0 0 1440 877 </string>
 	<key>NSWindow Frame SharedPreferences</key>
 	<string>437 627 918 512 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 6 1913 1171 0 0 1920 1177 </string>
+	<string>1750 922 890 577 1440 189 1200 1897 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>0 579 890 598 0 0 1920 1177 </string>
 	<key>New Bookmarks</key>
@@ -1612,6 +1625,8 @@
 	<string>/Users/work/dotfiles</string>
 	<key>Print In Black And White</key>
 	<true/>
+	<key>SUAutomaticallyUpdate</key>
+	<true/>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedAlternateAppNameKey</key>
@@ -1621,7 +1636,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-08-18T01:18:23Z</date>
+	<date>2017-10-16T15:56:24Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SwitchPaneModifier</key>
@@ -1633,6 +1648,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.0.15</string>
+	<string>3.1.2</string>
 </dict>
 </plist>

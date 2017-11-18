@@ -46,6 +46,7 @@ alias lsa='ls -lah'
 alias killrails='rm ~/**/tmp/pids/server.pid; sudo lsof -iTCP -sTCP:LISTEN -P | grep :3000'
 alias killmail='sudo lsof -iTCP -sTCP:LISTEN -P | grep :1080; sudo lsof -iTCP -sTCP:LISTEN -P | grep :1025'
 eval "$(rbenv init -)"
+eval "$(ssh-agent -s)"
 alias zozi='cd ~/workspace/zozi'
 alias mobile='cd ~/workspace/ZoziMobile'
 alias cms='cd ~/workspace/cms'
@@ -63,6 +64,7 @@ alias killaccel='defaults write .GlobalPreferences com.apple.mouse.scaling -1'
 alias reaccel='defaults write .GlobalPreferences com.apple.mouse.scaling 2'
 alias s='subl'
 alias v='gvim'
+alias w='webstorm'
 sem() {
   branch=$(git rev-parse --abbrev-ref HEAD | sed "s#/#\-#g")
   directory="${PWD##*/}"

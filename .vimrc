@@ -53,7 +53,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 
 " Languages
-Plug 'vim-scripts/csv.vim'
+Plug 'chrisbra/csv.vim'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-markdown'
 Plug 'derekwyatt/vim-scala'
