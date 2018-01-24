@@ -26,6 +26,9 @@ export PATH="$HOME/bin:/usr/local/bin:$HOME/.rbenv/bin:$HOME/.rbenv/shims/:$PATH
 export GOPATH="$HOME/workspace/go"
 source $ZSH/oh-my-zsh.sh
 
+export AWS_DEFAULT_REGION=us-east-1
+export AWS_REGION=us-east-1
+
 # increase the number of files a terminal session can have open
 ulimit -n 2560
 
@@ -45,8 +48,11 @@ alias clsa='clear;ls -a'
 alias lsa='ls -lah'
 alias killrails='rm ~/**/tmp/pids/server.pid; sudo lsof -iTCP -sTCP:LISTEN -P | grep :3000'
 alias killmail='sudo lsof -iTCP -sTCP:LISTEN -P | grep :1080; sudo lsof -iTCP -sTCP:LISTEN -P | grep :1025'
+# Evals
 eval "$(rbenv init -)"
 eval "$(ssh-agent -s)"
+eval $(thefuck --alias)
+
 alias zozi='cd ~/workspace/zozi'
 alias mobile='cd ~/workspace/ZoziMobile'
 alias cms='cd ~/workspace/cms'

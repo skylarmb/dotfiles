@@ -16,7 +16,7 @@
   d = diff
   dc = diff --cached
   r = rebase
-  p = push origin head
+  p = push -u origin head
   a = add
   s = status
   co = checkout
