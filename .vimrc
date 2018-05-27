@@ -99,6 +99,7 @@ set shiftwidth=2
 set smarttab
 set expandtab
 set list listchars=tab:▸\ ,trail:·
+set whichwrap+=<,>,h,l,[,]
 
 " backups
 set backupdir=~/.vim/tmp/backup//
