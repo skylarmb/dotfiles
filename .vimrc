@@ -134,12 +134,35 @@ nnoremap <leader><space> :noh<cr>
 nnoremap f *
 
 " wrap at word
-set linebreak
+" set linebreak
+set nowrap
+set background=dark
 
-colorscheme hybrid_material
+colorscheme Revolution
+" colorscheme atom
+" colorscheme Revolution
+" colorscheme parsec
+" colorscheme onedark
+" colorscheme mod8
+" colorscheme atom
+" colorscheme lilydjwg_dark
+" colorscheme itg_flat
+" colorscheme iangenzo
+" colorscheme hybrid_material
+" colorscheme inori
+" colorscheme kalisi
+" colorscheme solarized
+" colorscheme flatui
+
 syntax on
 set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h14
 let g:indentLine_char="⎸"
+let g:indentLine_setConceal = 0
+set tabstop=4
+set expandtab
+set shiftwidth=4
+set autoindent
+set smartindent
 
 " make cursor move by visual lines instead of file lines (when wrapping)
 map k gk
@@ -218,7 +241,6 @@ autocmd FileType gitcommit setlocal spell
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
 let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_ruby_mri_exec = '/Users/jeff/.rbenv/shims/ruby'
 
 " tagbar
 map <leader>rt :TagbarToggle<cr>
@@ -242,6 +264,7 @@ if executable('ag')
   " https://github.com/ggreer/the_silver_searcher
   let g:ackprg = 'ag --vimgrep'
 endif
+nnoremap <Leader>f :Ack!<Space>
 
 " yankring
 let g:yankring_history_dir = '~/.vim/tmp'
@@ -326,5 +349,6 @@ let g:syntastic_html_tidy_ignore_errors = [
     \"proprietary attribute \"role\"",
     \"proprietary attribute \"hidden\"",
     \"proprietary attribute \"ng-",
+    \"proprietary attribute \"data-",
 \]
 

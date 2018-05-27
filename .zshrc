@@ -1,4 +1,6 @@
 #!/bin/bash
+RPROMPT='%D{%r}'
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 export GPG_TTY=$(tty)
@@ -69,9 +71,15 @@ alias goproj='cd ~/workspace/go/src/github.com/skylarmb/goplay'
 alias killaccel='defaults write .GlobalPreferences com.apple.mouse.scaling -1'
 alias reaccel='defaults write .GlobalPreferences com.apple.mouse.scaling 2'
 alias s='subl'
-alias v='gvim'
+alias v='vim'
+alias gv='gvim'
 alias w='webstorm'
-sem() {
+
+dns() {
+    curl -sI $1 | grep -E '(301|302|Server|Location|X-Cache|HTTP)'
+}
+
+sema() {
   branch=$(git rev-parse --abbrev-ref HEAD | sed "s#/#\-#g")
   directory="${PWD##*/}"
   open https://semaphoreci.com/headnote/$directory/branches/$branch
@@ -80,6 +88,11 @@ sem() {
 findfile() {
   find . -name "*$1*"
 }
+
+tails() {
+  serverless logs --tail --stage $1 --function root --startTime 1m
+}
+
 alias ff='findfile'
 alias gg='ag'
 
@@ -95,3 +108,4 @@ export NVM_DIR="$HOME/.nvm"
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+
