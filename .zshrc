@@ -81,7 +81,7 @@ dns() {
 
 sema() {
   branch=$(git rev-parse --abbrev-ref HEAD | sed "s#/#\-#g")
-  directory="${PWD##*/}"
+  directory=$(printf '%s' "${PWD##*/}" | sed 's/[0-9]//g')
   open https://semaphoreci.com/headnote/$directory/branches/$branch
 }
 

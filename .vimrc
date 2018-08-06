@@ -89,7 +89,6 @@ set laststatus=2 " always show the status bar
 set backspace=start,eol,indent
 set virtualedit=onemore
 
-
 " leader character
 let mapleader = "\\"
 
