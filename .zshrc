@@ -1,9 +1,15 @@
 #!/bin/bash
+# private stuff that doesn't get pushed to github
+source '.private'
+
+# zmodload zsh/zprof
+export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
 RPROMPT='%D{%r}'
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 export GPG_TTY=$(tty)
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -24,88 +30,123 @@ plugins=(git)
 
 # export MANPATH="/usr/local/man:$MANPATH"
 export ANDROID_HOME="~/Library/Android/sdk"
-export PATH="$HOME/bin:/usr/local/bin:$HOME/.rbenv/bin:$HOME/.rbenv/shims/:$PATH:$ANDROID_HOME:$(yarn global bin)"
-export GOPATH="$HOME/workspace/go"
+export PATH="$HOME/bin:/usr/local/bin:$PATH"
+export PATH="$PATH:/usr/local/go/bin"
+export GO111MODULE=on
 source $ZSH/oh-my-zsh.sh
-
-export AWS_DEFAULT_REGION=us-east-1
-export AWS_REGION=us-east-1
 
 # increase the number of files a terminal session can have open
 ulimit -n 2560
 
-export EDITOR='vim'
-export GIT_EDITOR='vim'
+export EDITOR='nvim'
+export GIT_EDITOR='nvim'
 export DEFAULT_USER="$(whoami)"
 # export LESS='-FXr'
 
-alias workspace='cd ~/workspace'
 alias ws=workspace
-alias gs='grunt serve'
-alias gss='grunt serve:staging'
-alias gsp='grunt serve:prod'
 alias cls='clear;ls'
-alias bi='bundle install --binstubs .bundle/bin'
 alias clsa='clear;ls -a'
 alias lsa='ls -lah'
-alias killrails='rm ~/**/tmp/pids/server.pid; sudo lsof -iTCP -sTCP:LISTEN -P | grep :3000'
-alias killmail='sudo lsof -iTCP -sTCP:LISTEN -P | grep :1080; sudo lsof -iTCP -sTCP:LISTEN -P | grep :1025'
-# Evals
-eval "$(rbenv init -)"
-eval "$(ssh-agent -s)"
-eval $(thefuck --alias)
+alias vimc='vim ~/.vimrc'
+alias zshc='vim ~/.zshrc'
+alias killdocker='docker kill $(docker ps -q)'
+alias vim='nvim'
+alias t='tree -I node_modules -L'
 
-alias zozi='cd ~/workspace/zozi'
-alias mobile='cd ~/workspace/ZoziMobile'
-alias cms='cd ~/workspace/cms'
-alias web='cd ~/workspace/web'
-alias web2='cd ~/workspace/web2'
-alias api='cd ~/workspace/api'
-alias sl='cd ~/workspace/serverless'
-alias sr='spring rails s'
-alias sc='spring rails c'
+# Evals
+# eval "$(ssh-agent -s)"
+# eval $(thefuck --alias)
+
 alias g='git'
-alias rake='noglob bundle exec rake'
 alias zshup='source ~/.zshrc'
-alias goproj='cd ~/workspace/go/src/github.com/skylarmb/goplay'
-alias killaccel='defaults write .GlobalPreferences com.apple.mouse.scaling -1'
-alias reaccel='defaults write .GlobalPreferences com.apple.mouse.scaling 2'
 alias s='subl'
-alias v='vim'
-alias gv='gvim'
-alias w='webstorm'
+alias vo='nvim $(fzf --height 30% --reverse)'
+alias v='nvim'
 
 dns() {
     curl -sI $1 | grep -E '(301|302|Server|Location|X-Cache|HTTP)'
 }
 
-sema() {
-  branch=$(git rev-parse --abbrev-ref HEAD | sed "s#/#\-#g")
-  directory=$(printf '%s' "${PWD##*/}" | sed 's/[0-9]//g')
-  open https://semaphoreci.com/headnote/$directory/branches/$branch
-}
-
 findfile() {
-  find . -name "*$1*"
+  ag -g "$1"
 }
 
 tails() {
   serverless logs --tail --stage $1 --function root --startTime 1m
 }
 
+confirm() {
+    # call with a prompt string or use a default
+    read "response?Are you sure? [y/N]"
+    if [[ "$response" =~ ^[Yy]$ ]]
+    then
+      return 0
+    fi
+    return 1
+}
+
 alias ff='findfile'
+alias ag='ag --path-to-ignore ~/.ignore'
 alias gg='ag'
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
-
 
 #. /Users/skylar/workspace/distro/install/bin/torch-activate
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# [[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+# [[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
 
+
+# export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Performance optimzations
+DISABLE_UPDATE_PROMPT=true
+
+# nvm / npm / node
+nvm() {
+  unset -f nvm
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
+  nvm "$@"
+}
+
+node() {
+  unset -f node
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
+  node "$@"
+}
+
+npm() {
+  unset -f npm
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
+  npm "$@"
+}
+
+# Perform compinit only once a day.
+autoload -Uz compinit
+
+setopt EXTENDEDGLOB
+for dump in $ZSH_COMPDUMP(#qN.m1); do
+  compinit
+  if [[ -s "$dump" && (! -s "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
+    zcompile "$dump"
+  fi
+  echo "Initializing Completions..."
+done
+unsetopt EXTENDEDGLOB
+compinit -C
+
+
+# zprof
+# Install Ruby Gems to ~/gems
+export GEM_HOME=$HOME/gems
+export PATH=$HOME/gems/bin:$PATH

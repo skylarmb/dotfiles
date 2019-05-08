@@ -6,23 +6,24 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-set clipboard=unnamed
+
+" Colors
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
-Plug 'mattn/emmet-vim/'
-" Colors
 Plug 'flazz/vim-colorschemes'
-Plug 'curist/vim-angular-template'
 
 " Tools
 Plug 'bling/vim-airline'
+Plug 'tpope/vim-fugitive'
+Plug 'FooSoft/vim-argwrap'
+
 " Plug 'skammer/vim-css-color'
-Plug 'tpope/vim-dispatch'
 Plug 'Yggdroot/indentLine'
-Plug 'tpope/vim-rbenv'
-Plug 'vim-scripts/Rename2'
+" Plug 'tpope/vim-rbenv'
+" Plug 'vim-scripts/Rename2'
 Plug 'scrooloose/syntastic'
 Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
 Plug 'majutsushi/tagbar'
 Plug 'vim-scripts/YankRing.vim'
 
@@ -31,13 +32,13 @@ Plug 'tpope/vim-vinegar'
 Plug 'mileszs/ack.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'corntrace/bufexplorer'
-
-" Tools - Git
-Plug 'tpope/vim-fugitive'
-Plug 'mhinz/vim-signify'
+Plug 'rking/ag.vim'
+Plug 'Chun-Yang/vim-action-ag'
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 
 " Tools - Tab Completion
-Plug 'ervandew/supertab'
+" Plug 'ervandew/supertab'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
@@ -51,54 +52,55 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'ntpeters/vim-better-whitespace'
 
 " Languages
-Plug 'chrisbra/csv.vim'
+" Plug 'chrisbra/csv.vim'
 Plug 'tpope/vim-git'
-Plug 'tpope/vim-markdown'
-Plug 'derekwyatt/vim-scala'
-Plug 'gre/play2vim'
-
-" Languages - Ruby
-Plug 'vim-ruby/vim-ruby'
-Plug 'thoughtbot/vim-rspec'
-Plug 'tpope/vim-bundler'
-Plug 'tpope/vim-rails'
-Plug 'slim-template/vim-slim'
-Plug 'tpope/vim-haml'
-Plug 'tpope/vim-cucumber'
+" Plug 'tpope/vim-markdown'
+" Plug 'gre/play2vim'
 
 " Languages - Yavascript
-Plug 'pangloss/vim-javascript'
-Plug 'kchmck/vim-coffee-script'
-Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'burnettk/vim-angular'
-Plug 'digitaltoad/vim-jade'
-Plug 'mxw/vim-jsx'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+" Plug 'pangloss/vim-javascript'
+" Plug 'othree/javascript-libraries-syntax.vim'
+" Plug 'mxw/vim-jsx'
+Plug 'sheerun/vim-polyglot'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
 " Languages - Web
-Plug 'othree/html5.vim'
-Plug 'cakebaker/scss-syntax.vim'
+Plug 'mattn/emmet-vim/'
+" Plug 'othree/html5.vim'
+" Plug 'cakebaker/scss-syntax.vim'
 
 call plug#end()
 
+" basic config
+set cursorline
 set number
 set ruler
 set encoding=utf-8
-set laststatus=2 " always show the status bar
+" use system clipboard
+set clipboard=unnamed
+" disable compatibility mode (enables meta key)
+set nocp
+" always show the status bar
+set laststatus=2
+" set backspace behavior
 set backspace=start,eol,indent
+" go one char past end of line
 set virtualedit=onemore
+" always show sign column (prevents flicker)
+set signcolumn=yes
+
+" enable syntax
+syntax on
+" set font
+set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h14
 
 " leader character
 let mapleader = "\\"
-
-" whitespace
-set tabstop=2
-set shiftwidth=2
-set smarttab
-set expandtab
-set list listchars=tab:▸\ ,trail:·
-set whichwrap+=<,>,h,l,[,]
 
 " backups
 set backupdir=~/.vim/tmp/backup//
@@ -130,67 +132,72 @@ set hlsearch
 set ignorecase
 set smartcase
 set incsearch
+" unhighlight search results
 nnoremap <leader><space> :noh<cr>
-nnoremap f *
+let g:ag_working_path_mode="r"
+" search word under cursor
+nmap f *N
+" use Coc to global search word under cursor
+nmap F gagiw
+" ag global search
+nmap <c-f> :Ag!<space>
+" fzf lines in open buffers
+nmap <leader>l :Lines<CR>
 
-" wrap at word
-" set linebreak
-set nowrap
+" colorscheme
 set background=dark
+colorscheme gruvbox
 
-colorscheme Revolution
-" colorscheme atom
-" colorscheme Revolution
-" colorscheme parsec
-" colorscheme onedark
-" colorscheme mod8
-" colorscheme atom
-" colorscheme lilydjwg_dark
-" colorscheme itg_flat
-" colorscheme iangenzo
-" colorscheme hybrid_material
-" colorscheme inori
-" colorscheme kalisi
-" colorscheme solarized
-" colorscheme flatui
-
-syntax on
-set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h14
-let g:indentLine_char="⎸"
-let g:indentLine_setConceal = 0
-set tabstop=4
+" whitespace
+set shiftwidth=2
+set nowrap
+set smarttab
 set expandtab
-set shiftwidth=4
+set list listchars=tab:▸\ ,trail:·
+set whichwrap+=<,>,h,l,[,]
+
+" indentation
+let g:indentLine_char_list = ['⎸']
+set tabstop=2
 set autoindent
 set smartindent
+vnoremap < <gv
+vnoremap > >gv
 
-" make cursor move by visual lines instead of file lines (when wrapping)
+" cursor movement
+" always move by display lines when wrapping
 map k gk
 map j gj
-map E ge
-
-" start/end of line
+" move by beginning of word instead of end of word
+nnoremap E b
+nnoremap e w
+" beginning / end of line
 map H ^
-map L $
-map K <C-b>
-map J <C-f>
+map L $l
+" jump 10 lines
+map K 10k
+map J 10j
 
 " shortcuts
 " exit insert mode with jj
-inoremap jj <ESC>
+inoremap jj <ESC>l
 " enter insert mode when pressing backspace from normal mode
 nnoremap <bs> i<bs>
 " qq to quit from normal mode
 nnoremap qq :q<CR>
 " ww to write from normal mode
 nnoremap ww :w<CR>
-" tab to trigger emmet
-imap ,, <C-y>,<CR>
+" \e to trigger emmet
+imap <leader>e <C-y>,<CR><esc>O
 " redo with U
 nnoremap U <C-r>
-
+" quit all
+nnoremap qa :conf qa<CR>
 " save when focus lost
 au FocusLost * :wa
+
+" tabs
+map <leader>t <Esc>:tabnew<CR>
 
 " new split
 nnoremap <leader>s<space> <C-w>v<C-w>l
@@ -204,12 +211,12 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 " navigate buffers
-map <A-h> :bp<CR>
-map <A-l> :bn<CR>
+map <M-h> :bp<CR>
+map <M-l> :bn<CR>
 
 " move lines up and down
-map <A-j> :m +1 <CR>
-map <A-k> :m -2 <CR>
+map <M-j> :m +1 <CR>
+map <M-k> :m -2 <CR>
 
 " clean whitespace
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
@@ -228,14 +235,25 @@ nmap <leader>Y "+yy
 " paste from clipboard
 nmap <leader>p "+gP
 
-" show the registers from things cut/yanked
-nmap <leader>r :registers<CR>
-
-" highlight current line
-set cursorline
+" show yankring contents
+nmap <leader>p :YRShow<CR>
 
 " enabled spell checking in git commit
 autocmd FileType gitcommit setlocal spell
+
+" ~~ PLUGINS ~~
+
+" Argwrap
+nnoremap <silent> <leader>a :ArgWrap<CR>
+
+" Coc
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gf :CocCommand tslint.fixAllProblems<CR>
+
+imap <C-e> <Plug>(coc-snippets-expand)
 
 " syntastic
 let g:syntastic_enable_signs=1
@@ -246,6 +264,7 @@ let g:syntastic_javascript_checkers = ['eslint']
 map <leader>rt :TagbarToggle<cr>
 
 " ctrlp
+let g:ctrlp_max_files=0
 let g:ctrlp_user_command = {
   \ 'types': {
     \ 1: ['.git', 'cd %s && git ls-files'],
@@ -255,6 +274,10 @@ let g:ctrlp_user_command = {
 \ }
 let g:ctrlp_clear_cache_on_exit = 1
 let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
+let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("e")': ['<2-LeftMouse>'],
+    \ 'AcceptSelection("t")': ['<cr>'],
+    \ }
 
 " ack
 if executable('ack-grep')
@@ -264,7 +287,6 @@ if executable('ag')
   " https://github.com/ggreer/the_silver_searcher
   let g:ackprg = 'ag --vimgrep'
 endif
-nnoremap <Leader>f :Ack!<Space>
 
 " yankring
 let g:yankring_history_dir = '~/.vim/tmp'
@@ -273,56 +295,6 @@ let g:yankring_history_file = 'yankring_history'
 " airline (status line)
 let g:airline_left_sep=''
 let g:airline_right_sep=''
-
-" dispatch
-let g:rspec_command = "Dispatch rspec {spec}"
-
-" rspec
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
-
-" global search for word under cursor
-nnoremap F :Ack "\b<C-R><C-W>\b"<CR>:cw<CR>
-
-" highlight cap files
-au BufRead,BufNewFile *.cap set filetype=ruby
-
-" close hidden buffers
-" http://stackoverflow.com/a/1536094
-function! Wipeout()
-  " list of *all* buffer numbers
-  let l:buffers = range(1, bufnr('$'))
-
-  " what tab page are we in?
-  let l:currentTab = tabpagenr()
-  try
-    " go through all tab pages
-    let l:tab = 0
-    while l:tab < tabpagenr('$')
-      let l:tab += 1
-
-      " go through all windows
-      let l:win = 0
-      while l:win < winnr('$')
-        let l:win += 1
-        " whatever buffer is in this window in this tab, remove it from
-        " l:buffers list
-        let l:thisbuf = winbufnr(l:win)
-        call remove(l:buffers, index(l:buffers, l:thisbuf))
-      endwhile
-    endwhile
-
-    " if there are any buffers left, delete them
-    if len(l:buffers)
-      execute 'bwipeout' join(l:buffers)
-    endif
-  finally
-    " go back to our original tab page
-    execute 'tabnext' l:currentTab
-  endtry
-endfunction
 
 " javascript-libraries-syntax
 let g:used_javascript_libs = 'jquery,underscore,angularjs,angularui,jasmine'
@@ -344,7 +316,6 @@ nnoremap ` :call NERDTreeToggleInCurDir()<CR>
 
 let g:syntastic_html_tidy_ignore_errors = [
     \"trimming empty <i>",
-    \"trimming empty <span>",
     \"<input> proprietary attribute \"autocomplete\"",
     \"proprietary attribute \"role\"",
     \"proprietary attribute \"hidden\"",

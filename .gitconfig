@@ -1,61 +1,41 @@
-[core]
-  excludesfile = ~/.gitignore_global
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
-[user]
-  name = Skylar Brown
-  email = skylarmb@gmail.com
-	signingkey = 83BDBEB0
+# private file must define [user] and [core]
+[include]
+  path = .gitconfig_private
+[color]
+	ui = auto
 [alias]
   c = commit
   ca = commit -a
-  d = diff
-  dc = diff --cached
+  d = diff --ignore-all-space
+  dc = diff --cached --ignore-all-space
   r = rebase
   p = push -u origin head
   a = add
   s = status
   co = checkout
-  o = open
   g = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
   zmerge = merge --no-ff
-  l = diff HEAD^ HEAD
-  ll = diff HEAD^^ HEAD^
+  l = diff --word-diff HEAD^ HEAD
+  ll = diff --word-diff HEAD^^ HEAD^
   lf = diff HEAD^  HEAD --name-only
   llf = diff HEAD^^  HEAD^ --name-only
   nuke = reset --hard origin/master
-  yolo = "!f() { \
-            curr_branch=$(git rev-parse --abbrev-ref HEAD); \
-            if [ "$curr_branch" = "master" ]; then \
-              echo "~~ cant yolo on master..." && return; \
-            fi; \
-            echo "~~ force pushing origin head"; \
-            git push -f origin head; \
-          }; f"
+#  yolo = "!f() { \
+#            curr_branch=$(git rev-parse --abbrev-ref HEAD); \
+#            if [ "$curr_branch" = "master" ]; then \
+#              echo "~~ cant yolo on master..." && return; \
+#   fi; \
+#   echo "~~ force pushing origin head"; \
+#   git push -f origin head; \
+        #          }; f"
+  mu = "!f() { \
+            echo "~~ updating master"; \
+            git fetch origin master; \
+            git update-ref --create-reflog refs/heads/master refs/remotes/origin/master; \
+        }; f"
   reup = "!f() { \
-            curr_branch=$(git rev-parse --abbrev-ref HEAD); \
-            echo "~~ checking out master"; \
-            git checkout master; \
-            echo "~~ pulling master"; \
-            git pull; \
-            echo "~~ checking out $curr_branch"; \
-            git checkout $curr_branch; \
-            echo "~~ rebasing $curr_branch on origin/master"; \
+            git mu; \
+            echo "~~ rebasing on origin/master"; \
             git rebase origin/master; \
             echo "~~ done"; \
           }; f"
-[commit]
-	gpgsign = true
-[gpg]
-	program = /usr/local/MacGPG2/bin/gpg2
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-[rerere]
-	enabled = true
