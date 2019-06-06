@@ -3,10 +3,17 @@
   path = .gitconfig_private
 [color]
 	ui = auto
+[merge]
+  tool = vim_mergetool
+  conflictstyle = diff3
+[mergetool "vim_mergetool"]
+  cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
+  trustExitCode = true
 [alias]
   c = commit
   ca = commit -a
   d = diff --ignore-all-space
+  dw = diff --ignore-all-space --word-diff
   dc = diff --cached --ignore-all-space
   r = rebase
   p = push -u origin head

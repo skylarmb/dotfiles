@@ -1,6 +1,6 @@
 #!/bin/bash
 # private stuff that doesn't get pushed to github
-source '.private'
+source "$HOME/.private"
 
 # zmodload zsh/zprof
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
@@ -52,6 +52,7 @@ alias zshc='vim ~/.zshrc'
 alias killdocker='docker kill $(docker ps -q)'
 alias vim='nvim'
 alias t='tree -I node_modules -L'
+alias ta='tmux a #'
 
 # Evals
 # eval "$(ssh-agent -s)"
@@ -106,30 +107,9 @@ alias gg='ag'
 # Performance optimzations
 DISABLE_UPDATE_PROMPT=true
 
-# nvm / npm / node
-nvm() {
-  unset -f nvm
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
-  nvm "$@"
-}
-
-node() {
-  unset -f node
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
-  node "$@"
-}
-
-npm() {
-  unset -f npm
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
-  npm "$@"
-}
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
 
 # Perform compinit only once a day.
 autoload -Uz compinit

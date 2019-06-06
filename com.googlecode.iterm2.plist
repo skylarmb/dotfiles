@@ -4476,15 +4476,19 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-05-02T03:22:49Z</date>
+	<date>2019-06-03T04:33:49Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<false/>
+	<true/>
+	<key>ShowNewOutputIndicator</key>
+	<true/>
 	<key>SoundForEsc</key>
 	<false/>
 	<key>SplitPaneDimmingAmount</key>
 	<real>0.46475360576923075</real>
+	<key>StretchTabsToFillBar</key>
+	<false/>
 	<key>SwitchPaneModifier</key>
 	<integer>5</integer>
 	<key>TabStyleWithAutomaticOption</key>

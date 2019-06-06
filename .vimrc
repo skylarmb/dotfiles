@@ -57,8 +57,12 @@ Plug 'ntpeters/vim-better-whitespace'
 " Languages
 " Plug 'chrisbra/csv.vim'
 Plug 'tpope/vim-git'
+Plug 'samoshkin/vim-mergetool'
 " Plug 'tpope/vim-markdown'
 " Plug 'gre/play2vim'
+
+" Languages - Go
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " Languages - Yavascript
 Plug 'leafgarland/typescript-vim'
@@ -71,16 +75,21 @@ Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
 " Languages - Web
 Plug 'mattn/emmet-vim/'
-" Plug 'othree/html5.vim'
-" Plug 'cakebaker/scss-syntax.vim'
+
+" Prettier
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
 call plug#end()
 
 " basic config
+set autoread
 set cursorline
 set number
 set ruler
 set encoding=utf-8
+set nocompatible
+filetype plugin indent on
+
 " use system clipboard
 set clipboard=unnamed
 " disable compatibility mode (enables meta key)
@@ -164,13 +173,23 @@ set smartindent
 vnoremap < <gv
 vnoremap > >gv
 
+" mergetool
+let g:mergetool_layout = 'bmr'
+let g:mergetool_prefer_revision = 'local'
+nmap mt <plug>(MergetoolToggle)
+nmap mgl :MergetoolDiffExchangeLeft<CR>
+nmap mgr :MergetoolDiffExchangeRight<CR>
+nmap <leader>gd :Gdiff<CR>
+
 " cursor movement
 " always move by display lines when wrapping
 map k gk
 map j gj
 " move by beginning of word instead of end of word
 nnoremap E b
+vnoremap E b
 nnoremap e w
+vnoremap e w
 " beginning / end of line
 map H ^
 map L $l
@@ -232,6 +251,8 @@ map <leader>N :Explore<cr>
 vmap <leader>y "+y
 " copy current line to clipboard
 nmap <leader>Y "+yy
+" fix known issue in Neovim #7994
+au InsertLeave * set nopaste
 " paste from clipboard
 nmap <leader>p "+gP
 
@@ -259,9 +280,6 @@ imap <C-e> <Plug>(coc-snippets-expand)
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
 let g:syntastic_javascript_checkers = ['eslint']
-
-" tagbar
-map <leader>rt :TagbarToggle<cr>
 
 " ctrlp
 let g:ctrlp_max_files=0
