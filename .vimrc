@@ -16,6 +16,8 @@ Plug 'flazz/vim-colorschemes'
 Plug 'bling/vim-airline'
 Plug 'tpope/vim-fugitive'
 Plug 'FooSoft/vim-argwrap'
+" Plug 'raymond-w-ko/scrollfix'
+Plug 'vim-scripts/Tabmerge'
 
 " Plug 'skammer/vim-css-color'
 Plug 'Yggdroot/indentLine'
@@ -25,7 +27,7 @@ Plug 'scrooloose/syntastic'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'majutsushi/tagbar'
-Plug 'vim-scripts/YankRing.vim'
+" Plug 'vim-scripts/YankRing.vim'
 
 " Tools - Search
 Plug 'tpope/vim-vinegar'
@@ -78,7 +80,6 @@ Plug 'mattn/emmet-vim/'
 
 " Prettier
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
-
 call plug#end()
 
 " basic config
@@ -89,6 +90,9 @@ set ruler
 set encoding=utf-8
 set nocompatible
 filetype plugin indent on
+autocmd BufReadPre,FileReadPre,winenter,focusgained * :setlocal number relativenumber
+autocmd winleave,focuslost   * :setlocal number norelativenumber
+" let g:scrollfix=50
 
 " use system clipboard
 set clipboard=unnamed
@@ -110,6 +114,10 @@ set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h14
 
 " leader character
 let mapleader = "\\"
+
+" languages
+let g:go_doc_keywordprg_enabled = 0
+let g:go_def_mode = 'godef'
 
 " backups
 set backupdir=~/.vim/tmp/backup//
@@ -164,6 +172,7 @@ set smarttab
 set expandtab
 set list listchars=tab:▸\ ,trail:·
 set whichwrap+=<,>,h,l,[,]
+nnoremap <leader>w :set wrap!<cr>
 
 " indentation
 let g:indentLine_char_list = ['⎸']
@@ -200,6 +209,7 @@ map J 10j
 " shortcuts
 " exit insert mode with jj
 inoremap jj <ESC>l
+tnoremap jj <C-\><C-n>
 " enter insert mode when pressing backspace from normal mode
 nnoremap <bs> i<bs>
 " qq to quit from normal mode
@@ -222,6 +232,8 @@ map <leader>t <Esc>:tabnew<CR>
 nnoremap <leader>s<space> <C-w>v<C-w>l
 nnoremap <leader>vs <C-w><C-v>
 nnoremap <leader>hs <C-w><C-s>
+nnoremap <leader>, <c-w>10><cr>
+nnoremap <leader>. <c-w>10<<cr>
 
 " navigate splits
 map <C-h> <C-w>h
@@ -257,7 +269,7 @@ au InsertLeave * set nopaste
 nmap <leader>p "+gP
 
 " show yankring contents
-nmap <leader>p :YRShow<CR>
+" nmap <leader>p :YRShow<CR>
 
 " enabled spell checking in git commit
 autocmd FileType gitcommit setlocal spell
@@ -285,7 +297,7 @@ let g:syntastic_javascript_checkers = ['eslint']
 let g:ctrlp_max_files=0
 let g:ctrlp_user_command = {
   \ 'types': {
-    \ 1: ['.git', 'cd %s && git ls-files'],
+    \ 1: ['.git', 'cd %s && git ls-files -o'],
     \ 2: ['.hg', 'hg --cwd %s locate -I .'],
     \ },
   \ 'fallback': 'find %s -type f'
@@ -293,7 +305,6 @@ let g:ctrlp_user_command = {
 let g:ctrlp_clear_cache_on_exit = 1
 let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
 let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("e")': ['<2-LeftMouse>'],
     \ 'AcceptSelection("t")': ['<cr>'],
     \ }
 
@@ -307,8 +318,8 @@ if executable('ag')
 endif
 
 " yankring
-let g:yankring_history_dir = '~/.vim/tmp'
-let g:yankring_history_file = 'yankring_history'
+" let g:yankring_history_dir = '~/.vim/tmp'
+" let g:yankring_history_file = 'yankring_history'
 
 " airline (status line)
 let g:airline_left_sep=''
