@@ -1,3 +1,7 @@
+" -------------------------------------
+" ------------ PLUGINS ----------------
+" -------------------------------------
+
 " vim-plug auto install
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -7,92 +11,109 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-" Colors
+" ~~ Eye candy ~~
+
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
 Plug 'flazz/vim-colorschemes'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'ap/vim-css-color'
 
-" Tools
-Plug 'bling/vim-airline'
+" ~~ Tools ~~
+
+" start screen
+Plug 'mhinz/vim-startify'
+" airline
+Plug 'vim-airline/vim-airline'
+" git integration
 Plug 'tpope/vim-fugitive'
+" wrap args to many lines
 Plug 'FooSoft/vim-argwrap'
-" Plug 'raymond-w-ko/scrollfix'
+" tab management
 Plug 'vim-scripts/Tabmerge'
-
-" Plug 'skammer/vim-css-color'
+" show indentation visually
 Plug 'Yggdroot/indentLine'
-" Plug 'tpope/vim-rbenv'
-" Plug 'vim-scripts/Rename2'
+" polyglot syntax checking
 Plug 'scrooloose/syntastic'
+" file browsing
 Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/nerdcommenter'
-Plug 'majutsushi/tagbar'
-" Plug 'vim-scripts/YankRing.vim'
 
-" Tools - Search
+" ~~ Search ~~
+
+" open files
 Plug 'tpope/vim-vinegar'
-Plug 'mileszs/ack.vim'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'corntrace/bufexplorer'
+" Ag integration
 Plug 'rking/ag.vim'
 Plug 'Chun-Yang/vim-action-ag'
+" fzf integration
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
-" Tools - Tab Completion
-" Plug 'ervandew/supertab'
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
-Plug 'honza/vim-snippets'
+" ~~ Formatting ~~
 
-" Tools - Formatting
+" respect editorconfig files
 Plug 'editorconfig/editorconfig-vim'
+" automatic bracket and quote matching, etc
 Plug 'Raimondi/delimitMate'
+" context and indentation aware pasting
 Plug 'sickill/vim-pasta'
+" powerful commenting
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-repeat'
+" manage and replace quotes, brackets, parens, etc
 Plug 'tpope/vim-surround'
+" nuke whitespace
 Plug 'ntpeters/vim-better-whitespace'
-
-" Languages
-" Plug 'chrisbra/csv.vim'
-Plug 'tpope/vim-git'
-Plug 'samoshkin/vim-mergetool'
-" Plug 'tpope/vim-markdown'
-" Plug 'gre/play2vim'
-
-" Languages - Go
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-
-" Languages - Yavascript
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-" Plug 'pangloss/vim-javascript'
-" Plug 'othree/javascript-libraries-syntax.vim'
-" Plug 'mxw/vim-jsx'
-Plug 'sheerun/vim-polyglot'
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
-
-" Languages - Web
-Plug 'mattn/emmet-vim/'
-
 " Prettier
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+
+" ~~ Writing / note taking ~~
+
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+
+" ~~ Languages ~~
+
+" automagic polyglot syntax highlighting
+Plug 'sheerun/vim-polyglot'
+" syntax highlighting for git files (.gitconfig, etc)
+Plug 'tpope/vim-git'
+" git conflicts
+Plug 'samoshkin/vim-mergetool'
+" go
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" javascript
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+" web
+Plug 'mattn/emmet-vim/'
+
 call plug#end()
 
-" basic config
-set autoread
-set cursorline
-set number
-set ruler
+" -------------------------------------
+" ------------ BASE CONFIG ------------
+" -------------------------------------
+
+" ~~ General ~~
 set encoding=utf-8
 set nocompatible
 filetype plugin indent on
-autocmd BufReadPre,FileReadPre,winenter,focusgained * :setlocal number relativenumber
-autocmd winleave,focuslost   * :setlocal number norelativenumber
-" let g:scrollfix=50
+
+" enable syntax
+syntax on
+
+" reload files automatically
+set autoread
+" highlight current line
+set cursorline
+" relative line numbers
+set number relativenumber
+" show cursor column
+set ruler
+
+" leader character
+let mapleader = "\\"
 
 " use system clipboard
 set clipboard=unnamed
@@ -106,18 +127,13 @@ set backspace=start,eol,indent
 set virtualedit=onemore
 " always show sign column (prevents flicker)
 set signcolumn=yes
+" allow mouse clicks
+set mouse=a
+" show matching brackets.
+set showmatch
 
-" enable syntax
-syntax on
 " set font
 set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h14
-
-" leader character
-let mapleader = "\\"
-
-" languages
-let g:go_doc_keywordprg_enabled = 0
-let g:go_def_mode = 'godef'
 
 " backups
 set backupdir=~/.vim/tmp/backup//
@@ -128,87 +144,72 @@ set backup
 set wildmode=list:longest,list:full
 set wildignore+=*.o,*.obj,*.rbc,*.class,vendor/gems/*
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png
-set wildignore+=*.zip,*.apk
-
-" allow mouse clicks
-set mouse=a
-
-" show matching brackets.
-set showmatch
-
-" bounce between brackets
-nmap <tab> %
-vmap <tab> %
-runtime! macros/matchit.vim
-
-" show in title bar
-set title
-
-" search
-set hlsearch
-set ignorecase
-set smartcase
-set incsearch
-" unhighlight search results
-nnoremap <leader><space> :noh<cr>
-let g:ag_working_path_mode="r"
-" search word under cursor
-nmap f *N
-" use Coc to global search word under cursor
-nmap F gagiw
-" ag global search
-nmap <c-f> :Ag!<space>
-" fzf lines in open buffers
-nmap <leader>l :Lines<CR>
+set wildignore+=*.zip,*.apk,*.gz
 
 " colorscheme
 set background=dark
 colorscheme gruvbox
+let g:airline_theme='gruvbox'
 
 " whitespace
 set shiftwidth=2
-set nowrap
+set wrap
+set showbreak=↪>\
 set smarttab
 set expandtab
 set list listchars=tab:▸\ ,trail:·
 set whichwrap+=<,>,h,l,[,]
-nnoremap <leader>w :set wrap!<cr>
+
+" show title
+set title
+
+" search
+set hlsearch
+" case insensitive
+set ignorecase
+" incremental search (searches as you type)
+set incsearch
 
 " indentation
 let g:indentLine_char_list = ['⎸']
 set tabstop=2
 set autoindent
 set smartindent
-vnoremap < <gv
-vnoremap > >gv
 
-" mergetool
-let g:mergetool_layout = 'bmr'
-let g:mergetool_prefer_revision = 'local'
-nmap mt <plug>(MergetoolToggle)
-nmap mgl :MergetoolDiffExchangeLeft<CR>
-nmap mgr :MergetoolDiffExchangeRight<CR>
-nmap <leader>gd :Gdiff<CR>
+" fix known issue in Neovim #7994
+au InsertLeave * set nopaste
 
-" cursor movement
+" -------------------------------------
+" ------------- KEYBINDS --------------
+" -------------------------------------
+
+" ~~ Cursor movement ~~
+
 " always move by display lines when wrapping
 map k gk
 map j gj
+
 " move by beginning of word instead of end of word
 nnoremap E b
 vnoremap E b
 nnoremap e w
 vnoremap e w
+
 " beginning / end of line
 map H ^
 map L $l
+
 " jump 10 lines
 map K 10k
 map J 10j
 
-" shortcuts
+" ~~ Shortcuts ~~
+
+" redo with U
+nnoremap U <C-r>
 " exit insert mode with jj
 inoremap jj <ESC>l
+" jj for term mode
 tnoremap jj <C-\><C-n>
 " enter insert mode when pressing backspace from normal mode
 nnoremap <bs> i<bs>
@@ -216,65 +217,104 @@ nnoremap <bs> i<bs>
 nnoremap qq :q<CR>
 " ww to write from normal mode
 nnoremap ww :w<CR>
-" \e to trigger emmet
-imap <leader>e <C-y>,<CR><esc>O
-" redo with U
-nnoremap U <C-r>
+
+" bounce between brackets
+nmap <tab> %
+vmap <tab> %
+runtime! macros/matchit.vim
+
+" move lines up and down
+map <M-j> :m +1 <CR>
+map <M-k> :m -2 <CR>
+
+" sudo write
+cmap w!! w !sudo tee % >/dev/null
 " quit all
 nnoremap qa :conf qa<CR>
 " save when focus lost
 au FocusLost * :wa
 
-" tabs
-map <leader>t <Esc>:tabnew<CR>
+" ~~ Search ~~
 
+" unhighlight search results
+nnoremap <leader><space> :noh<cr>
+" search word under cursor
+nmap f *N
+
+" ~~ Whitespace ~~
+
+" toggle wrap
+nnoremap <leader>w :set wrap!<cr>
+" sort lines
+vnoremap <leader>s :sort<cr>
+" automatic bracket formatting on newlines
+inoremap {<CR> {<CR>}<ESC>O
+inoremap (<CR> (<CR>)<ESC>O
+inoremap [<CR> [<CR>]<ESC>O
+" indentation
+vnoremap < <gv
+vnoremap > >gv
+
+" ~~ Tabs and Splits ~~
+
+" new blank tab
+map <leader>t <Esc>:tabnew<CR>
 " new split
 nnoremap <leader>s<space> <C-w>v<C-w>l
+" new vertical split
 nnoremap <leader>vs <C-w><C-v>
+" new horizontal split
 nnoremap <leader>hs <C-w><C-s>
+" resize splits by 10 lines
 nnoremap <leader>, <c-w>10><cr>
 nnoremap <leader>. <c-w>10<<cr>
-
 " navigate splits
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-" navigate buffers
-map <M-h> :bp<CR>
-map <M-l> :bn<CR>
+" -------------------------------------
+" -------------- PLUGINS --------------
+" -------------------------------------
 
-" move lines up and down
-map <M-j> :m +1 <CR>
-map <M-k> :m -2 <CR>
+" ag
+let g:ag_working_path_mode="r"
+" ag global search
+nmap <c-f> :Ag!<space>
+" fzf lines in open buffers
+nmap <leader>l :Lines<CR>
 
 " clean whitespace
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+nnoremap <leader>W :StripWhitespace<cr>
+let g:strip_whitespace_on_save = 1
+let g:strip_only_modified_lines=0
 
-" sudo write
-cmap w!! w !sudo tee % >/dev/null
-
-" netrw
-map <leader>n :e.<cr>
-map <leader>N :Explore<cr>
-
-" copy to clipboard
-vmap <leader>y "+y
-" copy current line to clipboard
-nmap <leader>Y "+yy
-" fix known issue in Neovim #7994
-au InsertLeave * set nopaste
-" paste from clipboard
-nmap <leader>p "+gP
-
-" show yankring contents
-" nmap <leader>p :YRShow<CR>
+" git mergetool
+let g:mergetool_layout = 'bmr'
+let g:mergetool_prefer_revision = 'local'
+nmap mt <plug>(MergetoolToggle)
+nmap mgr :MergetoolDiffExchangeLeft<CR>
+nmap mgl :MergetoolDiffExchangeRight<CR>
+nmap <leader>gd :Gdiff<CR>
 
 " enabled spell checking in git commit
 autocmd FileType gitcommit setlocal spell
 
-" ~~ PLUGINS ~~
+" \e to trigger Emmet
+imap <leader>e <C-y>,<CR><esc>O
+
+" go
+let g:go_doc_keywordprg_enabled = 0
+let g:go_def_mode = 'godef'
+
+" Polyglot
+let g:polyglot_disabled = ['markdown']
+
+" Goyo / Limelight
+let g:limelight_conceal_ctermfg = 'gray'
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
 
 " Argwrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
@@ -285,7 +325,6 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gf :CocCommand tslint.fixAllProblems<CR>
-
 imap <C-e> <Plug>(coc-snippets-expand)
 
 " syntastic
@@ -297,7 +336,7 @@ let g:syntastic_javascript_checkers = ['eslint']
 let g:ctrlp_max_files=0
 let g:ctrlp_user_command = {
   \ 'types': {
-    \ 1: ['.git', 'cd %s && git ls-files -o'],
+    \ 1: ['.git', 'cd %s && git ls-files'],
     \ 2: ['.hg', 'hg --cwd %s locate -I .'],
     \ },
   \ 'fallback': 'find %s -type f'
@@ -305,6 +344,7 @@ let g:ctrlp_user_command = {
 let g:ctrlp_clear_cache_on_exit = 1
 let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
 let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("e")': ['<2-LeftMouse>'],
     \ 'AcceptSelection("t")': ['<cr>'],
     \ }
 
@@ -317,16 +357,11 @@ if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
-" yankring
-" let g:yankring_history_dir = '~/.vim/tmp'
-" let g:yankring_history_file = 'yankring_history'
-
 " airline (status line)
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 
 " javascript-libraries-syntax
-let g:used_javascript_libs = 'jquery,underscore,angularjs,angularui,jasmine'
 let g:jsx_ext_required = 0
 
 " editorconfig
@@ -342,13 +377,3 @@ function! NERDTreeToggleInCurDir()
   endif
 endfunction
 nnoremap ` :call NERDTreeToggleInCurDir()<CR>
-
-let g:syntastic_html_tidy_ignore_errors = [
-    \"trimming empty <i>",
-    \"<input> proprietary attribute \"autocomplete\"",
-    \"proprietary attribute \"role\"",
-    \"proprietary attribute \"hidden\"",
-    \"proprietary attribute \"ng-",
-    \"proprietary attribute \"data-",
-\]
-

@@ -1,6 +1,7 @@
 #!/bin/bash
 # private stuff that doesn't get pushed to github
 source "$HOME/.private"
+source "$HOME/zsh-interactive-cd.plugin.zsh"
 
 # zmodload zsh/zprof
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
@@ -41,6 +42,7 @@ ulimit -n 2560
 export EDITOR='nvim'
 export GIT_EDITOR='nvim'
 export DEFAULT_USER="$(whoami)"
+export FZF_DEFAULT_COMMAND='ag -l -g ""'
 # export LESS='-FXr'
 
 alias ws=workspace
@@ -50,7 +52,6 @@ alias lsa='ls -lah'
 alias vimc='vim ~/.vimrc'
 alias zshc='vim ~/.zshrc'
 alias killdocker='docker kill $(docker ps -q)'
-alias vim='nvim'
 alias t='tree -I node_modules -L'
 alias ta='tmux a #'
 
@@ -61,8 +62,12 @@ alias ta='tmux a #'
 alias g='git'
 alias zshup='source ~/.zshrc'
 alias s='subl'
-alias vo='nvim $(fzf --height 30% --reverse)'
+alias vo='nvim $(fzf --height 30% --reverse -i)'
 alias v='nvim'
+
+vc() {
+  nvim $(ag --nobreak --noheading . | fzf --reverse | awk -F ':' '{print $1" +"$2}')
+}
 
 dns() {
     curl -sI $1 | grep -E '(301|302|Server|Location|X-Cache|HTTP)'
@@ -70,10 +75,6 @@ dns() {
 
 findfile() {
   ag -i -g "$1"
-}
-
-tails() {
-  serverless logs --tail --stage $1 --function root --startTime 1m
 }
 
 confirm() {
@@ -86,6 +87,16 @@ confirm() {
     return 1
 }
 
+# eval history
+h() {
+  eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | gsed -r 's/ *[0-9]*\*? *//' | gsed -r 's/\\/\\\\/g')
+}
+
+# print (edit) history before running
+hh() {
+  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | gsed -r 's/ *[0-9]*\*? *//' | gsed -r 's/\\/\\\\/g')
+}
+
 function randomsay() {
   cow=(`cowsay -l | tail -n +2 | tr  " "  "\n" | sort -R | head -n 1`)
   cowsay -f $cow "$@" | lolcat
@@ -95,9 +106,14 @@ function why() {
   lsof -nP -i4TCP:$1 | grep LISTEN
 }
 
+function replace() {
+  ag -0 -l $1 | xargs -0 sed -i "" -e "s/$1/$2/g"
+}
+
 alias ff='findfile'
 alias ag='ag --path-to-ignore ~/.ignore'
 alias gg='ag -i'
+
 
 #. /Users/skylar/workspace/distro/install/bin/torch-activate
 
