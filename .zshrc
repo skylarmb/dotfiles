@@ -1,7 +1,6 @@
 #!/bin/bash
 # private stuff that doesn't get pushed to github
 source "$HOME/.private"
-source "$HOME/zsh-interactive-cd.plugin.zsh"
 
 # zmodload zsh/zprof
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
@@ -49,8 +48,8 @@ alias ws=workspace
 alias cls='clear;ls'
 alias clsa='clear;ls -a'
 alias lsa='ls -lah'
-alias vimc='vim ~/.vimrc'
-alias zshc='vim ~/.zshrc'
+alias vimc='nvim ~/.vimrc'
+alias zshc='nvim ~/.zshrc'
 alias killdocker='docker kill $(docker ps -q)'
 alias t='tree -I node_modules -L'
 alias ta='tmux a #'
