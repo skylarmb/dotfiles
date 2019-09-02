@@ -11,7 +11,6 @@ ln -s ~/dotfiles/.gitconfig ~/.gitconfig
 ln -s ~/dotfiles/.gitignore_global ~/.gitignore_global
 ln -s ~/dotfiles/.vimrc ~/.vimrc
 ln -s ~/dotfiles/.itermprofile ~/.itermprofile
-ln -s ~/dotfiles/.gvimrc ~/.gvimrc
 ln -s ~/dotfiles/.fzf.zsh ~/.fzf.zsh
 
 # set up vim folders
