@@ -19,3 +19,6 @@ mkdir ~/.vim
 mkdir ~/.vim/tmp
 mkdir ~/.vim/tmp/swap
 mkdir ~/.vim/tmp/backup
+
+# random packages to install
+npm install -f diff-so-fancy

@@ -21,12 +21,11 @@
   s = status
   co = checkout
   g = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
-  zmerge = merge --no-ff
-  l = diff --word-diff HEAD^ HEAD
-  ll = diff --word-diff HEAD^^ HEAD^
+  l = diff HEAD^ HEAD
+  ll = diff HEAD^^ HEAD^
   lf = diff HEAD^  HEAD --name-only
   llf = diff HEAD^^  HEAD^ --name-only
-  nuke = reset --hard origin/master
+#  nuke = reset --hard origin/master
 #  yolo = "!f() { \
 #            curr_branch=$(git rev-parse --abbrev-ref HEAD); \
 #            if [ "$curr_branch" = "master" ]; then \

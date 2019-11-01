@@ -27,14 +27,20 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+# plugins=(git)
 
 # export MANPATH="/usr/local/man:$MANPATH"
 export ANDROID_HOME="~/Library/Android/sdk"
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:$GOPATH/bin"
 export GO111MODULE=on
 source $ZSH/oh-my-zsh.sh
+# forgit
+forgit_diff=gdd
+forgit_add=gaa
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
 
 # increase the number of files a terminal session can have open
 ulimit -n 2560
@@ -49,8 +55,8 @@ alias ws=workspace
 alias cls='clear;ls'
 alias clsa='clear;ls -a'
 alias lsa='ls -lah'
-alias vimc='vim ~/.vimrc'
-alias zshc='vim ~/.zshrc'
+alias vimc='v ~/.vimrc'
+alias zshc='v ~/.zshrc'
 alias killdocker='docker kill $(docker ps -q)'
 alias t='tree -I node_modules -L'
 alias ta='tmux a #'
@@ -64,6 +70,7 @@ alias zshup='source ~/.zshrc'
 alias s='subl'
 alias vo='nvim $(fzf --height 30% --reverse -i)'
 alias v='nvim'
+alias wip='git add . && git commit -m wip'
 
 vc() {
   nvim $(ag --nobreak --noheading . | fzf --reverse | awk -F ':' '{print $1" +"$2}')

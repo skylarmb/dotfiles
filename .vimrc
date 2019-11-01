@@ -34,10 +34,9 @@ Plug 'vim-scripts/Tabmerge'
 " show indentation visually
 Plug 'Yggdroot/indentLine'
 " polyglot syntax checking
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
 " file browsing
 Plug 'scrooloose/nerdtree'
-
 " ~~ Search ~~
 
 " open files
@@ -147,8 +146,10 @@ set wildignore+=*.jpg,*.jpeg,*.gif,*.png
 set wildignore+=*.zip,*.apk,*.gz
 
 " colorscheme
+set t_Co=256
 set background=dark
 colorscheme gruvbox
+" colorscheme seagull
 let g:airline_theme='gruvbox'
 
 " whitespace
@@ -224,8 +225,10 @@ vmap <tab> %
 runtime! macros/matchit.vim
 
 " move lines up and down
-map <M-j> :m +1 <CR>
-map <M-k> :m -2 <CR>
+" nnoremap <c-n> :m +1<CR>
+" nnoremap <c-m> :m -2<CR>
+" vmap <c-n> :m '>+1<CR>gv=gv
+" vmap <c-m> :m '<-2<CR>gv=gv
 
 " sudo write
 cmap w!! w !sudo tee % >/dev/null
@@ -240,6 +243,34 @@ au FocusLost * :wa
 nnoremap <leader><space> :noh<cr>
 " search word under cursor
 nmap f *N
+" vim-action-ag
+nmap F gagiw
+" fzf
+let g:fzf_buffers_jump = 1
+let g:fzf_layout = { 'options': '--reverse', 'window': 'belowright 10new' }
+nmap <leader>f :call fzf#vim#ag('', g:fzf_layout)<cr>
+" fzf colors
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" ag
+let g:ag_working_path_mode="r"
+" ag global search
+nmap <c-f> :Ag!<space>
+" fzf lines in open buffers
+nmap <leader>l :Lines<CR>
 
 " ~~ Whitespace ~~
 
@@ -277,13 +308,9 @@ map <C-l> <C-w>l
 " -------------------------------------
 " -------------- PLUGINS --------------
 " -------------------------------------
-
-" ag
-let g:ag_working_path_mode="r"
-" ag global search
-nmap <c-f> :Ag!<space>
-" fzf lines in open buffers
-nmap <leader>l :Lines<CR>
+" prettier
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 " clean whitespace
 nnoremap <leader>W :StripWhitespace<cr>
@@ -304,12 +331,14 @@ autocmd FileType gitcommit setlocal spell
 " \e to trigger Emmet
 imap <leader>e <C-y>,<CR><esc>O
 
-" go
-let g:go_doc_keywordprg_enabled = 0
-let g:go_def_mode = 'godef'
-
 " Polyglot
 let g:polyglot_disabled = ['markdown']
+
+" go
+let g:go_doc_keywordprg_enabled = 0
+let g:go_def_mapping_enabled = 0
+let g:go_code_completion_enabled = 0
+" let g:go_def_mode = 'godef'
 
 " Goyo / Limelight
 let g:limelight_conceal_ctermfg = 'gray'
@@ -325,6 +354,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gf :CocCommand tslint.fixAllProblems<CR>
+nmap <silent> ; :call CocAction('doHover')<cr>
 imap <C-e> <Plug>(coc-snippets-expand)
 
 " syntastic
@@ -367,6 +397,7 @@ let g:jsx_ext_required = 0
 " editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
+" NERDTree
 " Always show the current file when opening NERDTree
 function! NERDTreeToggleInCurDir()
   " If NERDTree is open in the current buffer
@@ -376,4 +407,7 @@ function! NERDTreeToggleInCurDir()
     exe ":NERDTreeFind"
   endif
 endfunction
+" toggle NERDTree in current dir with `
 nnoremap ` :call NERDTreeToggleInCurDir()<CR>
+" show hidden files
+let NERDTreeShowHidden=1
