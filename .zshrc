@@ -1,7 +1,6 @@
 #!/bin/bash
 # private stuff that doesn't get pushed to github
 source "$HOME/.private"
-source "$HOME/zsh-interactive-cd.plugin.zsh"
 
 # zmodload zsh/zprof
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/

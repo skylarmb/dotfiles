@@ -11,14 +11,22 @@ ln -s ~/dotfiles/.gitconfig ~/.gitconfig
 ln -s ~/dotfiles/.gitignore_global ~/.gitignore_global
 ln -s ~/dotfiles/.vimrc ~/.vimrc
 ln -s ~/dotfiles/.itermprofile ~/.itermprofile
-ln -s ~/dotfiles/.gvimrc ~/.gvimrc
 ln -s ~/dotfiles/.fzf.zsh ~/.fzf.zsh
 
 # set up vim folders
-mkdir ~/.vim
-mkdir ~/.vim/tmp
+mkdir --parents ~/.vim/tmp/backup
 mkdir ~/.vim/tmp/swap
-mkdir ~/.vim/tmp/backup
+
+# run after PlugInstall
+mkdir --parents ~/.vim/colors
+ln -s ~/.vim/plugged/gruvbox/colors/gruvbox.vim ~/.vim/colors/gruvbox.vim
+
+mkdir --parents ~/.config/nvim
+echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after">>~/.config/nvim/init.vim
+echo "let &packpath=&runtimepath">>~/.config/nvim/init.vim
+echo "source ~/.vimrc">>~/.config/nvim/init.vim
 
 # random packages to install
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
 npm install -f diff-so-fancy

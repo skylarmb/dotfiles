@@ -18,6 +18,7 @@ Plug 'xolox/vim-misc'
 Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ap/vim-css-color'
+Plug 'morhetz/gruvbox'
 
 " ~~ Tools ~~
 
