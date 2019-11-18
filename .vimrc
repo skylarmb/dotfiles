@@ -116,7 +116,7 @@ set ruler
 let mapleader = "\\"
 
 " use system clipboard
-set clipboard=unnamed
+set clipboard=unnamedplus
 " disable compatibility mode (enables meta key)
 set nocp
 " always show the status bar
