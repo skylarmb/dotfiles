@@ -10,4 +10,4 @@ echo "source ~/.vimrc">>~/.config/nvim/init.vim
 # random packages to install
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
-npm install -f diff-so-fancy
+npm install -g diff-so-fancy

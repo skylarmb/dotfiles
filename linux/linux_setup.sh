@@ -4,7 +4,7 @@ curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo add-apt-repository ppa:neovim-ppa/stable
 sudp apt update
 # node, neovim, zsh
-sudo apt-get install -y nodejs zsh
+sudo apt-get install -y git nodejs zsh
 # nvim
 curl -l https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage > /tmp/nvim.appimage
 sudo mv /tmp/nvim.appimage /usr/local/bin/nvim
