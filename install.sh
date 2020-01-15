@@ -2,6 +2,13 @@
 
 # run from ~/dotfiles directory, not from ~/
 
+# touch private files
+echo "# private stuff not for github">.private
+echo "[user]
+  name = Skylar Brown
+  email =
+">.gitconfig_private
+
 # link files
 ln -s ~/dotfiles/.gitconfig_private ~/.gitconfig_private
 ln -s ~/dotfiles/.private ~/.private
@@ -11,22 +18,9 @@ ln -s ~/dotfiles/.gitconfig ~/.gitconfig
 ln -s ~/dotfiles/.gitignore_global ~/.gitignore_global
 ln -s ~/dotfiles/.vimrc ~/.vimrc
 ln -s ~/dotfiles/.itermprofile ~/.itermprofile
-ln -s ~/dotfiles/.fzf.zsh ~/.fzf.zsh
 
-# set up vim folders
-mkdir --parents ~/.vim/tmp/backup
-mkdir ~/.vim/tmp/swap
-
-# run after PlugInstall
-mkdir --parents ~/.vim/colors
-ln -s ~/.vim/plugged/gruvbox/colors/gruvbox.vim ~/.vim/colors/gruvbox.vim
-
-mkdir --parents ~/.config/nvim
-echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after">>~/.config/nvim/init.vim
-echo "let &packpath=&runtimepath">>~/.config/nvim/init.vim
-echo "source ~/.vimrc">>~/.config/nvim/init.vim
-
-# random packages to install
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
-npm install -f diff-so-fancy
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  ln -s ~/dotfiles/.fzf.zsh ~/.fzf.zsh
+else
+  ln -s ~/dotfiles/linux/.fzf.zsh ~/.fzf.zsh
+fi
