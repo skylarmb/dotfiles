@@ -66,11 +66,14 @@ Plug 'tpope/vim-surround'
 Plug 'ntpeters/vim-better-whitespace'
 " Prettier
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+" snippets
+Plug 'SirVer/ultisnips'
 
 " ~~ Writing / note taking ~~
 
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
+Plug 'vim-scripts/loremipsum'
 
 " ~~ Languages ~~
 
@@ -78,6 +81,8 @@ Plug 'junegunn/limelight.vim'
 Plug 'sheerun/vim-polyglot'
 " syntax highlighting for git files (.gitconfig, etc)
 Plug 'tpope/vim-git'
+" git gutter
+" Plug 'airblade/vim-gitgutter'
 " git conflicts
 Plug 'samoshkin/vim-mergetool'
 " go
@@ -147,10 +152,19 @@ set wildignore+=*.jpg,*.jpeg,*.gif,*.png
 set wildignore+=*.zip,*.apk,*.gz
 
 " colorscheme
+" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+" set termguicolors
 set t_Co=256
+" dark theme
 set background=dark
 colorscheme gruvbox
-" colorscheme seagull
+" let g:gruvbox_contrast_dark='medium'
+
+" light theme
+" set background=light
+" colorscheme solarized8_light_high
+
+" airline theme
 let g:airline_theme='gruvbox'
 
 " whitespace
@@ -211,6 +225,11 @@ map J 10j
 nnoremap U <C-r>
 " exit insert mode with jj
 inoremap jj <ESC>l
+inoremap jJ <ESC>l
+inoremap JJ <ESC>l
+inoremap Jj <ESC>l
+inoremap JK <ESC>l
+inoremap jk <ESC>l
 " jj for term mode
 tnoremap jj <C-\><C-n>
 " enter insert mode when pressing backspace from normal mode
@@ -220,16 +239,25 @@ nnoremap qq :q<CR>
 " ww to write from normal mode
 nnoremap ww :w<CR>
 
+" yank current file name
+nnoremap yn :silent !echo % \| pbcopy<CR>
+
+" dupe line
+nnoremap <C-d> yyp
+
+" browse source of current file
+nnoremap cs :silent !/bin/zsh -i -c 'browsesource "$(basename `git rev-parse --show-toplevel`)" %'<CR>
+
 " bounce between brackets
-nmap <tab> %
-vmap <tab> %
+nmap t %
+vmap t %
 runtime! macros/matchit.vim
 
 " move lines up and down
-" nnoremap <c-n> :m +1<CR>
-" nnoremap <c-m> :m -2<CR>
-" vmap <c-n> :m '>+1<CR>gv=gv
-" vmap <c-m> :m '<-2<CR>gv=gv
+nnoremap <c-n> :m +1<CR>
+nnoremap <c-m> :m -2<CR>
+vmap <c-n> :m '>+1<CR>gv=gv
+vmap <c-m> :m '<-2<CR>gv=gv
 
 " sudo write
 cmap w!! w !sudo tee % >/dev/null
@@ -247,6 +275,7 @@ nmap f *N
 " vim-action-ag
 nmap F gagiw
 " fzf
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 let g:fzf_buffers_jump = 1
 let g:fzf_layout = { 'options': '--reverse', 'window': 'belowright 10new' }
 nmap <leader>f :call fzf#vim#ag('', g:fzf_layout)<cr>
@@ -269,7 +298,7 @@ let g:fzf_colors =
 " ag
 let g:ag_working_path_mode="r"
 " ag global search
-nmap <c-f> :Ag!<space>
+nmap <c-f> :Ag! -iQ<space>
 " fzf lines in open buffers
 nmap <leader>l :Lines<CR>
 
@@ -305,6 +334,9 @@ map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
+
+" files
+nmap <leader>n :n<cr>
 
 " -------------------------------------
 " -------------- PLUGINS --------------
@@ -356,7 +388,7 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gf :CocCommand tslint.fixAllProblems<CR>
 nmap <silent> ; :call CocAction('doHover')<cr>
-imap <C-e> <Plug>(coc-snippets-expand)
+nmap <silent> ge <Plug>(coc-diagnostic-next-error)
 
 " syntastic
 let g:syntastic_enable_signs=1
@@ -412,3 +444,10 @@ endfunction
 nnoremap ` :call NERDTreeToggleInCurDir()<CR>
 " show hidden files
 let NERDTreeShowHidden=1
+
+" snippets
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsEditSplit="vertical"

@@ -41,8 +41,8 @@
         }; f"
   reup = "!f() { \
             git mu; \
-            echo "~~ rebasing on origin/master"; \
-            git rebase origin/master; \
+            echo "~~ rebasing on origin master"; \
+            git pull --rebase origin master; \
             echo "~~ done"; \
           }; f"
 [rerere]

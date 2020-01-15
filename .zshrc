@@ -56,20 +56,29 @@ alias clsa='clear;ls -a'
 alias lsa='ls -lah'
 alias vimc='v ~/.vimrc'
 alias zshc='v ~/.zshrc'
+alias zshp='v ~/.private'
+alias zshup='source ~/.zshrc'
 alias killdocker='docker kill $(docker ps -q)'
 alias t='tree -I node_modules -L'
 alias ta='tmux a #'
-
-# Evals
-# eval "$(ssh-agent -s)"
-# eval $(thefuck --alias)
-
+alias vimwipe='rm ~/.vim/tmp/swap/*'
 alias g='git'
-alias zshup='source ~/.zshrc'
 alias s='subl'
-alias vo='nvim $(fzf --height 30% --reverse -i)'
 alias v='nvim'
-alias wip='git add . && git commit -m wip'
+alias wip='g a . && HUSKY_SKIP_HOOKS=1 g c -m wip'
+alias vm='nvim `git --no-pager diff --name-only --diff-filter=U`'
+alias vo='nvim $(fzf --height 30% --reverse -i)'
+alias todo='gg "todo before"'
+
+
+# fbr - checkout git branch (including remote branches)
+fbr() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD) &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
 
 vc() {
   nvim $(ag --nobreak --noheading . | fzf --reverse | awk -F ':' '{print $1" +"$2}')
@@ -118,7 +127,9 @@ function replace() {
 
 alias ff='findfile'
 alias ag='ag --path-to-ignore ~/.ignore'
-alias gg='ag -i'
+alias gg='ag -iQ'
+alias ggg='ag -i --multiline'
+alias ggl='ag -iQl'
 
 
 #. /Users/skylar/workspace/distro/install/bin/torch-activate
@@ -138,9 +149,31 @@ alias gg='ag -i'
 # Performance optimzations
 DISABLE_UPDATE_PROMPT=true
 
+# NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
+
+autoload -U add-zsh-hook
+load-nvmrc() {
+  local node_version="$(nvm version)"
+  local nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$node_version" ]; then
+      nvm use
+    fi
+  elif [ "$node_version" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
 
 # Perform compinit only once a day.
 autoload -Uz compinit
