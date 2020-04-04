@@ -11,6 +11,10 @@
 [mergetool "vim_mergetool"]
   cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
   trustExitCode = true
+[diff]
+  tool = vimdiff
+[difftool]
+  prompt = false
 [alias]
   c = commit
   ca = commit -a

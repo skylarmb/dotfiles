@@ -1,10 +1,21 @@
 #!/bin/bash
+# Profiler
+# zmodload zsh/datetime
+# setopt PROMPT_SUBST
+# PS4='+$EPOCHREALTIME %N:%i> '
+
+# logfile=$(mktemp zsh_profile.XXXXXXXX)
+# echo "Logging to $logfile"
+# exec 3>&2 2>$logfile
+
+# setopt XTRACE
+
 # private stuff that doesn't get pushed to github
 source "$HOME/.private"
-
 # zmodload zsh/zprof
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
 RPROMPT='%D{%r}'
+ZSH_DISABLE_COMPFIX=true
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -14,10 +25,11 @@ export GPG_TTY=$(tty)
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="agnoster"
+TYPEWRITTEN_CURSOR="block"
+ZSH_THEME="typewritten"
 
 # use hyphen-insensitive completion. _ and - will be interchangeable.
-HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="false"
 
 # display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
@@ -69,12 +81,14 @@ alias wip='g a . && HUSKY_SKIP_HOOKS=1 g c -m wip'
 alias vm='nvim `git --no-pager diff --name-only --diff-filter=U`'
 alias vo='nvim $(fzf --height 30% --reverse -i)'
 alias todo='gg "todo before"'
+alias python='/usr/local/bin/python3'
+alias pip='/usr/local/bin/pip3'
 
 
 # fbr - checkout git branch (including remote branches)
 fbr() {
   local branches branch
-  branches=$(git branch --all | grep -v HEAD) &&
+  branches=$(git branch --all --sort=-committerdate | grep -v HEAD) &&
   branch=$(echo "$branches" |
            fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
@@ -151,8 +165,8 @@ DISABLE_UPDATE_PROMPT=true
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  --no-use # This loads nvm
+# [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
 
 autoload -U add-zsh-hook
 load-nvmrc() {
@@ -175,22 +189,38 @@ load-nvmrc() {
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
-# Perform compinit only once a day.
-autoload -Uz compinit
+# # Perform compinit only once a day.
 
-setopt EXTENDEDGLOB
-for dump in $ZSH_COMPDUMP(#qN.m1); do
-  compinit
-  if [[ -s "$dump" && (! -s "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
-    zcompile "$dump"
-  fi
-  echo "Initializing Completions..."
-done
-unsetopt EXTENDEDGLOB
-compinit -C
 
+# setopt EXTENDEDGLOB LOCAL_OPTIONS
+# autoload -Uz compinit
+# autoload -Uz bashcompinit && bashcompinit
+# zmodload -i zsh/complist
+
+# local zcd=${ZPLGM[ZCOMPDUMP_PATH]:-${ZDOTDIR:-$HOME}/.zcompdump}
+# local zcdc="$zcd.zwc"
+# if [[ -f "$zcd"(#qN.m+1) ]]; then
+#     compinit -i -d "$zcd"
+#     { rm -f "$zcdc" && zcompile "$zcd" } &!
+# else
+#     compinit -C -d "$zcd"
+#     { [[ ! -f "$zcdc" || "$zcd" -nt "$zcdc" ]] && rm -f "$zcdc" && zcompile "$zcd" } &!
+# fi
+# unsetopt EXTENDEDGLOB
+# compinit -C
+# caching
+# zstyle ':completion:*' accept-exact '*(N)'
+
+# zstyle ':completion:*'            use-cache yes
+# zstyle ':completion::complete:*'  cache-path ~/
 
 # zprof
 # Install Ruby Gems to ~/gems
-export GEM_HOME=$HOME/gems
-export PATH=$HOME/gems/bin:$PATH
+# export GEM_HOME=$HOME/gems
+# export PATH=$HOME/gems/bin:$PATH
+
+
+
+# Profiler
+# unsetopt XTRACE
+# exec 2>&3 3>&-

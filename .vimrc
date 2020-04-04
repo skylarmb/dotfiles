@@ -34,8 +34,7 @@ Plug 'FooSoft/vim-argwrap'
 Plug 'vim-scripts/Tabmerge'
 " show indentation visually
 Plug 'Yggdroot/indentLine'
-" polyglot syntax checking
-" Plug 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 " file browsing
 Plug 'scrooloose/nerdtree'
 " ~~ Search ~~
@@ -78,7 +77,6 @@ Plug 'vim-scripts/loremipsum'
 " ~~ Languages ~~
 
 " automagic polyglot syntax highlighting
-Plug 'sheerun/vim-polyglot'
 " syntax highlighting for git files (.gitconfig, etc)
 Plug 'tpope/vim-git'
 " git gutter
@@ -93,7 +91,11 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 " web
 Plug 'mattn/emmet-vim/'
-
+"
+" polyglot syntax checking
+Plug 'sheerun/vim-polyglot'
+" MDX
+" Plug 'jxnblk/vim-mdx-js'
 call plug#end()
 
 " -------------------------------------
@@ -121,7 +123,7 @@ set ruler
 let mapleader = "\\"
 
 " use system clipboard
-set clipboard=unnamedplus
+set clipboard=unnamed
 " disable compatibility mode (enables meta key)
 set nocp
 " always show the status bar
@@ -141,8 +143,10 @@ set showmatch
 set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h14
 
 " backups
-set backupdir=~/.vim/tmp/backup//
-set directory=~/.vim/tmp/swap//
+set undodir=~/.vim/tmp/backup/
+set undofile
+set backupdir=~/.vim/tmp/backup/
+set directory=~/.vim/tmp/swap/
 set backup
 
 " files to ignore
@@ -152,13 +156,17 @@ set wildignore+=*.jpg,*.jpeg,*.gif,*.png
 set wildignore+=*.zip,*.apk,*.gz
 
 " colorscheme
-" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-" set termguicolors
-set t_Co=256
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+set termguicolors
+" set t_Co=256
 " dark theme
 set background=dark
+let g:gruvbox_contrast_dark='medium'
 colorscheme gruvbox
-" let g:gruvbox_contrast_dark='medium'
+
+hi tsxTagName guifg=#83a598
+hi tsxCloseTag guifg=#83a598
+hi tsxCloseTagName guifg=#83a598
 
 " light theme
 " set background=light
@@ -192,8 +200,25 @@ set tabstop=2
 set autoindent
 set smartindent
 
+" -------------------------------------
+" ------------- autocmds --------------
+" -------------------------------------
+
 " fix known issue in Neovim #7994
 au InsertLeave * set nopaste
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
+
+" prettier
+" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml PrettierAsync
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.mdx,*.vue,*.yaml,*.html PrettierAsync
+
+" enabled spell checking in git commit
+autocmd FileType gitcommit setlocal spell
+
+" Goyo / Limelight
+let g:limelight_conceal_ctermfg = 'gray'
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
 
 " -------------------------------------
 " ------------- KEYBINDS --------------
@@ -246,7 +271,7 @@ nnoremap yn :silent !echo % \| pbcopy<CR>
 nnoremap <C-d> yyp
 
 " browse source of current file
-nnoremap cs :silent !/bin/zsh -i -c 'browsesource "$(basename `git rev-parse --show-toplevel`)" %'<CR>
+nnoremap <leader>cs :silent !/bin/zsh -i -c 'browsesource "$(basename `git rev-parse --show-toplevel`)" %'<CR>
 
 " bounce between brackets
 nmap t %
@@ -263,8 +288,6 @@ vmap <c-m> :m '<-2<CR>gv=gv
 cmap w!! w !sudo tee % >/dev/null
 " quit all
 nnoremap qa :conf qa<CR>
-" save when focus lost
-au FocusLost * :wa
 
 " ~~ Search ~~
 
@@ -341,9 +364,11 @@ nmap <leader>n :n<cr>
 " -------------------------------------
 " -------------- PLUGINS --------------
 " -------------------------------------
+" git blamer
+let g:blamer_enabled = 1
+let g:blamer_template = '<author>, <committer-time> • <summary>'
 " prettier
 let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 " clean whitespace
 nnoremap <leader>W :StripWhitespace<cr>
@@ -358,25 +383,18 @@ nmap mgr :MergetoolDiffExchangeLeft<CR>
 nmap mgl :MergetoolDiffExchangeRight<CR>
 nmap <leader>gd :Gdiff<CR>
 
-" enabled spell checking in git commit
-autocmd FileType gitcommit setlocal spell
-
 " \e to trigger Emmet
 imap <leader>e <C-y>,<CR><esc>O
 
 " Polyglot
-let g:polyglot_disabled = ['markdown']
+let g:polyglot_disabled = ['markdown', 'javascript', 'typescript']
 
 " go
 let g:go_doc_keywordprg_enabled = 0
 let g:go_def_mapping_enabled = 0
 let g:go_code_completion_enabled = 0
-" let g:go_def_mode = 'godef'
-
-" Goyo / Limelight
-let g:limelight_conceal_ctermfg = 'gray'
-autocmd! User GoyoEnter Limelight
-autocmd! User GoyoLeave Limelight!
+let g:go_def_mode = 'gopls'
+let g:go_gopls_enabled = 0
 
 " Argwrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
@@ -386,6 +404,7 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+nmap <silent> rn <Plug>(coc-rename)
 nmap <silent> gf :CocCommand tslint.fixAllProblems<CR>
 nmap <silent> ; :call CocAction('doHover')<cr>
 nmap <silent> ge <Plug>(coc-diagnostic-next-error)
