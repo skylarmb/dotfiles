@@ -76,7 +76,6 @@ Plug 'vim-scripts/loremipsum'
 
 " ~~ Languages ~~
 
-" automagic polyglot syntax highlighting
 " syntax highlighting for git files (.gitconfig, etc)
 Plug 'tpope/vim-git'
 " git gutter
@@ -88,14 +87,16 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " javascript
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " web
 Plug 'mattn/emmet-vim/'
-"
+
+" TODO: try to figure out why these plugins fight with each other
 " polyglot syntax checking
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 " MDX
-" Plug 'jxnblk/vim-mdx-js'
+Plug 'jxnblk/vim-mdx-js'
+
 call plug#end()
 
 " -------------------------------------
@@ -134,8 +135,8 @@ set backspace=start,eol,indent
 set virtualedit=onemore
 " always show sign column (prevents flicker)
 set signcolumn=yes
-" allow mouse clicks
-set mouse=a
+" dont allow mouse clicks
+set mouse-=a
 " show matching brackets.
 set showmatch
 
@@ -155,11 +156,9 @@ set wildignore+=*.o,*.obj,*.rbc,*.class,vendor/gems/*
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png
 set wildignore+=*.zip,*.apk,*.gz
 
-" colorscheme
+" dark theme
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set termguicolors
-" set t_Co=256
-" dark theme
 set background=dark
 let g:gruvbox_contrast_dark='medium'
 colorscheme gruvbox
@@ -167,10 +166,14 @@ colorscheme gruvbox
 hi tsxTagName guifg=#83a598
 hi tsxCloseTag guifg=#83a598
 hi tsxCloseTagName guifg=#83a598
+" end dark theme
 
 " light theme
+" set t_Co=256
 " set background=light
-" colorscheme solarized8_light_high
+" colorscheme solarized8_dark_low
+" let g:solarized_termcolors=256
+" end light theme
 
 " airline theme
 let g:airline_theme='gruvbox'
@@ -207,10 +210,20 @@ set smartindent
 " fix known issue in Neovim #7994
 au InsertLeave * set nopaste
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
+autocmd BufNewFile,BufRead *.mdx set filetype=markdown.mdx
 
 " prettier
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml PrettierAsync
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.mdx,*.vue,*.yaml,*.html PrettierAsync
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+autocmd BufWritePost *.mdx call HandleMDXFormat()
+
+" mega hack because reasons
+function HandleMDXFormat()
+  exe ':silent !prettier --write %'
+  exe ':e'
+endfunction
+
+let g:prettier#autoformat_config_present = 1
 
 " enabled spell checking in git commit
 autocmd FileType gitcommit setlocal spell
@@ -349,7 +362,7 @@ nnoremap <leader>s<space> <C-w>v<C-w>l
 nnoremap <leader>vs <C-w><C-v>
 " new horizontal split
 nnoremap <leader>hs <C-w><C-s>
-" resize splits by 10 lines
+" resize splits by 10 columns
 nnoremap <leader>, <c-w>10><cr>
 nnoremap <leader>. <c-w>10<<cr>
 " navigate splits
@@ -360,6 +373,8 @@ map <C-l> <C-w>l
 
 " files
 nmap <leader>n :n<cr>
+" expand %% to current dir name
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
 " -------------------------------------
 " -------------- PLUGINS --------------
@@ -369,6 +384,8 @@ let g:blamer_enabled = 1
 let g:blamer_template = '<author>, <committer-time> • <summary>'
 " prettier
 let g:prettier#autoformat = 0
+let g:prettier#exec_cmd_path = "~/.nvm/versions/node/v12.16.2/bin/prettier"
+let g:prettier#quickfix_auto_focus = 0
 
 " clean whitespace
 nnoremap <leader>W :StripWhitespace<cr>
@@ -387,14 +404,21 @@ nmap <leader>gd :Gdiff<CR>
 imap <leader>e <C-y>,<CR><esc>O
 
 " Polyglot
-let g:polyglot_disabled = ['markdown', 'javascript', 'typescript']
+let g:polyglot_disabled = ['typescript', 'go']
 
 " go
-let g:go_doc_keywordprg_enabled = 0
 let g:go_def_mapping_enabled = 0
 let g:go_code_completion_enabled = 0
-let g:go_def_mode = 'gopls'
+let g:go_doc_keywordprg_enabled = 0
 let g:go_gopls_enabled = 0
+let g:go_info_mode = 'gopls'
+
+" let g:go_def_mode='gopls'
+" let g:go_info_mode='gopls'
+" let g:go_doc_keywordprg_enabled = 0
+" let g:go_def_mapping_enabled = 0
+
+" let g:go_code_completion_enabled = 0
 
 " Argwrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
