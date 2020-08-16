@@ -9,7 +9,7 @@ module.exports = {
     updateChannel: 'stable',
 
     // default font size in pixels for all tabs
-    fontSize: 13,
+    fontSize: 20,
 
     // font family with optional fallbacks
     fontFamily:
@@ -149,7 +149,7 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: ['hypercwd', 'hyper-search', 'hyper-pane'],
+  plugins: ['hypercwd', 'hyper-search', 'hyper-pane', /*'hyper-solarized-light'*/],
 
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here

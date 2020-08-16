@@ -10,6 +10,9 @@
 
 # setopt XTRACE
 
+# use vim navigation
+set -o vi
+
 # private stuff that doesn't get pushed to github
 source "$HOME/.private"
 # zmodload zsh/zprof
@@ -38,9 +41,9 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-# plugins=(git)
+plugins=(zsh-autosuggestions)
 
-# export MANPATH="/usr/local/man:$MANPATH"
+export MANPATH="/usr/local/man:$MANPATH"
 export ANDROID_HOME="~/Library/Android/sdk"
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
@@ -62,6 +65,11 @@ export DEFAULT_USER="$(whoami)"
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 # export LESS='-FXr'
 
+# Install Ruby Gems to ~/.gems
+export GEM_HOME=$HOME/.gem
+export GEM_PATH=$HOME/.gem
+export PATH=$HOME/.gem/bin:$PATH
+
 alias ws=workspace
 alias cls='clear;ls'
 alias clsa='clear;ls -a'
@@ -75,6 +83,7 @@ alias t='tree -I node_modules -L'
 alias ta='tmux a #'
 alias vimwipe='rm ~/.vim/tmp/swap/*'
 alias g='git'
+alias cc='git rev-parse HEAD | pbcopy'
 alias s='subl'
 alias v='nvim'
 alias wip='g a . && HUSKY_SKIP_HOOKS=1 g c -m wip'
@@ -215,10 +224,6 @@ load-nvmrc
 # zstyle ':completion::complete:*'  cache-path ~/
 
 # zprof
-# Install Ruby Gems to ~/gems
-# export GEM_HOME=$HOME/gems
-# export PATH=$HOME/gems/bin:$PATH
-
 
 
 # Profiler

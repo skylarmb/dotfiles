@@ -3,6 +3,12 @@
 " -------------------------------------
 
 " vim-plug auto install
+
+if argc() == 0
+  echomsg "vimrc: Refusing to open vim without file argument"
+  quit
+endif
+
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -116,12 +122,12 @@ set autoread
 " highlight current line
 set cursorline
 " relative line numbers
-set number relativenumber
+set number
 " show cursor column
 set ruler
 
 " leader character
-let mapleader = "\\"
+let mapleader = " "
 
 " use system clipboard
 set clipboard=unnamed
@@ -213,6 +219,12 @@ autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 autocmd BufNewFile,BufRead *.mdx set filetype=markdown.mdx
 
 " prettier
+let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
+let g:prettier#autoformat_config_present = 1
+let g:prettier#exec_cmd_path = "~/.nvm/versions/node/v12.16.2/bin/prettier"
+let g:prettier#quickfix_auto_focus = 0
+
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml PrettierAsync
 autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 autocmd BufWritePost *.mdx call HandleMDXFormat()
@@ -222,8 +234,6 @@ function HandleMDXFormat()
   exe ':silent !prettier --write %'
   exe ':e'
 endfunction
-
-let g:prettier#autoformat_config_present = 1
 
 " enabled spell checking in git commit
 autocmd FileType gitcommit setlocal spell
@@ -278,7 +288,7 @@ nnoremap qq :q<CR>
 nnoremap ww :w<CR>
 
 " yank current file name
-nnoremap yn :silent !echo % \| pbcopy<CR>
+nnoremap yn :let @*=expand("%") . ':' . line(".")<CR>
 
 " dupe line
 nnoremap <C-d> yyp
@@ -355,7 +365,7 @@ vnoremap > >gv
 " ~~ Tabs and Splits ~~
 
 " new blank tab
-map <leader>t <Esc>:tabnew<CR>
+nnoremap <leader>t <Esc>:tabnew<CR>
 " new split
 nnoremap <leader>s<space> <C-w>v<C-w>l
 " new vertical split
@@ -372,7 +382,7 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 " files
-nmap <leader>n :n<cr>
+nnoremap <leader>n :n<cr>
 " expand %% to current dir name
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
@@ -401,10 +411,10 @@ nmap mgl :MergetoolDiffExchangeRight<CR>
 nmap <leader>gd :Gdiff<CR>
 
 " \e to trigger Emmet
-imap <leader>e <C-y>,<CR><esc>O
+" imap <leader>e <C-y>,<CR><esc>O
 
 " Polyglot
-let g:polyglot_disabled = ['typescript', 'go']
+let g:polyglot_disabled = ['typescript', 'go', 'json']
 
 " go
 let g:go_def_mapping_enabled = 0

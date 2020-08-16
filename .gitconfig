@@ -22,7 +22,9 @@
   dw = diff --ignore-all-space --word-diff
   dc = diff --cached --ignore-all-space
   r = rebase
+  rc = rebase --continue
   p = push -u origin head
+  pf = push -f origin head
   a = add
   s = status
   co = checkout
