@@ -496,3 +496,11 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
+
+" sneak
+" use labels to reduce steps to jump
+let g:sneak#label = 1
+" use s to move to next instance
+let g:sneak#s_next = 1
+" use case insensitive sneak
+let g:sneak#use_ic_scs = 1
