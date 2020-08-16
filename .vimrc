@@ -46,7 +46,7 @@ Plug 'scrooloose/nerdtree'
 " ~~ Search ~~
 
 " open files
-Plug 'tpope/vim-vinegar'
+" Plug 'tpope/vim-vinegar'
 Plug 'ctrlpvim/ctrlp.vim'
 " Ag integration
 Plug 'rking/ag.vim'
@@ -54,6 +54,8 @@ Plug 'Chun-Yang/vim-action-ag'
 " fzf integration
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
+" sneak
+Plug 'justinmk/vim-sneak'
 
 " ~~ Formatting ~~
 
@@ -504,3 +506,11 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
+
+" sneak
+" use labels to reduce steps to jump
+let g:sneak#label = 1
+" use s to move to next instance
+let g:sneak#s_next = 1
+" use case insensitive sneak
+let g:sneak#use_ic_scs = 1
