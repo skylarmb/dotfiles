@@ -40,7 +40,7 @@ Plug 'scrooloose/nerdtree'
 " ~~ Search ~~
 
 " open files
-Plug 'tpope/vim-vinegar'
+" Plug 'tpope/vim-vinegar'
 Plug 'ctrlpvim/ctrlp.vim'
 " Ag integration
 Plug 'rking/ag.vim'
@@ -48,6 +48,8 @@ Plug 'Chun-Yang/vim-action-ag'
 " fzf integration
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
+" sneak
+Plug 'justinmk/vim-sneak'
 
 " ~~ Formatting ~~
 

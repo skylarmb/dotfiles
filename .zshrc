@@ -45,6 +45,7 @@ export ANDROID_HOME="~/Library/Android/sdk"
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:$GOPATH/bin"
+export PATH="$PATH:~/.nvm/versions/node/v12.16.0/bin"
 export GO111MODULE=on
 source $ZSH/oh-my-zsh.sh
 # forgit
@@ -163,10 +164,18 @@ alias ggl='ag -iQl'
 # Performance optimzations
 DISABLE_UPDATE_PROMPT=true
 
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  --no-use # This loads nvm
+# # NVM
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 # [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
+export NVM_DIR="$HOME/.nvm"
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  --no-use # This loads nvm
+  # [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
+fi
 
 autoload -U add-zsh-hook
 load-nvmrc() {
