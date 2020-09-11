@@ -84,6 +84,7 @@ alias t='tree -I node_modules -L'
 alias ta='tmux a #'
 alias vimwipe='rm ~/.vim/tmp/swap/*'
 alias g='git'
+alias c='git commit -m'
 alias cc='git rev-parse HEAD | pbcopy'
 alias s='subl'
 alias v='nvim'
@@ -146,7 +147,7 @@ function why() {
 }
 
 function replace() {
-  ag -0 -l $1 | xargs -0 sed -i "" -e "s/$1/$2/g"
+  ag -0 -l $1 | xargs -0 sed -i "" -e "s|$1|$2|g"
 }
 
 alias ff='findfile'
@@ -238,3 +239,7 @@ load-nvmrc
 # Profiler
 # unsetopt XTRACE
 # exec 2>&3 3>&-
+
+# tabtab source for packages
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true

@@ -1,5 +1,4 @@
-" -------------------------------------
-" ------------ PLUGINS ----------------
+" ------------------------------------------------ PLUGINS ----------------
 " -------------------------------------
 
 " vim-plug auto install
@@ -19,9 +18,9 @@ call plug#begin('~/.vim/plugged')
 
 " ~~ Eye candy ~~
 
-Plug 'xolox/vim-colorscheme-switcher'
-Plug 'xolox/vim-misc'
-Plug 'flazz/vim-colorschemes'
+" Plug 'xolox/vim-colorscheme-switcher'
+" Plug 'xolox/vim-misc'
+" Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ap/vim-css-color'
 Plug 'morhetz/gruvbox'
@@ -29,7 +28,7 @@ Plug 'morhetz/gruvbox'
 " ~~ Tools ~~
 
 " start screen
-Plug 'mhinz/vim-startify'
+" Plug 'mhinz/vim-startify'
 " airline
 Plug 'vim-airline/vim-airline'
 " git integration
@@ -52,13 +51,12 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'rking/ag.vim'
 Plug 'Chun-Yang/vim-action-ag'
 " fzf integration
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim'
+" Plug '/usr/local/opt/fzf'
+" Plug 'junegunn/fzf.vim'
 " sneak
 Plug 'justinmk/vim-sneak'
 
 " ~~ Formatting ~~
-
 " respect editorconfig files
 Plug 'editorconfig/editorconfig-vim'
 " automatic bracket and quote matching, etc
@@ -289,7 +287,7 @@ nnoremap qq :q<CR>
 " ww to write from normal mode
 nnoremap ww :w<CR>
 
-" yank current file name
+" yank current file name and line number
 nnoremap yn :let @*=expand("%") . ':' . line(".")<CR>
 
 " dupe line
@@ -423,14 +421,7 @@ let g:go_def_mapping_enabled = 0
 let g:go_code_completion_enabled = 0
 let g:go_doc_keywordprg_enabled = 0
 let g:go_gopls_enabled = 0
-let g:go_info_mode = 'gopls'
-
-" let g:go_def_mode='gopls'
-" let g:go_info_mode='gopls'
-" let g:go_doc_keywordprg_enabled = 0
-" let g:go_def_mapping_enabled = 0
-
-" let g:go_code_completion_enabled = 0
+let g:go_fmt_command = 'goimports'
 
 " Argwrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
@@ -442,9 +433,8 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> rn <Plug>(coc-rename)
 nmap <silent> gf :CocCommand tslint.fixAllProblems<CR>
-nmap <silent> ; :call CocAction('doHover')<cr>
+nmap <silent> ; :call CocAction('doHover')<CR>
 nmap <silent> ge <Plug>(coc-diagnostic-next-error)
-
 " syntastic
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
