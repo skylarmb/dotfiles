@@ -36,7 +36,6 @@ Plug 'vim-scripts/Tabmerge'
 Plug 'gcmt/taboo.vim'
 " show indentation visually
 Plug 'Yggdroot/indentLine'
-" Plug 'scrooloose/syntastic'
 " file browsing
 Plug 'scrooloose/nerdtree'
 " ~~ Search ~~
@@ -46,7 +45,6 @@ Plug 'rking/ag.vim'
 " fzf integration
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-" sneak
 
 " ~~ Formatting ~~
 " respect editorconfig files
@@ -435,10 +433,6 @@ nmap <silent> rn <Plug>(coc-rename)
 nmap <silent> gf :CocCommand tslint.fixAllProblems<CR>
 nmap <silent> ; :call CocAction('doHover')<CR>
 nmap <silent> ge <Plug>(coc-diagnostic-next-error)
-" syntastic
-let g:syntastic_enable_signs=1
-let g:syntastic_auto_loc_list=2
-let g:syntastic_javascript_checkers = ['eslint']
 
 " ctrlp
 nmap <C-p> :Files<CR>
