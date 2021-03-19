@@ -6,7 +6,8 @@ module.exports = {
   config: {
     // choose either `'stable'` for receiving highly polished,
     // or `'canary'` for less polished but more frequent updates
-    updateChannel: 'stable',
+    updateChannel: "stable",
+    scrollback: 15000,
 
     // default font size in pixels for all tabs
     fontSize: 20,
@@ -16,10 +17,10 @@ module.exports = {
       '"Roboto Mono for Powerline", "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
 
     // default font weight: 'normal' or 'bold'
-    fontWeight: 'bold',
+    fontWeight: "bold",
 
     // font weight for bold characters: 'normal' or 'bold'
-    fontWeightBold: 'bold',
+    fontWeightBold: "bold",
 
     // line height as a relative unit
     lineHeight: 1,
@@ -28,39 +29,39 @@ module.exports = {
     letterSpacing: 0,
 
     // terminal cursor background color and opacity (hex, rgb, hsl, hsv, hwb or cmyk)
-    cursorColor: 'rgba(248,28,229,0.4)',
+    cursorColor: "rgba(248,28,229,0.4)",
 
     // terminal text color under BLOCK cursor
-    cursorAccentColor: '#000',
+    cursorAccentColor: "#000",
 
     // `'BEAM'` for |, `'UNDERLINE'` for _, `'BLOCK'` for █
-    cursorShape: 'BLOCK',
+    cursorShape: "BLOCK",
 
     // set to `true` (without backticks and without quotes) for blinking cursor
     cursorBlink: false,
 
     // color of the text
-    foregroundColor: '#ebdbb2',
+    foregroundColor: "#ebdbb2",
 
     // terminal background color
     // opacity is only supported on macOS
-    backgroundColor: '#282828',
+    backgroundColor: "#282828",
 
     // terminal selection color
-    selectionColor: 'rgba(248,28,229,0.3)',
+    selectionColor: "rgba(248,28,229,0.3)",
 
     // border color (window, tabs)
-    borderColor: '#444',
+    borderColor: "#444",
 
     // custom CSS to embed in the main window
-    css: '',
+    css: "",
 
     // custom CSS to embed in the terminal window
-    termCSS: '',
+    termCSS: "",
 
     // if you're using a Linux setup which show native menus, set to false
     // default: `true` on Linux, `true` on Windows, ignored on macOS
-    showHamburgerMenu: '',
+    showHamburgerMenu: "",
 
     // set to `false` (without backticks and without quotes) if you want to hide the minimize, maximize and close buttons
     // additionally, set to `'left'` if you want them on the left, like in Ubuntu
@@ -68,30 +69,30 @@ module.exports = {
     showWindowControls: false,
 
     // custom padding (CSS format, i.e.: `top right bottom left`)
-    padding: '0px',
+    padding: "0px",
 
     // the full list. if you're going to provide the full color palette,
     // including the 6 x 6 color cubes and the grayscale map, just provide
     // an array here instead of a color map object
     colors: {
-      foregroundColor: '#ebdbb2',
-      backgroundColor: '#282828',
-      black: '#928374',
-      red: '#fb4934',
-      green: '#b8bb26',
-      yellow: '#fabd2f',
-      blue: '#83a598',
-      magenta: '#d3869b',
-      cyan: '#8ec07c',
-      white: '#fbf1c7',
-      lightBlack: '#ebdbb2',
-      lightRed: '#cc241d',
-      lightGreen: '#98971a',
-      lightYellow: '#d79921',
-      lightBlue: '#458588',
-      lightMagenta: '#b16286',
-      lightCyan: '#689d6a',
-      lightWhite: '#a89984',
+      foregroundColor: "#ebdbb2",
+      backgroundColor: "#282828",
+      black: "#928374",
+      red: "#fb4934",
+      green: "#b8bb26",
+      yellow: "#fabd2f",
+      blue: "#83a598",
+      magenta: "#d3869b",
+      cyan: "#8ec07c",
+      white: "#fbf1c7",
+      lightBlack: "#ebdbb2",
+      lightRed: "#cc241d",
+      lightGreen: "#98971a",
+      lightYellow: "#d79921",
+      lightBlue: "#458588",
+      lightMagenta: "#b16286",
+      lightCyan: "#689d6a",
+      lightWhite: "#a89984",
     },
 
     // the shell to run when spawning a new session (i.e. /usr/local/bin/fish)
@@ -106,17 +107,17 @@ module.exports = {
     //
     // PowerShell on Windows
     // - Example: `C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe`
-    shell: '',
+    shell: "",
 
     // for setting shell arguments (i.e. for using interactive shellArgs: `['-i']`)
     // by default `['--login']` will be used
-    shellArgs: ['--login'],
+    shellArgs: ["--login"],
 
     // for environment variables
     env: {},
 
     // set to `false` for no bell
-    bell: 'SOUND',
+    bell: "SOUND",
 
     // if `true` (without backticks and without quotes), selected text will automatically be copied to the clipboard
     copyOnSelect: false,
@@ -131,7 +132,7 @@ module.exports = {
     // choose either `'vertical'`, if you want the column mode when Option key is hold during selection (Default)
     // or `'force'`, if you want to force selection regardless of whether the terminal is in mouse events mode
     // (inside tmux or vim with mouse mode enabled for example).
-    macOptionSelectionMode: 'vertical',
+    macOptionSelectionMode: "vertical",
 
     // URL to custom bell
     // bellSoundURL: 'http://example.com/bell.mp3',
@@ -139,8 +140,6 @@ module.exports = {
     // Whether to use the WebGL renderer. Set it to false to use canvas-based
     // rendering (slower, but supports transparent backgrounds)
     webGLRenderer: true,
-
-    // for advanced config flags please refer to https://hyper.is/#cfg
   },
 
   // a list of plugins to fetch and install from npm
@@ -149,7 +148,7 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: ['hypercwd', 'hyper-search', 'hyper-pane', /*'hyper-solarized-light'*/],
+  plugins: ["hypercwd", "hyper-search", "hyper-pane", "hyper-alt-click"],
 
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here

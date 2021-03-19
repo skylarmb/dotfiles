@@ -12,6 +12,7 @@
 
 # use vim navigation
 set -o vi
+setopt +o nomatch
 
 # private stuff that doesn't get pushed to github
 source "$HOME/.private"
@@ -48,7 +49,7 @@ export ANDROID_HOME="~/Library/Android/sdk"
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:$GOPATH/bin"
-export PATH="$PATH:~/.nvm/versions/node/v12.16.0/bin"
+export PATH="$PATH:~/.nvm/versions/node/v14.6.0/bin"
 export GO111MODULE=on
 source $ZSH/oh-my-zsh.sh
 # forgit
@@ -82,19 +83,19 @@ alias zshup='source ~/.zshrc'
 alias killdocker='docker kill $(docker ps -q)'
 alias t='tree -I node_modules -L'
 alias ta='tmux a #'
-alias vimwipe='rm ~/.vim/tmp/swap/*'
+alias vimwipe='rm -rf ~/.vim/tmp/backup/{*,.*}; rm -rf ~/.vim/tmp/swap/{*,.*}'
 alias g='git'
 alias c='git commit -m'
 alias cc='git rev-parse HEAD | pbcopy'
 alias s='subl'
 alias v='nvim'
-alias wip='g a . && HUSKY_SKIP_HOOKS=1 g c -m wip'
+alias wip='git add . && git commit --no-verify -m wip'
+alias unwip='git reset --soft HEAD~'
 alias vm='nvim `git --no-pager diff --name-only --diff-filter=U`'
 alias vo='nvim $(fzf --height 30% --reverse -i)'
 alias todo='gg "todo before"'
-alias python='/usr/local/bin/python3'
-alias pip='/usr/local/bin/pip3'
-
+alias installglobals='npm install -g prettier diff-so-fancy neovim npm-why serve serverless nodemon markdown-toc ts-node lebab'
+alias scr='nvim ~/scratch.tsx'
 
 # fbr - checkout git branch (including remote branches)
 fbr() {
@@ -156,6 +157,9 @@ alias gg='ag -iQ'
 alias ggg='ag -i --multiline'
 alias ggl='ag -iQl'
 
+function gga() {
+  ag -iQ -A $1 -B $1 $2
+}
 
 #. /Users/skylar/workspace/distro/install/bin/torch-activate
 
@@ -174,10 +178,7 @@ alias ggl='ag -iQl'
 # Performance optimzations
 DISABLE_UPDATE_PROMPT=true
 
-# # NVM
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-# [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
+# NVM
 export NVM_DIR="$HOME/.nvm"
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -211,22 +212,22 @@ load-nvmrc
 # # Perform compinit only once a day.
 
 
-# setopt EXTENDEDGLOB LOCAL_OPTIONS
-# autoload -Uz compinit
-# autoload -Uz bashcompinit && bashcompinit
-# zmodload -i zsh/complist
+setopt EXTENDEDGLOB LOCAL_OPTIONS
+autoload -Uz compinit
+autoload -Uz bashcompinit && bashcompinit
+zmodload -i zsh/complist
 
-# local zcd=${ZPLGM[ZCOMPDUMP_PATH]:-${ZDOTDIR:-$HOME}/.zcompdump}
-# local zcdc="$zcd.zwc"
-# if [[ -f "$zcd"(#qN.m+1) ]]; then
-#     compinit -i -d "$zcd"
-#     { rm -f "$zcdc" && zcompile "$zcd" } &!
-# else
-#     compinit -C -d "$zcd"
-#     { [[ ! -f "$zcdc" || "$zcd" -nt "$zcdc" ]] && rm -f "$zcdc" && zcompile "$zcd" } &!
-# fi
-# unsetopt EXTENDEDGLOB
-# compinit -C
+local zcd=${ZPLGM[ZCOMPDUMP_PATH]:-${ZDOTDIR:-$HOME}/.zcompdump}
+local zcdc="$zcd.zwc"
+if [[ -f "$zcd"(#qN.m+1) ]]; then
+    compinit -i -d "$zcd"
+    { rm -f "$zcdc" && zcompile "$zcd" } &!
+else
+    compinit -C -d "$zcd"
+    { [[ ! -f "$zcdc" || "$zcd" -nt "$zcdc" ]] && rm -f "$zcdc" && zcompile "$zcd" } &!
+fi
+unsetopt EXTENDEDGLOB
+compinit -C
 # caching
 # zstyle ':completion:*' accept-exact '*(N)'
 
@@ -243,3 +244,7 @@ load-nvmrc
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+eval "$(pyenv virtualenv-init -)"

@@ -2,6 +2,7 @@
 " -------------------------------------
 
 " vim-plug auto install
+set shell=/bin/zsh
 
 if argc() == 0
   echomsg "vimrc: Refusing to open vim without file argument"
@@ -18,17 +19,12 @@ call plug#begin('~/.vim/plugged')
 
 " ~~ Eye candy ~~
 
-" Plug 'xolox/vim-colorscheme-switcher'
-" Plug 'xolox/vim-misc'
-" Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ap/vim-css-color'
 Plug 'morhetz/gruvbox'
 
 " ~~ Tools ~~
 
-" start screen
-" Plug 'mhinz/vim-startify'
 " airline
 Plug 'vim-airline/vim-airline'
 " git integration
@@ -37,24 +33,20 @@ Plug 'tpope/vim-fugitive'
 Plug 'FooSoft/vim-argwrap'
 " tab management
 Plug 'vim-scripts/Tabmerge'
+Plug 'gcmt/taboo.vim'
 " show indentation visually
 Plug 'Yggdroot/indentLine'
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
 " file browsing
 Plug 'scrooloose/nerdtree'
 " ~~ Search ~~
 
-" open files
-" Plug 'tpope/vim-vinegar'
-Plug 'ctrlpvim/ctrlp.vim'
 " Ag integration
 Plug 'rking/ag.vim'
-Plug 'Chun-Yang/vim-action-ag'
 " fzf integration
-" Plug '/usr/local/opt/fzf'
-" Plug 'junegunn/fzf.vim'
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 " sneak
-Plug 'justinmk/vim-sneak'
 
 " ~~ Formatting ~~
 " respect editorconfig files
@@ -84,30 +76,31 @@ Plug 'vim-scripts/loremipsum'
 
 " syntax highlighting for git files (.gitconfig, etc)
 Plug 'tpope/vim-git'
-" git gutter
-" Plug 'airblade/vim-gitgutter'
 " git conflicts
 Plug 'samoshkin/vim-mergetool'
 " go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " javascript
 Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " web
 Plug 'mattn/emmet-vim/'
-
-" TODO: try to figure out why these plugins fight with each other
-" polyglot syntax checking
-" Plug 'sheerun/vim-polyglot'
+" Jenkins
+Plug 'martinda/Jenkinsfile-vim-syntax'
 " MDX
 Plug 'jxnblk/vim-mdx-js'
+
+Plug 'peitalin/vim-jsx-typescript'
 
 call plug#end()
 
 " -------------------------------------
 " ------------ BASE CONFIG ------------
 " -------------------------------------
+
+" providers
+let g:python_host_prog='~/.pyenv/shims/python2'
+let g:python3_host_prog='~/.pyenv/shims/python3'
 
 " ~~ General ~~
 set encoding=utf-8
@@ -172,6 +165,9 @@ colorscheme gruvbox
 hi tsxTagName guifg=#83a598
 hi tsxCloseTag guifg=#83a598
 hi tsxCloseTagName guifg=#83a598
+hi jsxTagName guifg=#83a598
+hi jsxCloseTag guifg=#83a598
+hi jsxCloseTagName guifg=#83a598
 " end dark theme
 
 " light theme
@@ -208,40 +204,44 @@ let g:indentLine_char_list = ['⎸']
 set tabstop=2
 set autoindent
 set smartindent
+let g:taboo_tab_format = '| %N%U:%r%m '
 
 " -------------------------------------
 " ------------- autocmds --------------
 " -------------------------------------
 
-" fix known issue in Neovim #7994
-au InsertLeave * set nopaste
-autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
-autocmd BufNewFile,BufRead *.mdx set filetype=markdown.mdx
-
-" prettier
-let g:prettier#autoformat = 1
-let g:prettier#autoformat_require_pragma = 0
-let g:prettier#autoformat_config_present = 1
-let g:prettier#exec_cmd_path = "~/.nvm/versions/node/v12.16.2/bin/prettier"
-let g:prettier#quickfix_auto_focus = 0
-
-" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml PrettierAsync
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
-autocmd BufWritePost *.mdx call HandleMDXFormat()
-
-" mega hack because reasons
-function HandleMDXFormat()
-  exe ':silent !prettier --write %'
-  exe ':e'
-endfunction
-
 " enabled spell checking in git commit
-autocmd FileType gitcommit setlocal spell
+autocmd FileType gitcommit,txt setlocal spell
 
 " Goyo / Limelight
 let g:limelight_conceal_ctermfg = 'gray'
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
+
+" fix known issue in Neovim #7994
+au InsertLeave * set nopaste
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
+autocmd BufNewFile,BufRead *.mdx set filetype=markdown.mdx
+
+" prettier
+let g:prettier#autoformat = 0
+let g:prettier#autoformat_require_pragma = 0
+let g:prettier#autoformat_config_present = 0
+let g:prettier#exec_cmd_path = "~/.nvm/versions/node/v14.16.0/bin/prettier"
+let g:prettier#quickfix_auto_focus = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml PrettierAsync
+" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+" autocmd BufWritePre *.js,*.jsx,*.ts,*.tsx CocCommand tslint.fixAllProblems
+autocmd BufWritePost *.mdx call HandleMDXFormat()
+
+" mega hack because reasons
+function HandleMDXFormat()
+  exe ':silent !~/.nvm/versions/node/v14.16.0/bin/prettier --parser mdx --write %'
+  exe ':e'
+endfunction
+
+" organize Go imports
+autocmd BufWritePre *.go call CocAction('runCommand', 'editor.action.organizeImport')
 
 " -------------------------------------
 " ------------- KEYBINDS --------------
@@ -292,7 +292,8 @@ nnoremap yn :let @*=expand("%") . ':' . line(".")<CR>
 
 " dupe line
 nnoremap <C-d> yyp
-
+" join line
+nnoremap <leader>j :join<CR>
 " browse source of current file
 nnoremap <leader>cs :silent !/bin/zsh -i -c 'browsesource "$(basename `git rev-parse --show-toplevel`)" %'<CR>
 
@@ -322,9 +323,9 @@ nmap f *N
 nmap F gagiw
 " fzf
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+let $FZF_DEFAULT_OPTS = '--reverse'
 let g:fzf_buffers_jump = 1
-let g:fzf_layout = { 'options': '--reverse', 'window': 'belowright 10new' }
-nmap <leader>f :call fzf#vim#ag('', g:fzf_layout)<cr>
+" nmap <leader>f :call fzf#vim#ag('', g:fzf_layout)<cr>
 " fzf colors
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
@@ -389,6 +390,7 @@ cnoremap %% <C-R>=expand('%:h').'/'<cr>
 " -------------------------------------
 " -------------- PLUGINS --------------
 " -------------------------------------
+
 " git blamer
 let g:blamer_enabled = 1
 let g:blamer_template = '<author>, <committer-time> • <summary>'
@@ -401,6 +403,7 @@ let g:prettier#quickfix_auto_focus = 0
 nnoremap <leader>W :StripWhitespace<cr>
 let g:strip_whitespace_on_save = 1
 let g:strip_only_modified_lines=0
+let g:strip_whitespace_confirm=0
 
 " git mergetool
 let g:mergetool_layout = 'bmr'
@@ -410,9 +413,6 @@ nmap mgr :MergetoolDiffExchangeLeft<CR>
 nmap mgl :MergetoolDiffExchangeRight<CR>
 nmap <leader>gd :Gdiff<CR>
 
-" \e to trigger Emmet
-" imap <leader>e <C-y>,<CR><esc>O
-
 " Polyglot
 let g:polyglot_disabled = ['typescript', 'go', 'json']
 
@@ -421,7 +421,7 @@ let g:go_def_mapping_enabled = 0
 let g:go_code_completion_enabled = 0
 let g:go_doc_keywordprg_enabled = 0
 let g:go_gopls_enabled = 0
-let g:go_fmt_command = 'goimports'
+let g:go_fmt_command = 'gofmt'
 
 " Argwrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
@@ -441,20 +441,7 @@ let g:syntastic_auto_loc_list=2
 let g:syntastic_javascript_checkers = ['eslint']
 
 " ctrlp
-let g:ctrlp_max_files=0
-let g:ctrlp_user_command = {
-  \ 'types': {
-    \ 1: ['.git', 'cd %s && git ls-files'],
-    \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-    \ },
-  \ 'fallback': 'find %s -type f'
-\ }
-let g:ctrlp_clear_cache_on_exit = 1
-let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
-let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("e")': ['<2-LeftMouse>'],
-    \ 'AcceptSelection("t")': ['<cr>'],
-    \ }
+nmap <C-p> :Files<CR>
 
 " ack
 if executable('ack-grep')
@@ -496,11 +483,3 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
-
-" sneak
-" use labels to reduce steps to jump
-let g:sneak#label = 1
-" use s to move to next instance
-let g:sneak#s_next = 1
-" use case insensitive sneak
-let g:sneak#use_ic_scs = 1
