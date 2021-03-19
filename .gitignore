@@ -1,2 +1,3 @@
+*.plist
 .gitconfig_private
 .private
