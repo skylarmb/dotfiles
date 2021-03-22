@@ -29,6 +29,7 @@ Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 " git integration
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 " wrap args to many lines
 Plug 'FooSoft/vim-argwrap'
 " tab management
@@ -42,6 +43,7 @@ Plug 'scrooloose/nerdtree'
 
 " Ag integration
 Plug 'rking/ag.vim'
+Plug 'Chun-Yang/vim-action-ag'
 " fzf integration
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
