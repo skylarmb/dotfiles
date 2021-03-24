@@ -19,6 +19,7 @@ ln -s ~/dotfiles/.gitignore_global ~/.gitignore_global
 ln -s ~/dotfiles/.vimrc ~/.vimrc
 # ln -s ~/dotfiles/.itermprofile ~/.itermprofile
 ln -s ~/dotfiles/.hyper.js ~/.hyper.js
+ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   ln -s ~/dotfiles/.fzf.zsh ~/.fzf.zsh

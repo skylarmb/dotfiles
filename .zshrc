@@ -92,10 +92,11 @@ alias v='nvim'
 alias wip='git add . && git commit --no-verify -m wip'
 alias unwip='git reset --soft HEAD~'
 alias vm='nvim `git --no-pager diff --name-only --diff-filter=U`'
-alias vo='nvim $(fzf --height 30% --reverse -i)'
+alias vo='nvim $(fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")'
 alias todo='gg "todo before"'
 alias installglobals='npm install -g prettier diff-so-fancy neovim npm-why serve serverless nodemon markdown-toc ts-node lebab'
 alias scr='nvim ~/scratch.tsx'
+alias cat='bat'
 
 # fbr - checkout git branch (including remote branches)
 fbr() {
@@ -107,7 +108,7 @@ fbr() {
 }
 
 vc() {
-  nvim $(ag --nobreak --noheading . | fzf --reverse | awk -F ':' '{print $1" +"$2}')
+  nvim $(ag --nobreak --noheading . | fzf --preview | awk -F ':' '{print $1" +"$2}')
 }
 
 dns() {
