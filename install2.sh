@@ -1,8 +1,8 @@
 # set up vim folders
-mkdir --parents ~/.vim/tmp/backup
+mkdir -p ~/.vim/tmp/backup
 mkdir ~/.vim/tmp/swap
 
-mkdir --parents ~/.config/nvim
+mkdir -p ~/.config/nvim
 echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after">>~/.config/nvim/init.vim
 echo "let &packpath=&runtimepath">>~/.config/nvim/init.vim
 echo "source ~/.vimrc">>~/.config/nvim/init.vim
