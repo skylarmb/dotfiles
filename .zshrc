@@ -108,7 +108,7 @@ fbr() {
 }
 
 vc() {
-  nvim $(ag --nobreak --noheading . | fzf --preview | awk -F ':' '{print $1" +"$2}')
+  nvim $(ag --nobreak --noheading . | fzf --reverse | awk -F ':' '{print $1" +"$2}')
 }
 
 dns() {

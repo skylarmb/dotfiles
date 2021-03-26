@@ -92,6 +92,7 @@ Plug 'jxnblk/vim-mdx-js'
 
 Plug 'peitalin/vim-jsx-typescript'
 
+Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 " -------------------------------------
@@ -377,10 +378,10 @@ nnoremap <leader>hs <C-w><C-s>
 nnoremap <leader>, <c-w>10><cr>
 nnoremap <leader>. <c-w>10<<cr>
 " navigate splits
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+" map <C-h> <C-w>h
+" map <C-j> <C-w>j
+" map <C-k> <C-w>k
+" map <C-l> <C-w>l
 
 " files
 nnoremap <leader>n :n<cr>
