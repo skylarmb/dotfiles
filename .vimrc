@@ -16,20 +16,22 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+Plug 'geekjuice/vim-mocha'
 
 " ~~ Eye candy ~~
 
-Plug 'vim-airline/vim-airline-themes'
 Plug 'ap/vim-css-color'
 Plug 'morhetz/gruvbox'
 
 " ~~ Tools ~~
 
 " airline
-Plug 'vim-airline/vim-airline'
+Plug 'hoob3rt/lualine.nvim'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 " git integration
 Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 " wrap args to many lines
 Plug 'FooSoft/vim-argwrap'
 " tab management
@@ -61,8 +63,11 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 " nuke whitespace
 Plug 'ntpeters/vim-better-whitespace'
-" Prettier
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+" sorting as a motion
+Plug 'christoomey/vim-sort-motion'
+
+" Prettier
 " snippets
 Plug 'SirVer/ultisnips'
 
@@ -83,6 +88,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " javascript
 Plug 'leafgarland/typescript-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'peitalin/vim-jsx-typescript'
 " web
 Plug 'mattn/emmet-vim/'
 " Jenkins
@@ -90,9 +96,18 @@ Plug 'martinda/Jenkinsfile-vim-syntax'
 " MDX
 Plug 'jxnblk/vim-mdx-js'
 
-Plug 'peitalin/vim-jsx-typescript'
+Plug 'keith/swift.vim'
+Plug 'udalov/kotlin-vim'
 
 Plug 'christoomey/vim-tmux-navigator'
+
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+
+" DAP
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+" Plug 'rcarriga/vim-ultest'
+" Plug 'Pocco81/DAPInstall.nvim'
 call plug#end()
 
 " -------------------------------------
@@ -230,7 +245,7 @@ let g:prettier#autoformat_require_pragma = 0
 let g:prettier#autoformat_config_present = 0
 let g:prettier#exec_cmd_path = "~/.nvm/versions/node/v14.16.0/bin/prettier"
 let g:prettier#quickfix_auto_focus = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml PrettierAsync
+" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml PrettierAsync
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 " autocmd BufWritePre *.js,*.jsx,*.ts,*.tsx CocCommand tslint.fixAllProblems
 autocmd BufWritePost *.mdx call HandleMDXFormat()
@@ -284,7 +299,8 @@ tnoremap jj <C-\><C-n>
 " enter insert mode when pressing backspace from normal mode
 nnoremap <bs> i<bs>
 " qq to quit from normal mode
-nnoremap qq :q<CR>
+nnoremap qq m':q<CR>
+nnoremap qa m':qa<CR>
 " ww to write from normal mode
 nnoremap ww :w<CR>
 
@@ -318,6 +334,7 @@ nnoremap qa :conf qa<CR>
 
 " unhighlight search results
 nnoremap <leader><space> :noh<cr>
+nnoremap <leader>e :Explore<cr>
 " search word under cursor
 nmap f *N
 " vim-action-ag
@@ -354,8 +371,7 @@ nmap <leader>l :Lines<CR>
 
 " toggle wrap
 nnoremap <leader>w :set wrap!<cr>
-" sort lines
-vnoremap <leader>s :sort<cr>
+
 " automatic bracket formatting on newlines
 inoremap {<CR> {<CR>}<ESC>O
 inoremap (<CR> (<CR>)<ESC>O
@@ -363,13 +379,12 @@ inoremap [<CR> [<CR>]<ESC>O
 " indentation
 vnoremap < <gv
 vnoremap > >gv
+" sorting
 
 " ~~ Tabs and Splits ~~
 
 " new blank tab
 nnoremap <leader>t <Esc>:tabnew<CR>
-" new split
-nnoremap <leader>s<space> <C-w>v<C-w>l
 " new vertical split
 nnoremap <leader>vs <C-w><C-v>
 " new horizontal split
@@ -385,6 +400,8 @@ nnoremap <leader>. <c-w>10<<cr>
 
 " files
 nnoremap <leader>n :n<cr>
+nnoremap - :Explore<cr>
+
 " expand %% to current dir name
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
@@ -433,9 +450,11 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> rn <Plug>(coc-rename)
-nmap <silent> gf :CocCommand tslint.fixAllProblems<CR>
-nmap <silent> ; :call CocAction('doHover')<CR>
+nmap <silent> gh :call CocAction('doHover')<CR>
 nmap <silent> ge <Plug>(coc-diagnostic-next-error)
+nmap <silent> gf :CocCommand tslint.fixAllProblems<CR>
+let g:coc_snippet_next = '<c-J>'
+let g:coc_snippet_prev = '<c-K>'
 
 " ctrlp
 nmap <C-p> :Files<CR>

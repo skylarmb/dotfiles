@@ -42,14 +42,15 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(zsh-autosuggestions)
+# export NVM_LAZY_LOAD=true
+# plugins=(zsh-autosuggestions zsh-nvm)
 
 export MANPATH="/usr/local/man:$MANPATH"
 export ANDROID_HOME="~/Library/Android/sdk"
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:$GOPATH/bin"
-export PATH="$PATH:~/.nvm/versions/node/v14.6.0/bin"
+# export PATH="$PATH:~/.nvm/versions/node/v14.16.0/bin"
 export GO111MODULE=on
 source $ZSH/oh-my-zsh.sh
 # forgit
@@ -65,6 +66,8 @@ export EDITOR='nvim'
 export GIT_EDITOR='nvim'
 export DEFAULT_USER="$(whoami)"
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --ignore-file .gitignore -t d"
 # export LESS='-FXr'
 
 # Install Ruby Gems to ~/.gems
@@ -73,6 +76,7 @@ export GEM_PATH=$HOME/.gem
 export PATH=$HOME/.gem/bin:$PATH
 
 alias ws=workspace
+alias dotfiles='cd ~/dotfiles'
 alias cls='clear;ls'
 alias clsa='clear;ls -a'
 alias lsa='ls -lah'
@@ -97,6 +101,11 @@ alias todo='gg "todo before"'
 alias installglobals='npm install -g prettier diff-so-fancy neovim npm-why serve serverless nodemon markdown-toc ts-node lebab'
 alias scr='nvim ~/scratch.tsx'
 alias cat='bat'
+alias ff='fd'
+alias ag='ag --path-to-ignore ~/.ignore'
+alias gg='ag -iQ'
+alias ggg='ag -i --multiline'
+alias ggl='ag -iQl'
 
 # fbr - checkout git branch (including remote branches)
 fbr() {
@@ -113,10 +122,6 @@ vc() {
 
 dns() {
     curl -sI $1 | grep -E '(301|302|Server|Location|X-Cache|HTTP)'
-}
-
-findfile() {
-  ag -i -g "$1"
 }
 
 confirm() {
@@ -152,42 +157,17 @@ function replace() {
   ag -0 -l $1 | xargs -0 sed -i "" -e "s|$1|$2|g"
 }
 
-alias ff='findfile'
-alias ag='ag --path-to-ignore ~/.ignore'
-alias gg='ag -iQ'
-alias ggg='ag -i --multiline'
-alias ggl='ag -iQl'
-
 function gga() {
   ag -iQ -A $1 -B $1 $2
 }
-
-#. /Users/skylar/workspace/distro/install/bin/torch-activate
-
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-# [[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-# [[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
-
-
-# export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Performance optimzations
 DISABLE_UPDATE_PROMPT=true
 
-# NVM
 export NVM_DIR="$HOME/.nvm"
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  --no-use # This loads nvm
-  # [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
-fi
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 autoload -U add-zsh-hook
 load-nvmrc() {
@@ -208,10 +188,8 @@ load-nvmrc() {
   fi
 }
 add-zsh-hook chpwd load-nvmrc
-load-nvmrc
 
 # # Perform compinit only once a day.
-
 
 setopt EXTENDEDGLOB LOCAL_OPTIONS
 autoload -Uz compinit
@@ -249,3 +227,19 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 eval "$(pyenv virtualenv-init -)"
+
+fancy-ctrl-z () {
+  if [[ $#BUFFER -eq 0 ]]; then
+    fg
+    zle redisplay
+  else
+    zle push-input
+    zle clear-screen
+  fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
+
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
