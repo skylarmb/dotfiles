@@ -22,13 +22,12 @@ Plug 'geekjuice/vim-mocha'
 
 Plug 'ap/vim-css-color'
 Plug 'morhetz/gruvbox'
-
+Plug 'flazz/vim-colorschemes'
 " ~~ Tools ~~
 
 " airline
 Plug 'hoob3rt/lualine.nvim'
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
+Plug 'kyazdani42/nvim-web-devicons'
 " git integration
 Plug 'tpope/vim-fugitive'
 " Plug 'airblade/vim-gitgutter'
@@ -41,6 +40,7 @@ Plug 'gcmt/taboo.vim'
 Plug 'Yggdroot/indentLine'
 " file browsing
 Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-vinegar'
 " ~~ Search ~~
 
 " Ag integration
@@ -49,6 +49,7 @@ Plug 'Chun-Yang/vim-action-ag'
 " fzf integration
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'justinmk/vim-sneak'
 
 " ~~ Formatting ~~
 " respect editorconfig files
@@ -87,8 +88,8 @@ Plug 'samoshkin/vim-mergetool'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " javascript
 Plug 'leafgarland/typescript-vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'peitalin/vim-jsx-typescript'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " web
 Plug 'mattn/emmet-vim/'
 " Jenkins
@@ -97,18 +98,23 @@ Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'jxnblk/vim-mdx-js'
 
 Plug 'keith/swift.vim'
-Plug 'udalov/kotlin-vim'
+" Plug 'udalov/kotlin-vim'
 
 Plug 'christoomey/vim-tmux-navigator'
 
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 
 " DAP
-Plug 'mfussenegger/nvim-dap'
-Plug 'rcarriga/nvim-dap-ui'
-" Plug 'rcarriga/vim-ultest'
-" Plug 'Pocco81/DAPInstall.nvim'
+" Plug 'mfussenegger/nvim-dap'
+" Plug 'rcarriga/nvim-dap-ui'
+
+" Plug 'aserebryakov/vim-todo-lists'
+Plug 'github/copilot.vim', { 'branch': 'release' }
+
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'vim-scripts/YankRing.vim'
 call plug#end()
+
 
 " -------------------------------------
 " ------------ BASE CONFIG ------------
@@ -121,6 +127,7 @@ let g:python3_host_prog='~/.pyenv/shims/python3'
 " ~~ General ~~
 set encoding=utf-8
 set nocompatible
+set colorcolumn=80
 filetype plugin indent on
 
 " enable syntax
@@ -171,11 +178,12 @@ set wildignore+=*.o,*.obj,*.rbc,*.class,vendor/gems/*
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png
 set wildignore+=*.zip,*.apk,*.gz
 
-" dark theme
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set termguicolors
+
+" dark theme
 set background=dark
-let g:gruvbox_contrast_dark='medium'
+let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
 
 hi tsxTagName guifg=#83a598
@@ -189,7 +197,7 @@ hi jsxCloseTagName guifg=#83a598
 " light theme
 " set t_Co=256
 " set background=light
-" colorscheme solarized8_dark_low
+" colorscheme solarized8_light_high
 " let g:solarized_termcolors=256
 " end light theme
 
@@ -214,7 +222,10 @@ set hlsearch
 set ignorecase
 " incremental search (searches as you type)
 set incsearch
-
+" netrw config
+let g:netrw_preview = 1
+let g:netrw_liststyle=3
+let g:netrw_chgwin=1
 " indentation
 let g:indentLine_char_list = ['⎸']
 set tabstop=2
@@ -222,6 +233,8 @@ set autoindent
 set smartindent
 let g:taboo_tab_format = '| %N%U:%r%m '
 
+" yankring
+let g:yankring_replace_n_pkey = '<C-M>'
 " -------------------------------------
 " ------------- autocmds --------------
 " -------------------------------------
@@ -257,7 +270,7 @@ function HandleMDXFormat()
 endfunction
 
 " organize Go imports
-autocmd BufWritePre *.go call CocAction('runCommand', 'editor.action.organizeImport')
+autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
 
 " -------------------------------------
 " ------------- KEYBINDS --------------
@@ -306,6 +319,7 @@ nnoremap ww :w<CR>
 
 " yank current file name and line number
 nnoremap yn :let @*=expand("%") . ':' . line(".")<CR>
+nnoremap <C-y> :YRShow<CR>
 
 " dupe line
 nnoremap <C-d> yyp
@@ -384,7 +398,7 @@ vnoremap > >gv
 " ~~ Tabs and Splits ~~
 
 " new blank tab
-nnoremap <leader>t <Esc>:tabnew<CR>
+" nnoremap <leader>t <Esc>:tabnew<CR>
 " new vertical split
 nnoremap <leader>vs <C-w><C-v>
 " new horizontal split
@@ -446,6 +460,7 @@ nnoremap <silent> <leader>a :ArgWrap<CR>
 
 " Coc
 nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gp :call CocAction('jumpDefinition', 'vsplit')<CR>
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
@@ -499,3 +514,24 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
+
+" mocha
+
+" map <Leader>s :call RunNearestSpec()<CR>
+
+" DAP
+" nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
+" nnoremap <silent> <F10> :lua require'dap'.step_over()<CR>
+" nnoremap <silent> <F11> :lua require'dap'.step_into()<CR>
+" nnoremap <silent> <F12> :lua require'dap'.step_out()<CR>
+" nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
+" nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+" nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+" nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
+" nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
+
+
+function! MdnSearch(...)
+  silent exec "!open 'https://mdn.io/".shellescape(join(a:000))."'"
+endfunction
+command! -nargs=+ Mdn call MdnSearch(<f-args>)

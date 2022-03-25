@@ -42,6 +42,7 @@
   d = diff --ignore-all-space
   dw = diff --ignore-all-space --word-diff
   dc = diff --cached --ignore-all-space
+  ds = diff --stat
   r = rebase
   rc = rebase --continue
   p = push -u origin head
@@ -76,7 +77,6 @@
         #          }; f"
   mc = merge --continue
   mo = merge --no-ff origin/master
-  mo = merge --no-ff origin/master
   mu = "!f() { \
             echo "~~ updating master"; \
             git fetch origin master; \
@@ -84,7 +84,7 @@
         }; f"
   up = "!f() { \
             git fetch; \
-            git merge --no-ff origin/master; \
+            git merge --no-ff --no-edit origin/master; \
             git push -u origin head --no-verify; \
           }; f"
 [rerere]
@@ -93,3 +93,10 @@
 	gpgsign = false
 [gpg]
 	program = gpg
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[user]
+	signingkey = 2DF4652D44758474

@@ -106,6 +106,9 @@ alias ag='ag --path-to-ignore ~/.ignore'
 alias gg='ag -iQ'
 alias ggg='ag -i --multiline'
 alias ggl='ag -iQl'
+alias notes='cd ~/notes'
+alias aa='cp ~/notes/all_around.template.md ~/notes/candidates/new.md && nvim ~/notes/candidates/new.md'
+alias todo='nvim ~/notes/life.todo.md'
 
 # fbr - checkout git branch (including remote branches)
 fbr() {
@@ -118,6 +121,10 @@ fbr() {
 
 vc() {
   nvim $(ag --nobreak --noheading . | fzf --reverse | awk -F ':' '{print $1" +"$2}')
+}
+
+vl() {
+  nvim $(git diff HEAD^ HEAD --name-only | fzf)
 }
 
 dns() {
@@ -154,7 +161,7 @@ function why() {
 }
 
 function replace() {
-  ag -0 -l $1 | xargs -0 sed -i "" -e "s|$1|$2|g"
+  ag -iQ -0 -l $1 -G $3 | xargs -0 sed -i "" -e "s|$1|$2|g"
 }
 
 function gga() {
@@ -169,25 +176,25 @@ DISABLE_UPDATE_PROMPT=true
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
-autoload -U add-zsh-hook
-load-nvmrc() {
-  local node_version="$(nvm version)"
-  local nvmrc_path="$(nvm_find_nvmrc)"
+# autoload -U add-zsh-hook
+# load-nvmrc() {
+#   local node_version="$(nvm version)"
+#   local nvmrc_path="$(nvm_find_nvmrc)"
 
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+#   if [ -n "$nvmrc_path" ]; then
+#     local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
 
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
-    fi
-  elif [ "$node_version" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-add-zsh-hook chpwd load-nvmrc
+#     if [ "$nvmrc_node_version" = "N/A" ]; then
+#       nvm install
+#     elif [ "$nvmrc_node_version" != "$node_version" ]; then
+#       nvm use
+#     fi
+#   elif [ "$node_version" != "$(nvm version default)" ]; then
+#     echo "Reverting to nvm default version"
+#     nvm use default
+#   fi
+# }
+# add-zsh-hook chpwd load-nvmrc
 
 # # Perform compinit only once a day.
 
