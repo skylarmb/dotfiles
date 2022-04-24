@@ -18,7 +18,6 @@ setopt +o nomatch
 source "$HOME/.private"
 # zmodload zsh/zprof
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
-RPROMPT='%D{%r}'
 ZSH_DISABLE_COMPFIX=true
 
 # Path to your oh-my-zsh installation.
@@ -30,7 +29,8 @@ export GPG_TTY=$(tty)
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 TYPEWRITTEN_CURSOR="block"
-ZSH_THEME="typewritten"
+TYPEWRITTEN_PROMPT_LAYOUT="pure"
+# ZSH_THEME="typewritten"
 
 # use hyphen-insensitive completion. _ and - will be interchangeable.
 HYPHEN_INSENSITIVE="false"
@@ -56,8 +56,8 @@ source $ZSH/oh-my-zsh.sh
 # forgit
 forgit_diff=gdd
 forgit_add=gaa
-export ZPLUG_HOME=/usr/local/opt/zplug
-source $ZPLUG_HOME/init.zsh
+# export ZPLUG_HOME=/usr/local/opt/zplug
+# source $ZPLUG_HOME/init.zsh
 
 # increase the number of files a terminal session can have open
 ulimit -n 2560
@@ -70,9 +70,6 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --ignore-file .gitignore -t d"
 # export LESS='-FXr'
 
-# Install Ruby Gems to ~/.gems
-export GEM_HOME=$HOME/.gem
-export GEM_PATH=$HOME/.gem
 export PATH=$HOME/.gem/bin:$PATH
 
 alias ws=workspace
@@ -173,8 +170,7 @@ function gga() {
 # Performance optimzations
 DISABLE_UPDATE_PROMPT=true
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+source /usr/share/nvm/init-nvm.sh
 
 # autoload -U add-zsh-hook
 # load-nvmrc() {
@@ -230,8 +226,9 @@ compinit -C
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
+export PATH="$HOME/.pyenv/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
+  eval "$(pyenv init --path)"
 fi
 eval "$(pyenv virtualenv-init -)"
 
@@ -250,3 +247,8 @@ bindkey '^Z' fancy-ctrl-z
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey "^X^E" edit-command-line
+fpath=($fpath "/home/x/.zfunctions")
+
+# Set typewritten ZSH as a prompt
+autoload -U promptinit; promptinit
+prompt typewritten
