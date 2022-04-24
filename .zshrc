@@ -18,7 +18,6 @@ setopt +o nomatch
 source "$HOME/.private"
 # zmodload zsh/zprof
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
-RPROMPT='%D{%r}'
 ZSH_DISABLE_COMPFIX=true
 
 # Path to your oh-my-zsh installation.
@@ -30,7 +29,7 @@ export GPG_TTY=$(tty)
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 TYPEWRITTEN_CURSOR="block"
-ZSH_THEME="typewritten"
+TYPEWRITTEN_PROMPT_LAYOUT="pure"
 
 # use hyphen-insensitive completion. _ and - will be interchangeable.
 HYPHEN_INSENSITIVE="false"
@@ -70,11 +69,6 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --ignore-file .gitignore -t d"
 # export LESS='-FXr'
 
-# Install Ruby Gems to ~/.gems
-export GEM_HOME=$HOME/.gem
-export GEM_PATH=$HOME/.gem
-export PATH=$HOME/.gem/bin:$PATH
-
 alias ws=workspace
 alias dotfiles='cd ~/dotfiles'
 alias cls='clear;ls'
@@ -96,7 +90,6 @@ alias v='nvim'
 alias wip='git add . && git commit --no-verify -m wip'
 alias unwip='git reset --soft HEAD~'
 alias vm='nvim `git --no-pager diff --name-only --diff-filter=U`'
-alias vo='nvim $(fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")'
 alias todo='gg "todo before"'
 alias installglobals='npm install -g prettier diff-so-fancy neovim npm-why serve serverless nodemon markdown-toc ts-node lebab'
 alias scr='nvim ~/scratch.tsx'
@@ -110,6 +103,32 @@ alias notes='cd ~/notes'
 alias aa='cp ~/notes/all_around.template.md ~/notes/candidates/new.md && nvim ~/notes/candidates/new.md'
 alias todo='nvim ~/notes/life.todo.md'
 
+# vim fuzzy open by filename with preview
+vo() {
+  nvim $( \
+    fzf \
+      --reverse \
+      --query="$@" \
+      --preview="bat --color=always --style=numbers --theme=gruvbox-dark {}" \
+  )
+}
+
+# vim fuzzy open by file contents with preview and highlighted line
+vc() {
+  nvim $( \
+    # workers however many cpu cores you have
+    ag --noheading --nobreak . \
+    | fzf \
+      --delimiter=":" \
+      --nth="2.." \
+      --reverse \
+      --query="$@" \
+      --preview="bat --style=numbers --color=always --theme=gruvbox-dark --highlight-line {2} {1}" \
+      --preview-window '+{2}+3/2' \
+    | awk -F ':' '{print $1" +"$2}' # open to specific line number
+  )
+}
+
 # fbr - checkout git branch (including remote branches)
 fbr() {
   local branches branch
@@ -117,10 +136,6 @@ fbr() {
   branch=$(echo "$branches" |
            fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
-}
-
-vc() {
-  nvim $(ag --nobreak --noheading . | fzf --reverse | awk -F ':' '{print $1" +"$2}')
 }
 
 vl() {
@@ -172,29 +187,6 @@ function gga() {
 
 # Performance optimzations
 DISABLE_UPDATE_PROMPT=true
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-
-# autoload -U add-zsh-hook
-# load-nvmrc() {
-#   local node_version="$(nvm version)"
-#   local nvmrc_path="$(nvm_find_nvmrc)"
-
-#   if [ -n "$nvmrc_path" ]; then
-#     local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-#     if [ "$nvmrc_node_version" = "N/A" ]; then
-#       nvm install
-#     elif [ "$nvmrc_node_version" != "$node_version" ]; then
-#       nvm use
-#     fi
-#   elif [ "$node_version" != "$(nvm version default)" ]; then
-#     echo "Reverting to nvm default version"
-#     nvm use default
-#   fi
-# }
-# add-zsh-hook chpwd load-nvmrc
 
 # # Perform compinit only once a day.
 
@@ -250,3 +242,7 @@ bindkey '^Z' fancy-ctrl-z
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey "^X^E" edit-command-line
+
+# Set typewritten ZSH as a prompt
+autoload -U promptinit; promptinit
+prompt typewritten
