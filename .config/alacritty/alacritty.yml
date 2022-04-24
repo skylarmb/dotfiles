@@ -1,0 +1,96 @@
+#env:
+  # TERM variable
+  #
+  # This value is used to set the `$TERM` environment variable for
+  # each instance of Alacritty. If it is not present, alacritty will
+  # check the local terminfo database and use `alacritty` if it is
+  # available, otherwise `xterm-256color` is used.
+  #TERM: alacritty
+
+window:
+  decorations: none
+scrolling:
+  history: 100000
+font:
+  normal:
+    family: "Roboto Mono for Powerline"
+  bold:
+    family: "Roboto Mono Medium for Powerline"
+  size: 14.0
+  # If `true`, Alacritty will use a custom built-in font for box drawing
+  # characters (Unicode points 2500 - 259f).
+  #
+  builtin_box_drawing: true
+
+# If `true`, bold text is drawn using the bright color variants.
+draw_bold_text_with_bright_colors: false
+
+schemes:
+  gruvbox_material_hard_dark: &gruvbox_material_hard_dark
+    primary:
+      background: '0x1d2021'
+      foreground: '0xd4be98'
+    normal:
+      black:   '0x32302f'
+      red:     '0xea6962'
+      green:   '0xa9b665'
+      yellow:  '0xd8a657'
+      blue:    '0x7daea3'
+      magenta: '0xd3869b'
+      cyan:    '0x89b482'
+      white:   '0xd4be98'
+    bright:
+      black:   '0x32302f'
+      red:     '0xea6962'
+      green:   '0xa9b665'
+      yellow:  '0xd8a657'
+      blue:    '0x7daea3'
+      magenta: '0xd3869b'
+      cyan:    '0x89b482'
+      white:   '0xd4be98'
+  gruvbox_material_hard_light: &gruvbox_material_hard_light
+    primary:
+      background: '0xf9f5d7'
+      foreground: '0x654735'
+    normal:
+      black:   '0x654735'
+      red:     '0xc14a4a'
+      green:   '0x6c782e'
+      yellow:  '0xb47109'
+      blue:    '0x45707a'
+      magenta: '0x945e80'
+      cyan:    '0x4c7a5d'
+      white:   '0xf2e5bc'
+    bright:
+      black:   '0x654735'
+      red:     '0xc14a4a'
+      green:   '0x6c782e'
+      yellow:  '0xb47109'
+      blue:    '0x45707a'
+      magenta: '0x945e80'
+      cyan:    '0x4c7a5d'
+      white:   '0xf2e5bc'
+
+# Apply the color scheme.
+colors: *gruvbox_material_hard_dark
+
+shell:
+ program: /bin/zsh
+ args:
+   - --login
+   - -c
+   - tmux new
+
+key_bindings:
+  # Tmux window switching with Control + number key
+  - { key: Key1,   mods: Control, chars: "\x01\x31" }
+  - { key: Key2,   mods: Control, chars: "\x01\x32" }
+  - { key: Key3,   mods: Control, chars: "\x01\x33" }
+  - { key: Key4,   mods: Control, chars: "\x01\x34" }
+  - { key: Key5,   mods: Control, chars: "\x01\x35" }
+  - { key: Key6,   mods: Control, chars: "\x01\x36" }
+  - { key: Key7,   mods: Control, chars: "\x01\x37" }
+  - { key: Key8,   mods: Control, chars: "\x01\x38" }
+  - { key: Key9,   mods: Control, chars: "\x01\x39" }
+  # Tmux zoom pane with Controm + Enter
+  - { key: Return, mods: Control, chars: "\x01\x7a"}
