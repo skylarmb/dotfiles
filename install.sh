@@ -17,6 +17,7 @@ ln -s ~/dotfiles/.zprofile ~/.zprofile
 ln -s ~/dotfiles/.gitconfig ~/.gitconfig
 ln -s ~/dotfiles/.gitignore_global ~/.gitignore_global
 ln -s ~/dotfiles/.vimrc ~/.vimrc
+ln -s ~/dotfiles/.ideavimrc ~/.ideavimrc
 # ln -s ~/dotfiles/.itermprofile ~/.itermprofile
 ln -s ~/dotfiles/.hyper.js ~/.hyper.js
 ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf

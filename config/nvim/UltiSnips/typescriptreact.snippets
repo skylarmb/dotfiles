@@ -59,13 +59,13 @@ endsnippet
 snippet rc "react component" b
 import React from 'react';
 
-interface Props {}
+export interface Props {
+	children?: React.ReactNode;
+}
 
 const $1: React.FC<Props> = (props: Props) => (
 	<>$2</>
 );
-
-$1.displayName = '$1';
 
 export default $1;
 endsnippet

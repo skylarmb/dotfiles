@@ -47,7 +47,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'rking/ag.vim'
 Plug 'Chun-Yang/vim-action-ag'
 " fzf integration
-Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-sneak'
 
@@ -90,6 +90,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 " web
 Plug 'mattn/emmet-vim/'
 " Jenkins
@@ -123,6 +124,8 @@ call plug#end()
 " providers
 let g:python_host_prog='~/.pyenv/shims/python2'
 let g:python3_host_prog='~/.pyenv/shims/python3'
+let g:node_host_prog = '~/.nvm/versions/node/v16.16.0/bin/node'
+let g:coc_node_path = '~/.nvm/versions/node/v16.16.0/bin/node'
 
 " ~~ General ~~
 set encoding=utf-8
@@ -181,18 +184,20 @@ set wildignore+=*.zip,*.apk,*.gz
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set termguicolors
 
+hi tsxTagName guifg=#00FF00
+hi tsxCloseTag guifg=#00FF00
+hi tsxCloseTagName guifg=#00FF00
+hi jsxTagName guifg=#00FF00
+hi jsxCloseTag guifg=#00FF00
+hi jsxCloseTagName guifg=#00FF00
+hi tsxTypeBraces guifg=#00FF00
+
 " dark theme
 set background=dark
-let g:gruvbox_contrast_dark='hard'
+let g:gruvbox_contrast_dark='medium'
 colorscheme gruvbox
 
-hi tsxTagName guifg=#83a598
-hi tsxCloseTag guifg=#83a598
-hi tsxCloseTagName guifg=#83a598
-hi jsxTagName guifg=#83a598
-hi jsxCloseTag guifg=#83a598
-hi jsxCloseTagName guifg=#83a598
-" end dark theme
+"end dark theme
 
 " light theme
 " set t_Co=256
@@ -256,7 +261,7 @@ autocmd BufNewFile,BufRead *.mdx set filetype=markdown.mdx
 let g:prettier#autoformat = 0
 let g:prettier#autoformat_require_pragma = 0
 let g:prettier#autoformat_config_present = 0
-let g:prettier#exec_cmd_path = "~/.nvm/versions/node/v14.16.0/bin/prettier"
+let g:prettier#exec_cmd_path = "~/.nvm/versions/node/v16.16.0/bin/prettier"
 let g:prettier#quickfix_auto_focus = 0
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml PrettierAsync
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
@@ -452,8 +457,7 @@ let g:polyglot_disabled = ['typescript', 'go', 'json']
 let g:go_def_mapping_enabled = 0
 let g:go_code_completion_enabled = 0
 let g:go_doc_keywordprg_enabled = 0
-let g:go_gopls_enabled = 0
-let g:go_fmt_command = 'gofmt'
+let g:go_fmt_command = 'goimports'
 
 " Argwrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
@@ -467,7 +471,8 @@ nmap <silent> gr <Plug>(coc-references)
 nmap <silent> rn <Plug>(coc-rename)
 nmap <silent> gh :call CocAction('doHover')<CR>
 nmap <silent> ge <Plug>(coc-diagnostic-next-error)
-nmap <silent> gf :CocCommand tslint.fixAllProblems<CR>
+nmap <silent> gf :CocCommand eslint.executeAutofix<CR> :call CocAction('runCommand', 'editor.action.organizeImport')<CR> :PrettierAsync<CR>
+
 let g:coc_snippet_next = '<c-J>'
 let g:coc_snippet_prev = '<c-K>'
 
@@ -482,6 +487,8 @@ if executable('ag')
   " https://github.com/ggreer/the_silver_searcher
   let g:ackprg = 'ag --vimgrep'
 endif
+
+nmap <silent> gb :Git blame<CR>
 
 " airline (status line)
 let g:airline_left_sep=''
@@ -514,6 +521,7 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsSnippetsDir=$HOME.'/.config/nvim/UltiSnips/'
 
 " mocha
 
@@ -535,3 +543,9 @@ function! MdnSearch(...)
   silent exec "!open 'https://mdn.io/".shellescape(join(a:000))."'"
 endfunction
 command! -nargs=+ Mdn call MdnSearch(<f-args>)
+
+
+" copilot
+" imap <script><expr> <C-Y> copilot#Accept("\<CR>")
+" let g:copilot_no_tab_map = v:true
+

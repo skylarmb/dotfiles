@@ -6,6 +6,7 @@ mkdir -p ~/.config/nvim
 echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after">>~/.config/nvim/init.vim
 echo "let &packpath=&runtimepath">>~/.config/nvim/init.vim
 echo "source ~/.vimrc">>~/.config/nvim/init.vim
+ln -s ~/dotfiles/config/nvim/UltiSnips ~/.config/nvim/UltiSnips
 
 # random packages to install
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf

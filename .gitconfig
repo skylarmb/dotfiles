@@ -50,6 +50,10 @@
   pf = push -f origin head
   f = fetch
   a = add
+  aa = add --all
+  am = commit --amend
+  amn = commit --amend --no-edit
+  rh = reset HEAD
   s = status
   co = checkout
   g = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
@@ -67,25 +71,23 @@
                 | parallel git ls-tree -r --long "{}" \
                 | sort -uk3 \
                 | sort -nk4"#  nuke = reset --hard origin/master
-#  yolo = "!f() { \
-#            curr_branch=$(git rev-parse --abbrev-ref HEAD); \
-#            if [ "$curr_branch" = "master" ]; then \
-#              echo "~~ cant yolo on master..." && return; \
-#   fi; \
-#   echo "~~ force pushing origin head"; \
-#   git push -f origin head; \
-        #          }; f"
+  yolo = "!f() { \
+            curr_branch=$(git rev-parse --abbrev-ref HEAD); \
+            if [ "$curr_branch" = "master" ]; then \
+              echo "~~ cant yolo on master..." && return; \
+   fi; \
+   echo "~~ force pushing origin head"; \
+   git push -f --no-verify origin head; \
+  }; f"
   mc = merge --continue
-  mo = merge --no-ff origin/master
   mu = "!f() { \
             echo "~~ updating master"; \
             git fetch origin master; \
             git update-ref --create-reflog refs/heads/master refs/remotes/origin/master; \
         }; f"
-  up = "!f() { \
+  mo = "!f() { \
             git fetch; \
             git merge --no-ff --no-edit origin/master; \
-            git push -u origin head --no-verify; \
           }; f"
 [rerere]
 	enabled = true

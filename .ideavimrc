@@ -1,0 +1,103 @@
+" leader character
+let mapleader = " "
+" use system clipboard
+set clipboard=unnamed
+" disable compatibility mode (enables meta key)
+set nocp
+" always show the status bar
+set laststatus=2
+" set backspace behavior
+set backspace=start,eol,indent
+" go one char past end of line
+set virtualedit=onemore
+" always show sign column (prevents flicker)
+set signcolumn=yes
+" dont allow mouse clicks
+set mouse-=a
+" show matching brackets.
+set showmatch
+" case insensitive
+set ignorecase
+" incremental search (searches as you type)
+set incsearch
+" -------------------------------------
+" ------------- KEYBINDS --------------
+" -------------------------------------
+
+" ~~ Cursor movement ~~
+
+" always move by display lines when wrapping
+map k gk
+map j gj
+
+" move by beginning of word instead of end of word
+nnoremap E b
+vnoremap E b
+nnoremap e w
+vnoremap e w
+
+" beginning / end of line
+map H ^
+map L $l
+
+" jump 10 lines
+map K 10k
+map J 10j
+
+" ~~ Shortcuts ~~
+
+" redo with U
+nnoremap U <C-r>
+" exit insert mode with something j/k ish
+inoremap jj <ESC>l
+inoremap jJ <ESC>l
+inoremap JJ <ESC>l
+inoremap Jj <ESC>l
+inoremap JK <ESC>l
+inoremap jk <ESC>l
+
+" jj for term mode
+tnoremap jj <C-\><C-n>
+" enter insert mode when pressing backspace from normal mode
+nnoremap <bs> i<bs>
+" qq to quit from normal mode
+nnoremap qq m':q<CR>
+nnoremap qa m':qa<CR>
+" ww to write from normal mode
+nnoremap ww :w<CR>
+
+" yank current file name and line number
+nnoremap yn :let @*=expand("%") . ':' . line(".")<CR>
+
+" dupe line
+nnoremap <C-d> yyp
+" join line
+nnoremap <leader>j :join<CR>
+" browse source of current file
+nnoremap <leader>cs :silent !/bin/zsh -i -c 'browsesource "$(basename `git rev-parse --show-toplevel`)" %'<CR>
+
+" bounce between brackets
+nmap t %
+vmap t %
+
+nnoremap <leader><space> :noh<cr>
+
+" indentation
+vnoremap < <gv
+vnoremap > >gv
+
+" new blank tab
+" nnoremap <leader>t <Esc>:tabnew<CR>
+" new vertical split
+nnoremap <leader>vs <C-w><C-v>
+" new horizontal split
+nnoremap <leader>hs <C-w><C-s>
+nnoremap <bs> i<bs>
+
+nmap f *N
+
+nnoremap gr :action FindUsages<CR>
+
+" split navigation
+nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h

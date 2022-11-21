@@ -55,7 +55,8 @@ source $ZSH/oh-my-zsh.sh
 # forgit
 forgit_diff=gdd
 forgit_add=gaa
-export ZPLUG_HOME=/usr/local/opt/zplug
+
+export ZPLUG_HOME=/opt/homebrew/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
 # increase the number of files a terminal session can have open
@@ -75,9 +76,9 @@ alias cls='clear;ls'
 alias clsa='clear;ls -a'
 alias lsa='ls -lah'
 alias vimc='v ~/.vimrc'
-alias zshc='v ~/.zshrc'
-alias zshp='v ~/.private'
-alias zshup='source ~/.zshrc'
+alias zc='v ~/.zshrc'
+alias zcp='v ~/.private'
+alias zu='source ~/.zshrc'
 alias killdocker='docker kill $(docker ps -q)'
 alias t='tree -I node_modules -L'
 alias ta='tmux a #'
@@ -96,12 +97,13 @@ alias scr='nvim ~/scratch.tsx'
 alias cat='bat'
 alias ff='fd'
 alias ag='ag --path-to-ignore ~/.ignore'
-alias gg='ag -iQ'
-alias ggg='ag -i --multiline'
-alias ggl='ag -iQl'
+alias gg='ag -iQ --width=500'
+alias ggg='ag -i --multiline --width=500'
+alias ggl='ag -iQl --width=500'
 alias notes='cd ~/notes'
 alias aa='cp ~/notes/all_around.template.md ~/notes/candidates/new.md && nvim ~/notes/candidates/new.md'
 alias todo='nvim ~/notes/life.todo.md'
+alias fgf='fg %$(jobs | fzf | grep -Eo "[0-9]{1,}" | head -1)'
 
 # vim fuzzy open by filename with preview
 vo() {
@@ -132,7 +134,7 @@ vc() {
 # fbr - checkout git branch (including remote branches)
 fbr() {
   local branches branch
-  branches=$(git branch --all --sort=-committerdate | grep -v HEAD) &&
+  branches=$(git branch --all --sort=-committerdate | grep -v -e HEAD -e remotes) &&
   branch=$(echo "$branches" |
            fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
