@@ -22,6 +22,20 @@ ln -s ~/dotfiles/.ideavimrc ~/.ideavimrc
 ln -s ~/dotfiles/.hyper.js ~/.hyper.js
 ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 
+# .config
+if [ -d "~/.config/nvim" ]
+then
+  echo "~/.config/nvim exists, skipping"
+else
+  ln -s ~/dotfiles/.config/nvim ~/.config/nvim
+fi
+if [ -d "~/.config/alacritty" ]
+then
+  echo "~/.config/alacritty exists, skipping"
+else
+  ln -s ~/dotfiles/.config/alacritty ~/.config/alacritty
+fi
+
 if [[ "$OSTYPE" == "darwin"* ]]; then
   ln -s ~/dotfiles/.fzf.zsh ~/.fzf.zsh
 else

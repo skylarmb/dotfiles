@@ -70,6 +70,8 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --ignore-file .gitignore -t d"
 # export LESS='-FXr'
 
+export PATH=$HOME/.gem/bin:$PATH
+
 alias ws=workspace
 alias dotfiles='cd ~/dotfiles'
 alias cls='clear;ls'
@@ -190,6 +192,8 @@ function gga() {
 # Performance optimzations
 DISABLE_UPDATE_PROMPT=true
 
+source /usr/share/nvm/init-nvm.sh
+
 # # Perform compinit only once a day.
 
 setopt EXTENDEDGLOB LOCAL_OPTIONS
@@ -224,8 +228,9 @@ compinit -C
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
+export PATH="$HOME/.pyenv/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
+  eval "$(pyenv init --path)"
 fi
 eval "$(pyenv virtualenv-init -)"
 
@@ -244,6 +249,7 @@ bindkey '^Z' fancy-ctrl-z
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey "^X^E" edit-command-line
+fpath=($fpath "/home/x/.zfunctions")
 
 # Set typewritten ZSH as a prompt
 autoload -U promptinit; promptinit
