@@ -1,2 +1,7 @@
+# copy to .private/.gitignore_global if required
 .DS_Store
 .vimspector.json
+/dist/
+*.pb.go
+node_modules
+build

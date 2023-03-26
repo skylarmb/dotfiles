@@ -1,22 +1,21 @@
-# private file must define [user] and [core]
+# .private/.gitconfig file must define at minimum [user] and [core]
 [include]
   path = .private/.gitconfig
 [core]
-  ; pager = diff-so-fancy
+  pager = delta
 [pull]
   rebase = false
 [interactive]
-  diffFilter = delta --color-only --width 10000
+  diffFilter = delta --color-only --features=interactive
 [delta]
-    features = side-by-side line-numbers decorations
-    syntax-theme = Monokai Extended Origin
-    ; plus-style = syntax "#003800"
-    ; minus-style = syntax "#3f0001"
+  navigate = true
+  features = side-by-side line-numbers decorations
+  syntax-theme =  gruvbox-dark
 
 [delta "decorations"]
     commit-decoration-style = bold yellow box ul
     file-style = bold yellow ul
-    file-decoration-style = none
+    ; file-decoration-style = none
     hunk-header-decoration-style = cyan box ul
 
 [delta "line-numbers"]
@@ -34,16 +33,19 @@
   trustExitCode = true
 [diff]
   tool = vimdiff
+  colorMoved = default
 [difftool]
   prompt = false
 [alias]
-  c = commit
+  undo = !"git reset --soft HEAD~1; git reset HEAD ."
+  c = commit --no-verify
+  cc = !"echo $(git rev-parse HEAD) | tee /dev/tty | pbcopy"
   ca = commit -a
   d = diff --ignore-all-space
+  do = diff --ignore-all-space origin/master
   dw = diff --ignore-all-space --word-diff
   dc = diff --cached --ignore-all-space
   ds = diff --stat
-  r = rebase
   rc = rebase --continue
   p = push -u origin head
   pn = push -u origin head --no-verify
@@ -51,16 +53,17 @@
   f = fetch
   a = add
   aa = add --all
-  am = commit --amend
-  amn = commit --amend --no-edit
+  am = commit -a --amend --no-edit
   rh = reset HEAD
-  s = status
+  s = !"git diff --stat; git status;"
   co = checkout
   g = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
   l = diff HEAD^ HEAD
   ll = diff HEAD^^ HEAD^
   lf = diff HEAD^  HEAD --name-only
   llf = diff HEAD^^  HEAD^ --name-only
+  mc = merge --continue --no-edit
+  reup = !"git fetch; git rebase origin/master"
   big-files    = !"git rev-list --objects --all \
                  | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
                  | sed -n 's/^blob //p' \
@@ -68,27 +71,41 @@
                  | cut -c 1-12,41- \
                  | $(command -v gnumfmt || echo numfmt) --field=2 --to=iec-i --suffix=B --padding=7 --round=nearest"
   big-objects = !"git rev-list --all \
-                | parallel git ls-tree -r --long "{}" \
+                | parallel git ls-tree -r --long \"{}\" \
                 | sort -uk3 \
                 | sort -nk4"#  nuke = reset --hard origin/master
   yolo = "!f() { \
-            curr_branch=$(git rev-parse --abbrev-ref HEAD); \
-            if [ "$curr_branch" = "master" ]; then \
-              echo "~~ cant yolo on master..." && return; \
-   fi; \
-   echo "~~ force pushing origin head"; \
-   git push -f --no-verify origin head; \
+    curr_branch=$(git rev-parse --abbrev-ref HEAD); \
+    if [ \"$curr_branch\" = \"master\" ]; then \
+      lolexec yolo echo "👀 cant yolo on master..."; return; \
+    fi; \
+    lolexec yolo git push -f --no-verify origin head; \
   }; f"
-  mc = merge --continue
+  fire= "!f() { \
+    newbranch=\"sb-FIRE-$(date +%s)\"; \
+    git checkout -b \"$newbranch\"; \
+    git add -A; \
+    git commit -m \"🔥\"; \
+    git push --no-verify -u origin \"$newbranch\"; \
+  }; f; unset f"
+  autosave = "!f() { \
+    HASH=`git stash create`; \
+    MESSAGE=`git log --no-walk --pretty=\"format:%-s\" \"$HASH\"`; \
+    git update-ref -m \"AUTOSAVE: $MESSAGE\" refs/stash \"$HASH\"; \
+    git stash list; \
+  }; f; unset f"
   mu = "!f() { \
-            echo "~~ updating master"; \
-            git fetch origin master; \
-            git update-ref --create-reflog refs/heads/master refs/remotes/origin/master; \
-        }; f"
+    lolexec autosave git autosave; \
+    lolexec fetch git fetch origin master:master; \
+    lolexec update-ref git update-ref --create-reflog refs/heads/master refs/remotes/origin/master; \
+  }; f"
   mo = "!f() { \
-            git fetch; \
-            git merge --no-ff --no-edit origin/master; \
-          }; f"
+    lolexec autosave git autosave; \
+    lolexec fetch git fetch origin master:master; \
+    lolexec merge git merge --no-ff --no-edit origin/master; \
+  }; f"
+  r = rebase -i --autosquash
+
 [rerere]
 	enabled = true
 [commit]
@@ -100,5 +117,3 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-[user]
-	signingkey = 2DF4652D44758474
