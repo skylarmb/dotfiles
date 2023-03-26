@@ -1,6 +1,6 @@
 # private file must define [user] and [core]
 [include]
-  path = .gitconfig_private
+  path = .private/.gitconfig
 [core]
   ; pager = diff-so-fancy
 [pull]
