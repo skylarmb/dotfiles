@@ -97,6 +97,7 @@ nnoremap <bs> i<bs>
 nmap f *N
 
 nnoremap gr :action FindUsages<CR>
+nnoremap gq :action WrapParagraphtoColumn<CR>
 
 " split navigation
 nnoremap <C-l> <C-w>l
