@@ -50,6 +50,8 @@ export ZSH_THEME="powerlevel10k/powerlevel10k"
 autoload -Uz zmv
 
 ## Environment variables
+# export TMUX_PLUGIN_MANAGER_PATH="$HOME/.tmux/plugins"
+export PYTHONWARNINGS="ignore"
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
 export GPG_TTY=$(tty)
 export NODE_OPTIONS="--max-old-space-size=16384"
@@ -69,7 +71,7 @@ source $ZSH/oh-my-zsh.sh
 forgit_diff=gdd
 forgit_add=gaa
 
-export ZPLUG_HOME=/opt/homebrew/opt/zplug
+export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
 # increase the number of files a terminal session can have open
@@ -94,7 +96,7 @@ alias workspace='cd $WORKSPACE'
 alias dotfiles='cd ~/dotfiles'
 alias cls='clear;ls'
 alias clsa='clear;ls -a'
-alias lsa='ls -lah'
+alias lsa='ls -lah --color=always'
 alias vimc='v ~/.vimrc'
 alias zc='v ~/.zshrc'
 alias zcp='v ~/.private/.zshrc'
@@ -359,8 +361,9 @@ bindkey "^X^E" edit-command-line
 
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
 
 fpath=($fpath "$HOME/.zfunctions")
 
