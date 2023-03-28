@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euxo pipefile
+set -euxo pipefail
 DIR="$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
 source "${DIR}/common.sh"
 
