@@ -3,6 +3,12 @@ set -euxo pipefile
 DIR="$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
 source "${DIR}/common.sh"
 
+git_submodules() {
+  echo "Installing git submodules"
+  cd "${DOTFILES}"
+  git submodule update --init --recursive
+}
+
 brew_install() {
   echo "Installing brew packages"
   cd "${HOME}"
