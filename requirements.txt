@@ -1,0 +1,6 @@
+greenlet==2.0.2
+libtmux==0.16.1
+msgpack==1.0.5
+neovim==0.3.1
+pynvim==0.4.3
+pywatchman==1.4.1

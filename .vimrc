@@ -249,10 +249,8 @@ let g:taboo_tab_format = ' %f '
 let g:yankring_replace_n_pkey = '<C-M>'
 
 " base language versions
-let g:node_version = "v16.17.1"
-let g:node_bin_path = "~/.nvm/versions/node/" . g:node_version . "/bin"
-let g:node_bin = g:node_bin_path . "/node"
-let g:prettier_bin = g:node_bin_path . "/prettier"
+let g:node_bin = $NVM_BIN . "/node"
+let g:prettier_bin = $NVM_BIN . "/prettier"
 
 " plugin language providers
 let g:python_host_prog='~/.pyenv/shims/python2'
