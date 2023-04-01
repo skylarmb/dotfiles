@@ -37,7 +37,9 @@ setopt +o nomatch
 # dont prompt when rming glob patterns
 setopt rmstarsilent
 
-source "$HOME/.private/.zshrc"
+if [ -d "$HOME/.private" ]
+  source "$HOME/.private/.zshrc"
+fi
 
 ## Theme
 export ZSH=$HOME/.oh-my-zsh
