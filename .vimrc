@@ -249,7 +249,7 @@ let g:taboo_tab_format = ' %f '
 let g:yankring_replace_n_pkey = '<C-M>'
 
 " base language versions
-let g:node_version = "v16.17.1"
+let g:node_version = "v16.19.1"
 let g:node_bin_path = "~/.nvm/versions/node/" . g:node_version . "/bin"
 let g:node_bin = g:node_bin_path . "/node"
 let g:prettier_bin = g:node_bin_path . "/prettier"

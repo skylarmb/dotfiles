@@ -41,7 +41,7 @@ source "$HOME/.private/.zshrc"
 
 ## Theme
 export ZSH=$HOME/.oh-my-zsh
-export ZSH_THEME="powerlevel10k/powerlevel10k"
+# export ZSH_THEME="powerlevel10k/powerlevel10k"
 
 ## Plugins
 # export NVM_LAZY_LOAD=true
@@ -101,7 +101,7 @@ alias vimc='v ~/.vimrc'
 alias zc='v ~/.zshrc'
 alias zcp='v ~/.private/.zshrc'
 alias tc='v ~/.tmux.conf'
-alias zu='source ~/.zshrc'
+alias zu='exec zsh'
 alias dka='docker kill $(docker ps -q)'
 alias t='tree -I node_modules -I .pnpm -I .git -laL'
 alias ta='tmux a #'
@@ -143,13 +143,15 @@ function c() {
   git push --no-verify origin HEAD
 }
 
-# auto tmux window naming
-tmux-window-name() {
-  ($TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py &)
-}
 
-add-zsh-hook chpwd tmux-window-name
-add-zsh-hook periodic tmux-window-name
+# auto tmux window naming
+if [ ! -z "$TMUX" ]; then
+  tmux-window-name() {
+    ($TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py &)
+  }
+  add-zsh-hook chpwd tmux-window-name
+  add-zsh-hook periodic tmux-window-name
+fi
 
 ws() {
   if [[ ! -z "$@" ]]
@@ -336,11 +338,11 @@ add-zsh-hook chpwd load-nvmrc
 # uninstall by removing these lines
 # [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
 
-export PATH="$HOME/.pyenv/bin:$PATH"
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init --path)"
-fi
-eval "$(pyenv virtualenv-init -)"
+# export PATH="$HOME/.pyenv/bin:$PATH"
+# if command -v pyenv 1>/dev/null 2>&1; then
+#   eval "$(pyenv init --path)"
+# fi
+# eval "$(pyenv virtualenv-init -)"
 
 
 fancy-ctrl-z () {
@@ -374,3 +376,4 @@ export PATH="$PNPM_HOME:$PATH"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+source $(brew --prefix)/opt/powerlevel10k/powerlevel10k.zsh-theme
