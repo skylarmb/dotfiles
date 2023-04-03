@@ -1,9 +1,13 @@
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath=&runtimepath
 source ~/.vimrc
-lua require'nvim-treesitter.configs'.setup{highlight={enable=true}}
+
 lua require'lualine'.setup {options={theme='gruvbox-material',icons_enabled=false}}
 
+lua require'nvim-treesitter.configs'.setup{highlight={enable=true}}
+
+" At the bottom of your init.vim, keep all configs on one line
+"
 " -- disable netrw at the very start of your init.lua (strongly advised)
 " vim.g.loaded_netrw = 1
 " vim.g.loaded_netrwPlugin = 1

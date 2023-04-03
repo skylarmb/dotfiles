@@ -37,11 +37,13 @@ setopt +o nomatch
 # dont prompt when rming glob patterns
 setopt rmstarsilent
 
-source "$HOME/.private/.zshrc"
+if [ -d "$HOME/.private" ]; then
+  source "$HOME/.private/.zshrc"
+fi
 
 ## Theme
 export ZSH=$HOME/.oh-my-zsh
-export ZSH_THEME="powerlevel10k/powerlevel10k"
+# export ZSH_THEME="powerlevel10k/powerlevel10k"
 
 ## Plugins
 # export NVM_LAZY_LOAD=true
@@ -50,6 +52,8 @@ export ZSH_THEME="powerlevel10k/powerlevel10k"
 autoload -Uz zmv
 
 ## Environment variables
+# export TMUX_PLUGIN_MANAGER_PATH="$HOME/.tmux/plugins"
+export PYTHONWARNINGS="ignore"
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
 export GPG_TTY=$(tty)
 export NODE_OPTIONS="--max-old-space-size=16384"
@@ -69,7 +73,7 @@ source $ZSH/oh-my-zsh.sh
 forgit_diff=gdd
 forgit_add=gaa
 
-export ZPLUG_HOME=/opt/homebrew/opt/zplug
+export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
 # increase the number of files a terminal session can have open
@@ -94,13 +98,13 @@ alias workspace='cd $WORKSPACE'
 alias dotfiles='cd ~/dotfiles'
 alias cls='clear;ls'
 alias clsa='clear;ls -a'
-alias lsa='ls -lah'
+alias lsa='ls -lah --color=always'
 alias vimc='v ~/.vimrc'
 alias zc='v ~/.zshrc'
 alias zcp='v ~/.private/.zshrc'
 alias alc='v ~/.config/alacritty/alacritty.yml'
 alias tc='v ~/.tmux.conf'
-alias zu='source ~/.zshrc'
+alias zu='exec zsh'
 alias dka='docker kill $(docker ps -q)'
 alias t='tree -I node_modules -I .pnpm -I .git -laL'
 alias ta='tmux a #'
@@ -142,6 +146,11 @@ function c() {
   git push --no-verify origin HEAD
 }
 
+# auto tmux window naming
+tmux-window-name() {
+  ($TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py &)
+}
+
 v(){
   if [[ -f "echo ~/.vim/tmp/swap/$(basename $@).swp" ]]
   then
@@ -160,8 +169,14 @@ tmux-window-name() {
   ($TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py &)
 }
 
-add-zsh-hook chpwd tmux-window-name
-add-zsh-hook periodic tmux-window-name
+# auto tmux window naming
+if [ ! -z "$TMUX" ]; then
+  tmux-window-name() {
+    ($TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py &)
+  }
+  add-zsh-hook chpwd tmux-window-name
+  add-zsh-hook periodic tmux-window-name
+fi
 
 ws() {
   if [[ ! -z "$@" ]]
@@ -348,11 +363,11 @@ add-zsh-hook chpwd load-nvmrc
 # uninstall by removing these lines
 # [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
 
-export PATH="$HOME/.pyenv/bin:$PATH"
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init --path)"
-fi
-eval "$(pyenv virtualenv-init -)"
+# export PATH="$HOME/.pyenv/bin:$PATH"
+# if command -v pyenv 1>/dev/null 2>&1; then
+#   eval "$(pyenv init --path)"
+# fi
+# eval "$(pyenv virtualenv-init -)"
 
 
 fancy-ctrl-z () {
@@ -373,8 +388,9 @@ bindkey "^X^E" edit-command-line
 
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
 
 fpath=($fpath "$HOME/.zfunctions")
 
@@ -385,3 +401,4 @@ export PATH="$PNPM_HOME:$PATH"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+source $(brew --prefix)/opt/powerlevel10k/powerlevel10k.zsh-theme

@@ -41,6 +41,10 @@
   c = commit --no-verify
   cc = !"echo $(git rev-parse HEAD) | tee /dev/tty | pbcopy"
   ca = commit -a
+  dm = "!f() { \
+    merge_base=$(git merge-base origin/master HEAD); \
+    git diff --relative $merge_base $@; \
+  }; f $@"
   d = diff --ignore-all-space
   do = diff --ignore-all-space origin/master
   dw = diff --ignore-all-space --word-diff
@@ -62,7 +66,7 @@
   ll = diff HEAD^^ HEAD^
   lf = diff HEAD^  HEAD --name-only
   llf = diff HEAD^^  HEAD^ --name-only
-  mc = merge --continue --no-edit
+  mc = merge --continue
   reup = !"git fetch; git rebase origin/master"
   big-files    = !"git rev-list --objects --all \
                  | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
