@@ -98,12 +98,12 @@ alias lsa='ls -lah'
 alias vimc='v ~/.vimrc'
 alias zc='v ~/.zshrc'
 alias zcp='v ~/.private/.zshrc'
+alias alc='v ~/.config/alacritty/alacritty.yml'
 alias tc='v ~/.tmux.conf'
 alias zu='source ~/.zshrc'
 alias dka='docker kill $(docker ps -q)'
 alias t='tree -I node_modules -I .pnpm -I .git -laL'
 alias ta='tmux a #'
-alias v='nvim'
 alias vimwipe='rm -rf ~/.vim/tmp/backup/**; rm -rf ~/.vim/tmp/swap/**'
 alias g='git'
 alias cc='git rev-parse HEAD | pbcopy'
@@ -129,6 +129,7 @@ alias plr='git checkout origin/master **/pnpm-lock.yaml && pnpm install'
 alias prs='gh pr status'
 alias w='~/.tmux/plugins/tmux-fzf/scripts/window.sh switch'
 alias tn='tmux attach || tmux new'
+alias psg='ps aux | grep'
 
 function wip() {
   git add -A;
@@ -141,8 +142,21 @@ function c() {
   git push --no-verify origin HEAD
 }
 
+v(){
+  if [[ -f "echo ~/.vim/tmp/swap/$(basename $@).swp" ]]
+  then
+    nvim -r $@
+  else
+    nvim $@
+  fi
+}
+
+
 # auto tmux window naming
 tmux-window-name() {
+  if [[ -z "$TMUX" ]] || [[ -z "$TMUX_PLUGIN_MANAGER_PATH" ]]; then
+    return
+  fi
   ($TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py &)
 }
 

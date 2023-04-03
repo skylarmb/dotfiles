@@ -11,23 +11,6 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-" ------------ Temporary / Experimental ------------
-Plug 'yegappan/mru', { 'do': ':MRU' }
-" Plug 'udalov/kotlin-vim'
-" Plug 'mfussenegger/nvim-dap'
-" Plug 'rcarriga/nvim-dap-ui'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-" Plug 'aserebryakov/vim-todo-lists'
-" Plug 'geekjuice/vim-mocha'
-" Plug 'justinmk/vim-sneak'
-" Plug 'FooSoft/vim-argwrap'
-" Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
-" Plug 'nvim-tree/nvim-tree.lua'
-
-Plug 'heavenshell/vim-jsdoc', {
-  \ 'for': ['javascript', 'javascript.jsx','typescript'],
-  \ 'do': 'make install'
-\}
 
 " ------------ Colorschemes ------------
 Plug 'ap/vim-css-color'
@@ -59,6 +42,7 @@ Plug 'tpope/vim-vinegar'
 " Plug 'vim-scripts/YankRing.vim'
 " seamless vim/tmux navigation
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'github/copilot.vim', { 'branch': 'release' }
 
 " ------------ Search ------------
 " Ag integration
@@ -91,7 +75,7 @@ Plug 'junegunn/limelight.vim'
 Plug 'vim-scripts/loremipsum'
 
 " ------------ Languages ------------
-Plug 'github/copilot.vim', { 'branch': 'release' }
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " syntax highlighting for git files (.gitconfig, etc)
 Plug 'tpope/vim-git'
 " git conflicts
@@ -112,14 +96,47 @@ Plug 'martinda/Jenkinsfile-vim-syntax'
 " " swift
 " Plug 'keith/swift.vim'
 
+
+
+
+
+" ------------ Temporary / Experimental ------------
+
+Plug 'nvim-lua/plenary.nvim'
+Plug 'MunifTanjim/nui.nvim'
+Plug 'dpayne/CodeGPT.nvim'
+
+Plug 'yegappan/mru', { 'do': ':MRU' }
+" Plug 'udalov/kotlin-vim'
+" Plug 'mfussenegger/nvim-dap'
+" Plug 'rcarriga/nvim-dap-ui'
+" Plug 'aserebryakov/vim-todo-lists'
+" Plug 'geekjuice/vim-mocha'
+" Plug 'justinmk/vim-sneak'
+" Plug 'FooSoft/vim-argwrap'
+" Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
+" Plug 'nvim-tree/nvim-tree.lua'
+
+" Plug 'heavenshell/vim-jsdoc', {
+"   \ 'for': ['javascript', 'javascript.jsx','typescript'],
+"   \ 'do': 'make install'
+" \}
+
+
 call plug#end()
 
-function InstallTSParsers()
-  let parsers = [ 'bash', 'css', 'diff', 'dockerfile', 'go', 'gomod', 'html', 'javascript', 'jq', 'jsdoc', 'json', 'kotlin', 'latex', 'lua', 'markdown', 'markdown_inline', 'proto', 'python', 'scss', 'typescript', 'vim', 'regex', 'sql', 'swift', 'terraform', 'yaml' ]
-  for parser in parsers
-    exe 'TSInstall ' . parser
-  endfor
-endfunction
+" ------------ TMP ------------
+noremap ;; :%s:::g<Left><Left><Left>
+noremap ;' :%s:::cg<Left><Left><Left><Left>
+noremap <leader>r cgn
+noremap <leader>s :so ~/.vimrc<CR>
+noremap <leader>cp :Copilot panel<CR>
+noremap <leader>ch :Copilot hide<CR>
+
+
+
+
+
 " -------------------------------------
 " ------------ BASE CONFIG ------------
 " -------------------------------------
@@ -249,7 +266,7 @@ let g:taboo_tab_format = ' %f '
 let g:yankring_replace_n_pkey = '<C-M>'
 
 " base language versions
-let g:node_version = "v16.17.1"
+let g:node_version = $NVM_BIN
 let g:node_bin_path = "~/.nvm/versions/node/" . g:node_version . "/bin"
 let g:node_bin = g:node_bin_path . "/node"
 let g:prettier_bin = g:node_bin_path . "/prettier"
@@ -263,6 +280,13 @@ let g:coc_node_path = g:node_bin
 " -------------------------------------
 " ------------- autocmds --------------
 " -------------------------------------
+
+function InstallTSParsers()
+  let parsers = [ 'bash', 'css', 'diff', 'dockerfile', 'go', 'gomod', 'html', 'javascript', 'jq', 'jsdoc', 'json', 'kotlin', 'latex', 'lua', 'markdown', 'markdown_inline', 'proto', 'python', 'scss', 'typescript', 'vim', 'regex', 'sql', 'swift', 'terraform', 'yaml' ]
+  for parser in parsers
+    exe 'TSInstall ' . parser
+  endfor
+endfunction
 
 " enabled spell checking in git commit
 autocmd FileType gitcommit,txt setlocal spell
@@ -320,6 +344,7 @@ autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.org
 
 noremap <leader>q q
 noremap q <nop>
+
 
 " ------------ Cursor movement ------------
 
@@ -383,10 +408,10 @@ vmap t %
 runtime! macros/matchit.vim
 
 " move lines up and down
-nnoremap <c-n> :m +1<CR>
-nnoremap <c-m> :m -2<CR>
-vmap <c-n> :m '>+1<CR>gv=gv
-vmap <c-m> :m '<-2<CR>gv=gv
+" nnoremap <c-n> :m +1<CR>
+" nnoremap <c-m> :m -2<CR>
+" vmap <c-n> :m '>+1<CR>gv=gv
+" vmap <c-m> :m '<-2<CR>gv=gv
 
 " sudo write
 cmap w!! w !sudo tee % >/dev/null
@@ -565,6 +590,7 @@ endfunction
 nnoremap <silent> ` :call NERDTreeToggleInCurDir()<CR>
 " show hidden files
 let NERDTreeShowHidden=1
+let g:NERDTreeQuitOnOpen = 1
 " if no filename given on command line, show file tree
 au VimEnter * if argc() == 0 | exe ":NERDTreeCWD" | endif
 
@@ -623,3 +649,4 @@ if has("multi_byte")
   "setglobal bomb
   set fileencodings=ucs-bom,utf-8,latin1
 endif
+

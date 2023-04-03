@@ -88,3 +88,4 @@ TMPPREFIX="${TMPDIR%/}/zsh"
 # export PATH="$HOME/.poetry/bin:$PATH"
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
+tmux start-server
