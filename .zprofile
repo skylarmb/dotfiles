@@ -85,14 +85,19 @@ TMPPREFIX="${TMPDIR%/}/zsh"
 #   eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info)
 # fi
 
-# export PATH="$HOME/.poetry/bin:$PATH"
-
-if [[ -f "/opt/homebrew/bin/brew" ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ -f "/usr/local/bin/brew" ]]; then
-  eval "$(/usr/local/bin/brew shellenv)"
+_brew_prefix_m1="/opt/homebrew/bin/brew"
+_brew_prefix_intel="/usr/local/bin/brew"
+if [[ -f "$_brew_prefix_m1" ]]; then
+  eval "$($_brew_prefix_m1 shellenv)"
+elif [[ -f "$_brew_prefix_intel" ]]; then
+  eval "$($_brew_prefix_intel shellenv)"
 else
   echo "WARNING: brew not found"
 fi
+export BREW_PREFIX="$(brew --prefix)"
+
+export PATH="$HOME/.pyenv/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init --path)"
 fi
-tmux start-server
+eval "$(pyenv virtualenv-init -)"

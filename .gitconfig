@@ -49,7 +49,7 @@
   do = diff --ignore-all-space origin/master
   dw = diff --ignore-all-space --word-diff
   dc = diff --cached --ignore-all-space
-  ds = diff --stat
+  ds = diff --ignore-all-space --compact-summary
   rc = rebase --continue
   p = push -u origin head
   pn = push -u origin head --no-verify
@@ -59,7 +59,7 @@
   aa = add --all
   am = commit -a --amend --no-edit
   rh = reset HEAD
-  s = !"git diff --stat; git status;"
+  s = !"git status --short --branch -uall;"
   co = checkout
   g = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
   l = diff HEAD^ HEAD
