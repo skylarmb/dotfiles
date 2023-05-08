@@ -1,0 +1,17 @@
+#! /usr/bin/env bash
+# reference: https://github.com/Freed-Wu/my-dotfiles/blob/main/.lessfilter
+mime=$(file -Lbs --mime-type "$1")
+category=${mime%%/*}
+kind=${mime##*/}
+bat_pretty="bat --theme=gruvbox-dark --color=always --number --decorations=always --theme=gruvbox-dark"
+if [ "$kind" = json ]; then
+	jq -r . "$1" | $bat_pretty -ljson
+elif [ -d "$1" ]; then
+	if [ "$(command -v exa)" ]; then
+		exa --all --group-directories-first -T -L1 --color=always "$1"
+	fi
+elif [ "$category" = text ]; then
+	$bat_pretty "$1"
+else
+  bat --color=always < "$(which lesspipe.sh)" "$1"
+fi

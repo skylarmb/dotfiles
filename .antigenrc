@@ -1,0 +1,13 @@
+antigen use oh-my-zsh
+
+antigen bundle unixorn/fzf-zsh-plugin --branch=main
+antigen bundle Freed-Wu/fzf-tab-source --branch=main
+antigen bundle command-not-found
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle simnalamburt/zsh-expand-all
+antigen bundle lukechilds/zsh-nvm
+antigen bundle Aloxaf/fzf-tab
+
+antigen theme romkatv/powerlevel10k
+
+antigen apply
