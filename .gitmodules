@@ -4,3 +4,6 @@
 [submodule ".tmux/plugins/tpm"]
 	path = .tmux/plugins/tpm
 	url = git@github.com:tmux-plugins/tpm.git
+[submodule ".config/alacritty/base-16"]
+	path = .config/alacritty/base-16
+	url = https://github.com/aarowill/base16-alacritty

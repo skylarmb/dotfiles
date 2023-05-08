@@ -3,20 +3,54 @@
   path = .private/.gitconfig
 [core]
   pager = delta
+
+; ------------ DIFFSITTER ------------
+; [pager]
+;   difftool = true
+; [diff]
+;   tool = diffsitter
+;   colorMoved = default
+; [difftool]
+;   prompt = false
+; [difftool "diffsitter"]
+;   cmd = diffsitter --color=on --config="$HOME/diffsitter.json5" "$LOCAL" "$REMOTE"
+
+; ----------------- DIFFTASTIC -----------------
+; [diff]
+;   tool = difftastic
+;
+;
+
+[difftool "difft"]
+  cmd = difft "$LOCAL" "$REMOTE"
+
+;----------------- PRETTIERDIFF -----------------
+; [diff]
+;   colorMoved = default
+;
+; [difftool]
+;   prompt = false
+;
+; [difftool "prettierdiff"]
+;   cmd = prettierdiff "$LOCAL" "$REMOTE"
+;
 [pull]
   rebase = false
-[interactive]
-  diffFilter = delta --color-only --features=interactive
+
+; [interactive]
+;   diffFilter = delta --color-only --features=interactive
+
 [delta]
-  navigate = true
-  features = side-by-side line-numbers decorations
-  syntax-theme =  gruvbox-dark
+ navigate = true
+ features = side-by-side line-numbers decorations
+ syntax-theme =  gruvbox-dark
+; map-styles = bold purple => syntax magenta, bold cyan => syntax blue
 
 [delta "decorations"]
-    commit-decoration-style = bold yellow box ul
-    file-style = bold yellow ul
-    ; file-decoration-style = none
-    hunk-header-decoration-style = cyan box ul
+   commit-decoration-style = bold yellow box ul
+   file-style = bold yellow ul
+   ; file-decoration-style = none
+   hunk-header-decoration-style = cyan box ul
 
 [delta "line-numbers"]
     line-numbers-left-style = cyan
@@ -25,20 +59,22 @@
     line-numbers-plus-style = 28
 [color]
   ui = auto
+
 [merge]
   tool = vim_mergetool
-  conflictstyle = diff3
+  conflictStyle = diff3
 [mergetool "vim_mergetool"]
   cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
   trustExitCode = true
-[diff]
-  tool = vimdiff
-  colorMoved = default
-[difftool]
-  prompt = false
+
 [alias]
+  pdiff = difftool --tool=prettierdiff --no-symlinks --dir-diff origin/master...
+  difft = difftool --tool=difftastic
+  diffs = difftool --no-symlinks --tool=diffsitter
   undo = !"git reset --soft HEAD~1; git reset HEAD ."
+  o = !"gh repo view --web --branch "$(git rev-parse --abbrev-ref HEAD)""
   c = commit --no-verify
+  com = checkout origin/master --
   cc = !"echo $(git rev-parse HEAD) | tee /dev/tty | pbcopy"
   ca = commit -a
   dm = "!f() { \
@@ -49,17 +85,19 @@
   do = diff --ignore-all-space origin/master
   dw = diff --ignore-all-space --word-diff
   dc = diff --cached --ignore-all-space
-  ds = diff --stat
-  rc = rebase --continue
+  ds = diff --ignore-all-space --compact-summary
+  rb = rebase
+  rbc = rebase --continue
   p = push -u origin head
   pn = push -u origin head --no-verify
   pf = push -f origin head
-  f = fetch
+  f = fetch --no-tags --prune
   a = add
+  b = git rev-parse --abbrev-ref HEAD
   aa = add --all
   am = commit -a --amend --no-edit
   rh = reset HEAD
-  s = !"git diff --stat; git status;"
+  s = !"git status --short --branch -uall;"
   co = checkout
   g = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
   l = diff HEAD^ HEAD
@@ -104,9 +142,8 @@
     lolexec update-ref git update-ref --create-reflog refs/heads/master refs/remotes/origin/master; \
   }; f"
   mo = "!f() { \
-    lolexec autosave git autosave; \
-    lolexec fetch git fetch origin master:master; \
-    lolexec merge git merge --no-ff --no-edit origin/master; \
+    git fetch origin master:master; \
+    git merge --no-ff --no-edit origin/master; \
   }; f"
   r = rebase -i --autosquash
 

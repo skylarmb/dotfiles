@@ -7,27 +7,22 @@ set shell=/bin/zsh
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall | source $MYVIMRC
+  autocmd VimEnter * PlugInstall | source $MYVIMRC | TSInstallSync
 endif
 
 call plug#begin('~/.vim/plugged')
 
 " ------------ Colorschemes ------------
-Plug 'ap/vim-css-color'
-Plug 'sainnhe/gruvbox-material'
-" Plug 'morhetz/gruvbox'
-Plug 'flazz/vim-colorschemes'
+Plug 'ap/vim-css-color', { 'for': ['css', 'scss', 'less', 'sass', 'stylus'] }
+" Plug 'sainnhe/gruvbox-material'
 
 " ------------ Utilties ------------
 " airline
-Plug 'kyazdani42/nvim-web-devicons'
-Plug 'hoob3rt/lualine.nvim'
+" Plug 'hoob3rt/lualine.nvim'
 " git integration
 Plug 'tpope/vim-fugitive'
 " show git diff in gutter
 Plug 'airblade/vim-gitgutter'
-" tab management
-Plug 'vim-scripts/Tabmerge'
 " control tab naming
 Plug 'gcmt/taboo.vim'
 " show indentation visually
@@ -37,7 +32,7 @@ Plug 'scrooloose/nerdtree'
 " make native netrw better
 Plug 'tpope/vim-vinegar'
 " snippets
-" Plug 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips'
 " yank history
 " Plug 'vim-scripts/YankRing.vim'
 " seamless vim/tmux navigation
@@ -48,15 +43,14 @@ Plug 'github/copilot.vim', { 'branch': 'release' }
 " Ag integration
 Plug 'rking/ag.vim'
 Plug 'Chun-Yang/vim-action-ag'
+
 " fzf integration
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', {'dir': '~/.fzf','do': './install --all'}
+Plug 'junegunn/fzf.vim' " needed for previews
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'antoinemadec/coc-fzf'
 
 " ------------ Formatting ------------
-" respect editorconfig files
-Plug 'editorconfig/editorconfig-vim'
-" automatic bracket and quote matching, etc
-Plug 'Raimondi/delimitMate'
 " context and indentation aware pasting
 Plug 'sickill/vim-pasta'
 " powerful commenting
@@ -65,147 +59,107 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 " nuke whitespace
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+" Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 " sorting as a motion
 Plug 'christoomey/vim-sort-motion'
 
 " ------------ Writing / note taking ------------
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
-Plug 'vim-scripts/loremipsum'
+Plug 'junegunn/goyo.vim', { 'for': ['markdown', 'text'] }
+Plug 'junegunn/limelight.vim', { 'for': ['markdown', 'text'] }
+" Plug 'vim-scripts/loremipsum'
 
 " ------------ Languages ------------
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-" syntax highlighting for git files (.gitconfig, etc)
-Plug 'tpope/vim-git'
 " git conflicts
 Plug 'samoshkin/vim-mergetool'
 " " go
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-" " javascript
-" Plug 'leafgarland/typescript-vim'
-" Plug 'peitalin/vim-jsx-typescript'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'iamcco/markdown-preview.nvim', { 'for': 'markdown', 'do': 'cd app && yarn install'  }
-" " web
-" Plug 'mattn/emmet-vim/'
-" " Jenkins
-Plug 'martinda/Jenkinsfile-vim-syntax'
-" " MDX
-" Plug 'jxnblk/vim-mdx-js'
-" " swift
-" Plug 'keith/swift.vim'
-
-
-
-
+Plug 'windwp/nvim-autopairs'
 
 " ------------ Temporary / Experimental ------------
-
+" Plug 'dstein64/vim-startuptime'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'MunifTanjim/nui.nvim'
 Plug 'dpayne/CodeGPT.nvim'
-
-Plug 'yegappan/mru', { 'do': ':MRU' }
-" Plug 'udalov/kotlin-vim'
-" Plug 'mfussenegger/nvim-dap'
-" Plug 'rcarriga/nvim-dap-ui'
-" Plug 'aserebryakov/vim-todo-lists'
-" Plug 'geekjuice/vim-mocha'
-" Plug 'justinmk/vim-sneak'
-" Plug 'FooSoft/vim-argwrap'
-" Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
-" Plug 'nvim-tree/nvim-tree.lua'
-
-" Plug 'heavenshell/vim-jsdoc', {
-"   \ 'for': ['javascript', 'javascript.jsx','typescript'],
-"   \ 'do': 'make install'
-" \}
+Plug 'yegappan/mru', { 'on': 'MRU', 'do': ':MRU' }
 
 
 call plug#end()
-
-" ------------ TMP ------------
-noremap ;; :%s:::g<Left><Left><Left>
-noremap ;' :%s:::cg<Left><Left><Left><Left>
-noremap <leader>r cgn
-noremap <leader>s :so ~/.vimrc<CR>
-noremap <leader>cp :Copilot panel<CR>
-noremap <leader>ch :Copilot hide<CR>
-
-
-
-
 
 " -------------------------------------
 " ------------ BASE CONFIG ------------
 " -------------------------------------
 
-" ------------ General ------------
-" text encoding and file format
-set encoding=utf-8
-set nocompatible
-set colorcolumn=80
-let g:vim_json_conceal=0
-set conceallevel=0
-" set cmdheight=0
-filetype plugin indent on
-" quickly reload vimrc
-nnoremap <silent> <leader>s :source ~/.vimrc<CR>
-" enable syntax
-syntax on
-" reload files automatically
-set autoread
-" highlight current line
-set cursorline
-" relative line numbers
-set number
-" show cursor column
-set ruler
+" examples
+
+" " use system clipboard
+" set clipboard+=unnamed
+
+" " set backspace behavior
+" set backspace=start,eol,indent
+
+" " always show sign column (prevents flicker)
+" set signcolumn=yes
+
+" " relative line numbers
+" set number
+
+" " show matching brackets.
+" set showmatch
+
 " leader character
-let mapleader = " "
-" use system clipboard
-set clipboard+=unnamed
-" disable compatibility mode (enables meta key)
-set nocp
-" always show the status bar
-set laststatus=2
-" set backspace behavior
-set backspace=start,eol,indent
+
+" let mapleader = " "
+" set mouse=
+
+" ------------ General ------------
 " go one char past end of line
-set virtualedit=onemore
-" always show sign column (prevents flicker)
-set signcolumn=yes
+" set virtualedit=onemore
+
+" " text encoding and file format
+" set encoding=utf-8
+" set nocompatible
+" set colorcolumn=80
+
+" filetype plugin indent on
+
+" " enable syntax
+" syntax on
+
+" " reload files automatically
+" set autoread
+
+" " highlight current line
+" set cursorline
+
+" show cursor column
+" set ruler
+
+" disable compatibility mode (enables meta key)
+" set nocp
+
+" always show the status bar
+" set laststatus=2
+
 " dont allow mouse clicks
-set mouse-=a
+" set mouse-=a
+
 " optimize ssh performance
-set ttyfast
+" set ttyfast
 hi NonText cterm=NONE ctermfg=NONE
-" set lazyredraw
-" show matching brackets.
-set showmatch
-" set font
-set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h14
-" backups / undo history
-set undodir=~/.vim/tmp/backup/
-set undofile
-set backupdir=~/.vim/tmp/backup/
-set directory=~/.vim/tmp/swap/
-set backup
-" files to ignore
-set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,*.rbc,*.class,vendor/gems/*
-set wildignore+=*.jpg,*.jpeg,*.gif,*.png
-set wildignore+=*.zip,*.apk,*.gz
 
+" " backups / undo history
+" set undodir=~/.local/share/nvim/undo
+" set undofile
+" set backupdir=~/.local/share/nvim/backup
+" set directory=~/.local/share/nvim/swap/
+" set backup
+" " files to ignore
+" set wildmode=list:longest,list:full
+" set wildignore+=*.o,*.obj,*.rbc,*.class,vendor/gems/*
+" set wildignore+=*.jpg,*.jpeg,*.gif,*.png
+" set wildignore+=*.zip,*.apk,*.gz
 
-" hi tsxTagName guifg=#00FF00
-" hi tsxCloseTag guifg=#00FF00
-" hi tsxCloseTagName guifg=#00FF00
-" hi jsxTagName guifg=#00FF00
-" hi jsxCloseTag guifg=#00FF00
-" hi jsxCloseTagName guifg=#00FF00
-" hi tsxTypeBraces guifg=#00FF00
 
 " dark theme
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -230,62 +184,88 @@ colorscheme gruvbox-material
 " airline theme
 let g:airline_theme='gruvbox'
 
-" whitespace
-set shiftwidth=2
-set wrap
-" set showbreak=╰─
-" exp
-let &showbreak = '↳ '
-" set cpo=n
-set list listchars=tab:▸\ ,trail:·,extends:»,precedes:«,nbsp:␣
-" set list listchars=tab:▸\ ,trail:·
-" endexp
-set smarttab
-set expandtab
-set whichwrap+=<,>,h,l,[,]
-" show title
-set title
-" search
-set hlsearch
-" case insensitive
-set ignorecase
-" incremental search (searches as you type)
-set incsearch
+" " whitespace
+" set shiftwidth=2
+" set wrap
+" " set showbreak=╰─
+" " exp
+" let &showbreak = '↳ '
+" " set cpo=n
+" set list listchars=tab:▸\ ,trail:·,extends:»,precedes:«,nbsp:␣
+" " set list listchars=tab:▸\ ,trail:·
+" " endexp
+" set smarttab
+" set expandtab
+" set whichwrap+=<,>,h,l,[,]
+" " show title
+" set title
+" " search
+" set hlsearch
+" " case insensitive
+" set ignorecase
+" " incremental search (searches as you type)
+" set incsearch
 " netrw config
 let g:netrw_preview = 1
 let g:netrw_liststyle=3
 let g:netrw_chgwin=1
 " indentation
 let g:indentLine_char_list = ['⎸']
-set tabstop=2
-set autoindent
-set smartindent
+" let g:indentLine_concealcursor = "nc"
+" set tabstop=2
+" set autoindent
+" set smartindent
 let g:taboo_tab_format = ' %f '
 
 " yankring bindings
 let g:yankring_replace_n_pkey = '<C-M>'
 
 " base language versions
-let g:node_bin = $NVM_BIN . "/node"
-let g:prettier_bin = $PNPM_HOME . "/prettier"
+" let g:node_bin = $NVM_BIN . "/node"
+" " let g:prettier_bin = $PNPM_HOME . "/prettier"
 
 " plugin language providers
 let g:python_host_prog='~/.pyenv/shims/python2'
 let g:python3_host_prog='~/.pyenv/shims/python3'
-let g:node_host_prog = g:node_bin
-let g:coc_node_path = g:node_bin
+let g:node_host_prog = $NVM_BIN . '/neovim-node-host'
+let g:coc_node_path = $NVM_BIN . '/node'
+" let g:coc_config_home = '~/.config/coc'
+
+let g:coc_global_extensions = [
+  \'coc-browser',
+  \'coc-css',
+  \'coc-css',
+  \'coc-cssmodules',
+  \'coc-dash-complete',
+  \'coc-diagnostic',
+  \'coc-docker',
+  \'coc-eslint',
+  \'coc-fzf-preview',
+  \'coc-git',
+  \'coc-go',
+  \'coc-highlight',
+  \'coc-html',
+  \'coc-json',
+  \'coc-lua',
+  \'coc-prettier',
+  \'coc-python',
+  \'coc-python',
+  \'coc-react-refactor',
+  \'coc-scssmodules',
+  \'coc-tsserver',
+  \'coc-vimlsp',
+  \'coc-yaml',
+  \'coc-sh',
+  \]
+" \'coc-tsdetect',
+"
 
 " -------------------------------------
 " ------------- autocmds --------------
 " -------------------------------------
 
-function InstallTSParsers()
-  let parsers = [ 'bash', 'css', 'diff', 'dockerfile', 'go', 'gomod', 'html', 'javascript', 'jq', 'jsdoc', 'json', 'kotlin', 'latex', 'lua', 'markdown', 'markdown_inline', 'proto', 'python', 'scss', 'typescript', 'vim', 'regex', 'sql', 'swift', 'terraform', 'yaml' ]
-  for parser in parsers
-    exe 'TSInstall ' . parser
-  endfor
-endfunction
-
+" hide command line when entering insert mode
+autocmd InsertEnter * set cmdheight=0
 " enabled spell checking in git commit
 autocmd FileType gitcommit,txt setlocal spell
 
@@ -317,21 +297,20 @@ endfunction
 
 " fix known issue in Neovim #7994
 au InsertLeave * set nopaste
-autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
-autocmd BufNewFile,BufRead *.mts set filetype=typescript
+" consistent treesitter highlighting for all js-like languages
 autocmd BufNewFile,BufRead *.mdx set filetype=markdown.mdx
 autocmd BufNewFile,BufRead .env,.env.* set filetype=sh
 
-" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml PrettierAsync
-" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
-" autocmd BufWritePre *.js,*.jsx,*.ts,*.tsx CocCommand tslint.fixAllProblems
+autocmd InsertEnter * set conceallevel=0
+autocmd InsertLeave * set conceallevel=1
+
 autocmd BufWritePost *.mdx call HandleMDXFormat()
 
-" mega hack because reasons
-function HandleMDXFormat()
-  exe ':silent !' . g:prettier_bin  . ' --parser mdx --write %'
-  exe ':e'
-endfunction
+" " mega hack because reasons
+" function HandleMDXFormat()
+"   exe ':silent !' . g:prettier_bin  . ' --parser mdx --write %'
+"   exe ':e'
+" endfunction
 
 " organize Go imports
 autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
@@ -340,91 +319,92 @@ autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.org
 " ------------- KEYBINDS --------------
 " -------------------------------------
 
-noremap <leader>q q
-noremap q <nop>
+"  noremap <leader>q q
+"  noremap q <nop>
 
+"  " move by visual lines on wrapped lines
+"  map k gk
+"  map j gj
 
-" ------------ Cursor movement ------------
+"  " move by beginning of word instead of end of word
+"  nnoremap E b
+"  vnoremap E b
+"  nnoremap e w
+"  vnoremap e w
 
-" always move by display lines when wrapping
-map k gk
-map j gj
+"  " beginning / end of line
+"  map H ^
+"  map L $l
 
-" move by beginning of word instead of end of word
-nnoremap E b
-vnoremap E b
-nnoremap e w
-vnoremap e w
+"  " jump 10 lines
+"  map K 10k
+"  map J 10j
 
-" beginning / end of line
-map H ^
-map L $l
+"  " ------------ Shortcuts ------------
 
-" jump 10 lines
-map K 10k
-map J 10j
+"  " redo with U
+"  nnoremap U <C-r>
+"  " exit insert mode with jj
+"  inoremap jj <ESC>l
+"  inoremap jJ <ESC>l
+"  inoremap JJ <ESC>l
+"  inoremap Jj <ESC>l
+"  inoremap JK <ESC>l
+"  inoremap jk <ESC>l
 
-" ------------ Shortcuts ------------
+"  " jj for term mode
+"  tnoremap jj <C-\><C-n>
+"  " enter insert mode when pressing backspace from normal mode
+"  nnoremap <bs> i<bs>
+"  " qq to quit from normal mode
+"  nnoremap qq m':q<CR>
+"  nnoremap qa m':close<cr> :call Wipeout()<CR> :qa<CR>
+"  " ww to write from normal mode
+"  nnoremap ww :w<CR>
 
-" redo with U
-nnoremap U <C-r>
-" exit insert mode with jj
-inoremap jj <ESC>l
-inoremap jJ <ESC>l
-inoremap JJ <ESC>l
-inoremap Jj <ESC>l
-inoremap JK <ESC>l
-inoremap jk <ESC>l
-" jj for term mode
-tnoremap jj <C-\><C-n>
-" enter insert mode when pressing backspace from normal mode
-nnoremap <bs> i<bs>
-" qq to quit from normal mode
-nnoremap qq m':q<CR>
-nnoremap qa m':qa<CR>
-" ww to write from normal mode
-nnoremap ww :w<CR>
+"  " yank current file name and line number
+"  nnoremap yl :let @*=expand("%") . ':' . line(".")<CR>
+"  " yank current file name
+"  nnoremap yn :let @*=expand("%")<CR>
+"  " show current yank rink
+"  nnoremap <C-y> :YRShow<CR>
 
-" yank current file name and line number
-nnoremap yl :let @*=expand("%") . ':' . line(".")<CR>
-" yank current file name
-nnoremap yn :let @*=expand("%")<CR>
-" show current yank rink
-nnoremap <C-y> :YRShow<CR>
+" -------__DONE__-------------------
 
-" dupe line
-nnoremap <C-d> yyp
-" join line
-nnoremap <leader>j :join<CR>
-vnoremap <leader>j :join<CR>
-" browse source of current file
-nnoremap <leader>cs :silent !/bin/zsh -i -c 'browsesource "$(basename `git rev-parse --show-toplevel`)" %'<CR>
+"  " dupe line
+"  nnoremap <C-d> yyp
+"  " join line
+"  nnoremap <leader>j :join<CR>
+"  vnoremap <leader>j :join<CR>
+"  " browse source of current file
+"  nnoremap <leader>cs :silent !/bin/zsh -i -c 'browsesource "$(basename `git rev-parse --show-toplevel`)" %'<CR>
 
-" bounce between brackets
-nmap t %
-vmap t %
-runtime! macros/matchit.vim
+"  " bounce between brackets
+"  nmap t %
+"  vmap t %
+"  runtime! macros/matchit.vim
+" sudo write
+"  cmap w!! w !sudo tee % >/dev/null
 
 " move lines up and down
-" nnoremap <c-n> :m +1<CR>
-" nnoremap <c-m> :m -2<CR>
-" vmap <c-n> :m '>+1<CR>gv=gv
-" vmap <c-m> :m '<-2<CR>gv=gv
+"  nnoremap <c-n> :m +1<CR>
+"  nnoremap <c-m> :m -2<CR>
+"  vmap <c-n> :m '>+1<CR>gv=gv
+"  vmap <c-m> :m '<-2<CR>gv=gv
 
-" sudo write
-cmap w!! w !sudo tee % >/dev/null
-" quit all
-nnoremap qa :conf qa<CR>
+"  " quit all
+"  nnoremap qa :conf qa<CR>
 
-" ------------ Search ------------
+"  " unhighlight search results
+"  nnoremap <leader><space> :noh<cr>
+"  nnoremap <leader>e :Explore<cr>
 
-" unhighlight search results
-nnoremap <leader><space> :noh<cr>
-nnoremap <leader>e :Explore<cr>
-" search word under cursor
-nmap f *N
-" vim-action-ag
-nmap F gagiw
+"  " search word under cursor
+"  nmap f *N
+
+"  " vim-action-ag
+"  nmap F gagiw
+
 " fzf
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 let $FZF_DEFAULT_OPTS = '--reverse'
@@ -448,53 +428,52 @@ let g:fzf_colors =
 
 " ag
 let g:ag_working_path_mode="r"
-" ag global search
-nmap <c-f> :Ag! -iQ<space>
-" fzf lines in open buffers
-nmap <leader>l :Lines<CR>
 
-" ------------ Whitespace ------------
 
-" toggle wrap
-nnoremap <leader>w :set wrap!<CR>
 
-" automatic bracket formatting on newlines
-inoremap {<CR> {<CR>}<ESC>O
-inoremap (<CR> (<CR>)<ESC>O
-inoremap [<CR> [<CR>]<ESC>O
-" indentation
-vnoremap < <gv
-vnoremap > >gv
+"  " ag global search
+"  nmap <c-f> :Ag! -iQ<space>
+"  " fzf lines in open buffers
+"  nmap <leader>l :Lines<CR>
 
-" ------------ Tabs and Splits ------------
+"  " ------------ Whitespace ------------
 
-" new blank tab
-" nnoremap <leader>t <Esc>:tabnew<CR>
-" new vertical split
-nnoremap <leader>vs <C-w><C-v>
-" new horizontal split
-nnoremap <leader>hs <C-w><C-s>
-" resize splits by 10 columns
-nnoremap <leader>, <c-w>10><CR>
-nnoremap <leader>. <c-w>10<<CR>
-" navigate splits: replaced by vim-tmux-navigator
-" map <C-h> <C-w>h
-" map <C-j> <C-w>j
-" map <C-k> <C-w>k
-" map <C-l> <C-w>l
+"  " toggle wrap
+"  nnoremap <leader>w :noa w<CR>
 
-" files
-nnoremap <leader>n :n<CR>
-nnoremap - :Explore<CR>
-" expand %% to current dir name
-cnoremap %% <C-R>=expand('%:h').'/'<CR>
-" change vim working dir to current buffer dir
-nnoremap <leader>cdf :cd %:h<CR>
-" change vim working dir to current buffer parent dir
-nnoremap <leader>cdu :cd %:p<CR>
-" change vim working dir to current git root
-nnoremap <leader>cdg :Gcd <CR>
-" nnoremap <leader>cdg :cd %:h | cd `git rev-parse --show-toplevel` <CR>
+"  " automatic bracket formatting on newlines
+"  " inoremap {<CR> {<CR>}<ESC>O
+"  " inoremap (<CR> (<CR>)<ESC>O
+"  " inoremap [<CR> [<CR>]<ESC>O
+"  " indentation
+"  vnoremap < <gv
+"  vnoremap > >gv
+
+"  " ------------ Tabs and Splits ------------
+
+"  " new blank tab
+"  " nnoremap <leader>t <Esc>:tabnew<CR>
+"  " new vertical split
+"  nnoremap <leader>vs <C-w><C-v>
+"  " new horizontal split
+"  nnoremap <leader>hs <C-w><C-s>
+"  " resize splits by 10 columns
+"  nnoremap <leader>, <c-w>10><CR>
+"  nnoremap <leader>. <c-w>10<<CR>
+
+
+
+"  " files
+"  nnoremap <leader>n :n<CR>
+"  nnoremap - :Explore<CR>
+"  " expand %% to current dir name
+"  cnoremap %% <C-R>=expand('%:h').'/'<CR>
+"  " change vim working dir to current buffer dir
+"  nnoremap <leader>cdf :cd %:h<CR>
+"  " change vim working dir to current buffer parent dir
+"  nnoremap <leader>cdu :cd %:p<CR>
+"  " change vim working dir to current git root
+"  nnoremap <leader>cdg :Gcd <CR>
 
 " -------------------------------------
 " -------------- PLUGINS --------------
@@ -504,15 +483,7 @@ nnoremap <leader>cdg :Gcd <CR>
 let g:blamer_enabled = 1
 let g:blamer_template = '<author>, <committer-time> • <summary>'
 
-" prettier
-let g:prettier#autoformat = 0
-let g:prettier#quickfix_auto_focus = 0
-let g:prettier#autoformat_require_pragma = 0
-let g:prettier#autoformat_config_present = 0
-let g:prettier#exec_cmd_path = g:prettier_bin
 
-" clean whitespace
-nnoremap <leader>W :StripWhitespace<CR>
 let g:strip_whitespace_on_save = 1
 let g:strip_only_modified_lines=0
 let g:strip_whitespace_confirm=0
@@ -520,10 +491,8 @@ let g:strip_whitespace_confirm=0
 " git mergetool
 let g:mergetool_layout = 'bmr'
 let g:mergetool_prefer_revision = 'local'
-nmap mt <plug>(MergetoolToggle)
-nmap mgr :MergetoolDiffExchangeLeft<CR>
-nmap mgl :MergetoolDiffExchangeRight<CR>
-nmap <leader>gd :Gdiff<CR>
+
+" nmap <leader>gd :Gdiff<CR>
 
 " go
 let g:go_def_mapping_enabled = 0
@@ -535,22 +504,61 @@ let g:go_fmt_command = 'goimports'
 nnoremap <silent> <leader>a :ArgWrap<CR>
 
 " Coc
+" Run the Code Lens action on the current line
+nmap <leader>cl  <Plug>(coc-codelens-action)
 nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gp :call CocAction('jumpDefinition', 'vsplit')<CR>
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> rn <Plug>(coc-rename)
-nmap <silent> gh :call CocAction('doHover')<CR>
+" nnoremap <leader>f <Plug>(coc-fix-current)<CR>
+nnoremap <leader>f <Plug>(coc-fix-current)
+" autocmd User CocNvimInit call CocAction('runCommand', 'tsserver.watchBuild')
+
+nnoremap <leader>a <Plug>(coc-codeaction-line)
+nnoremap <silent><nowait><expr> <C-n> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-n>"
+nnoremap <silent><nowait><expr> <C-m> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-m>"
+
+nmap <silent> gh :call ShowDocumentation()<CR>
 nmap <silent> ge <Plug>(coc-diagnostic-next-error)
-" nmap <silent> gf :CocCommand eslint.executeAutofix<CR> :call CocAction('runCommand', 'editor.action.organizeImport')<CR> :Prettier<CR>
-nmap <silent> gf :CocCommand eslint.executeAutofix<CR> :Prettier<CR>
+nmap <silent> ] <Plug>(coc-diagnostic-next)
+nmap <silent> [ <Plug>(coc-diagnostic-prev)
+nmap <silent> gf :silent CocCommand eslint.executeAutofix<CR> :silent CocCommand prettier.formatFile<CR> :silent call CocActionAsync('doQuickfix')<CR>
+nmap <silent> ; :call CocActionAsync('doHover')
+" nnoremap <silent> K :call ShowDocumentation()<CR>
 
-let g:coc_snippet_next = '<c-J>'
-let g:coc_snippet_prev = '<c-K>'
+" Highlight the symbol and its references when holding the cursor
+function! ShowDocumentation()
+  if coc#float#has_float()
+    return
+  endif
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  endif
+endfunction
 
-" ctrlp
-nmap <C-p> :Files<CR>
+" set updatetime=1000
+autocmd CursorHold * silent call ShowDocumentation()
+
+" let g:coc_snippet_next = '<c-J>'
+" let g:coc_snippet_prev = '<c-K>'
+
+" clean whitespace
+"  nnoremap <leader>W :StripWhitespace<CR>
+
+"  " mergetool
+"  nmap mt <plug>(MergetoolToggle)
+"  nmap mgr :MergetoolDiffExchangeLeft<CR>
+"  nmap mgl :MergetoolDiffExchangeRight<CR>
+
+"  " Find symbol of current document
+"  nnoremap <silent><nowait> <space>d :CocFzfList diagnostics<cr>
+
+"  " Search workspace symbols
+"  nnoremap <silent><nowait> <space>o :CocFzfList outline<cr>
+
+"  " ctrlp
+"  nmap <C-p> :Files<CR>
 
 " ack
 if executable('ack-grep')
@@ -561,7 +569,6 @@ if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
-nmap <silent> gb :Git blame<CR>
 
 " airline (status line)
 let g:airline_left_sep=''
@@ -584,29 +591,23 @@ function! NERDTreeToggleInCurDir()
     exe ":silent NERDTreeFind"
   endif
 endfunction
-" toggle NERDTree in current dir with `
-nnoremap <silent> ` :call NERDTreeToggleInCurDir()<CR>
+
 " show hidden files
 let NERDTreeShowHidden=1
 let g:NERDTreeQuitOnOpen = 1
 " if no filename given on command line, show file tree
-au VimEnter * if argc() == 0 | exe ":NERDTreeCWD" | endif
+" au VimEnter * if argc() == 0 | exe ":NERDTreeCWD" | endif
 
-" nnoremap <silent> ` :NvimTreeFindFile<CR>
-
-" MRU
-" fzf MRU files
-nnoremap <silent> z :FZFMru<CR>
 " dont replace the current buffer
 let MRU_Open_File_Use_Tabs = 1
 
 " snippets
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsSnippetsDir=system('readlink ~/.config/nvim/UltiSnips')
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsSnippetsDir=$HOME.'/.config/nvim/UltiSnips/'
 
 " mocha
 
@@ -648,3 +649,142 @@ if has("multi_byte")
   set fileencodings=ucs-bom,utf-8,latin1
 endif
 
+" ------------ TMP ------------
+
+" experimental NERDTree alternative
+" nnoremap <silent> ` :NvimTreeFindFile<CR>
+
+"  " git blame
+"  nmap <silent> gb :Git blame<CR>
+
+"  " toggle NERDTree in current dir with `
+"  nnoremap <silent> ` :call NERDTreeToggleInCurDir()<CR>
+
+"  " fzf MRU files
+"  nnoremap <leader>l :FZFMru<CR>
+
+"  " better search and replace / regex
+"  nnoremap ;; :%s:::g<Left><Left><Left>
+"  nnoremap ;' :%s:::cg<Left><Left><Left><Left>
+
+"  " copilot
+"  nnoremap <leader>cp :Copilot panel<CR>
+"  nnoremap <leader>ch :Copilot hide<CR>
+
+"  " edit/reload vim config
+"  nnoremap <leader>e :tabnew ~/.config/nvim<CR>
+"  nnoremap <leader>r :so ~/.config/nvim/init.vim<CR> :noh<CR>
+
+" set conceallevel=0
+
+let g:gitgutter_sign_added = '▌'
+let g:gitgutter_sign_modified = '▌'
+let g:gitgutter_sign_removed = '▌'
+let g:gitgutter_sign_removed_first_line = '▌'
+let g:gitgutter_sign_removed_above_and_below = '▌'
+let g:gitgutter_sign_modified_removed = '▌'
+let g:gitgutter_sign_allow_clobber = 0
+
+" pager
+" if !exists('g:vimpager')
+"   let g:vimpager = {}
+" endif
+" if !exists('g:less')
+"   let g:less     = {}
+" endif
+" let g:less.enabled = 0
+
+" ------------ LUA ------------
+
+" lua << EOF
+
+" require('lualine').setup {
+"   options = {
+"     theme='gruvbox-material',
+"     icons_enabled = false
+"   }
+" }
+
+" require('nvim-treesitter.configs').setup {
+"   highlight = {
+"     enable = true,
+"     additional_vim_regex_highlighting = false,
+"   },
+"   indent = {
+"     enable = true
+"   },
+"   incremental_selection = {
+"     enable = true,
+"     keymaps = {
+"       init_selection = "gnn",
+"       node_incremental = "grn",
+"       scope_incremental = "grc",
+"       node_decremental = "grm",
+"     },
+"   },
+" }
+
+" -- vim.treesitter.language.register('tsx', 'typescriptreact')
+" -- vim.treesitter.language.register('tsx', 'javascript')
+" -- vim.treesitter.language.register('tsx', 'typescript')
+
+" EOF
+
+" LSP highlights
+hi link VirtualTextError Error
+hi link VirtualTextWarning Question
+
+" close hidden buffers
+" http://stackoverflow.com/a/1536094
+function! Wipeout()
+  " list of *all* buffer numbers
+  let l:buffers = range(1, bufnr('$'))
+
+  " what tab page are we in?
+  let l:currentTab = tabpagenr()
+  try
+    " go through all tab pages
+    let l:tab = 0
+    while l:tab < tabpagenr('$')
+      let l:tab += 1
+
+      " go through all windows
+      let l:win = 0
+      while l:win < winnr('$')
+        let l:win += 1
+        " whatever buffer is in this window in this tab, remove it from
+        " l:buffers list
+        let l:thisbuf = winbufnr(l:win)
+        call remove(l:buffers, index(l:buffers, l:thisbuf))
+      endwhile
+    endwhile
+
+    " if there are any buffers left, delete them
+    if len(l:buffers)
+      execute 'bwipeout' join(l:buffers)
+    endif
+  finally
+    " go back to our original tab page
+    execute 'tabnext' l:currentTab
+  endtry
+endfunction
+
+function ConfirmLeave()
+  set noconfirm
+  set nomodifiable
+  set modified
+  echoerr "Press :q! or :qa! to quit" | throw 1
+endfunction
+
+function KeepAlive()
+  exec ':n /tmp/.KEEPALIVE'
+  exec ':w'
+  autocmd ExitPre *.KEEPALIVE call ConfirmLeave()
+endfunction
+
+command! DisconnectClients
+    \  if exists('b:nvr')
+    \|   for client in b:nvr
+    \|     silent! call rpcnotify(client, 'Exit', 1)
+    \|   endfor
+    \| endif
