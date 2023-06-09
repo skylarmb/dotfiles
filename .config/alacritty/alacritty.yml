@@ -1,34 +1,6 @@
 env:
-  TERM: screen-256color
-
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-256.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-dark-hard-256.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-dark-hard.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-dark-medium-256.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-dark-medium.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-dark-pale-256.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-dark-pale.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-dark-soft-256.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-dark-soft.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-light-hard-256.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-light-hard.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-light-medium-256.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-light-medium.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-light-soft-256.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-light-soft.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-material-dark-hard.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-material-dark-medium-256.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-material-dark-medium.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-material-dark-soft-256.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-material-dark-soft.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-material-light-hard-256.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-material-light-hard.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-material-light-medium-256.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-material-light-medium.yml
-# - ~/.config/alacritty/base-16/colors/base16-gruvbox-material-light-soft.yml
-import:
-  - ~/.config/alacritty/matcha/light.yml
-  # - ~/.config/alacritty/base-16/colors/base16-gruvbox-material-dark-medium-256.yml
+  TERM: xterm-256color
+  PATH: "$PATH:/opt/homebrew/bin"
 
 window:
   dynamic_padding: true
@@ -70,33 +42,6 @@ font:
 
   draw_bold_text_with_bright_colors: true
 
-colors:
-  cursor:
-    text: '#FFFFFF'
-    cursor: '#d3869b'
-
-  search:
-    matches:
-      foreground: '#FFFFFF'
-      background: '#7C6F64'
-    focused_match:
-      foreground: '#FFFFFF'
-      background: '#FE8019'
-
-  hints:
-    start:
-      foreground: '#1d1f21'
-      background: '#e9ff5e'
-
-    end:
-      foreground: '#e9ff5e'
-      background: '#1d1f21'
-cursor:
-  shape: Block
-  blinking: Never
-  vi_mode_style: Block
-  unfocused_hollow: false
-
 live_config_reload: true
 
 shell:
@@ -104,49 +49,128 @@ shell:
   args:
     - --login
     - -c
-    - 'tmux new-session -A -s main -t main'
+    - 'tmux new-session -A -s main -t main && /bin/zsh --login'
 
 hints:
   alphabet: 'jfkdls;ahgurieowpq'
   enabled:
+    - regex: "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|g\
+        it:|ssh:|ftp:)[^\0-\x1f-<>\"\\s{-}\\^⟨⟩`]+"
+      hyperlinks: true
+      command:
+        program: /usr/bin/open
+        args:
+          - --url
+      post_processing: true
+      mouse:
+        enabled: true
+        mods: Shift
     - regex: '@plaid/(.*)@'
       command: cd
       mouse:
         enabled: true
         mods: Shift
-    - regex:
-        "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\
-        [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+    - regex: "(~/|/|(src|services|lib)/|\\.\\./)+[a-zA-Z0-9\\.\\-_@/]*\\.(m?tsx?|m?js\
+        x?(on)?|ya?ml|lua|md)(:[0-9]+)?(:[0-9]+)?"
       hyperlinks: true
-      command: open
+      command:
+        program: /bin/bash
+        args:
+          - --login
+          - -c
+          - 'tmux run "nvim --server #{pane_current_path}/.nvimsocket --remote
+            $*"'
+          - --
       post_processing: true
       mouse:
         enabled: true
-        mods: None
+        mods: Shift
 
 # find key hexcodes with:  echo -n "k" | xxd -g 1
 key_bindings:
-  - { key: Key1, mods: Command, chars: "\x01\x31" }
-  - { key: Key2, mods: Command, chars: "\x01\x32" }
-  - { key: Key3, mods: Command, chars: "\x01\x33" }
-  - { key: Key4, mods: Command, chars: "\x01\x34" }
-  - { key: Key5, mods: Command, chars: "\x01\x35" }
-  - { key: Key6, mods: Command, chars: "\x01\x36" }
-  - { key: Key7, mods: Command, chars: "\x01\x37" }
-  - { key: Key8, mods: Command, chars: "\x01\x38" }
-  - { key: Key9, mods: Command, chars: "\x01\x39" }
-  - { key: Return, mods: Command, chars: "\x01\x7a" }
-  - { key: Key0, mods: Command, chars: "\x01\x30" }
-  - { key: W, mods: Command, chars: "\x01\x77" }
-  - { key: B, mods: Command, chars: "\x01\x62" }
-  - { key: G, mods: Command, chars: "\x01\x67" }
-  - { key: Back, mods: Super, chars: "\x15" } # delete word/line
-  - { key: Left, mods: Alt, chars: "\x1bb" } # one word left
-  - { key: Right, mods: Alt, chars: "\x1bf" } # one word right
-  - { key: Left, mods: Command, chars: "\x1bOH", mode: AppCursor } # Home
-  - { key: Right, mods: Command, chars: "\x1bOF", mode: AppCursor } # End
-  - { key: Return, mods: Control, mode: ~Search, action: ToggleViMode }
-  - { key: K, mods: Shift, mode: Vi, action: ScrollHalfPageUp }
-  - { key: J, mods: Shift, mode: Vi, action: ScrollHalfPageDown }
+  - { key: Key1, mods: Command, chars: "\x011" }
+  - { key: Key2, mods: Command, chars: "\x012" }
+  - { key: Key3, mods: Command, chars: "\x013" }
+  - { key: Key4, mods: Command, chars: "\x014" }
+  - { key: Key5, mods: Command, chars: "\x015" }
+  - { key: Key6, mods: Command, chars: "\x016" }
+  - { key: Key7, mods: Command, chars: "\x017" }
+  - { key: Key8, mods: Command, chars: "\x018" }
+  - { key: Key9, mods: Command, chars: "\x019" }
+  - { key: Return, mods: Command, chars: "\x01z" }
+  - { key: Key0, mods: Command, chars: "\x010" }
+  - { key: W, mods: Command, chars: "\x01w" }
+  - { key: B, mods: Command, chars: "\x01b" }
+  - { key: G, mods: Command, chars: "\x01g" }
+  - { key: Back, mods: Super, chars: "\x15" }
+  # delete word/line
+  - { key: Left, mods: Alt, chars: "\eb" }
+  # one word left
+  - { key: Right, mods: Alt, chars: "\ef" }
+  # one word right
+  - {
+      key: Left,
+      mods: Command,
+      chars: "\eOH",
+      mode: AppCursor
+    }
+  # Home
+  - {
+      key: Right,
+      mods: Command,
+      chars: "\eOF",
+      mode: AppCursor
+    }
+  # End
+  - {
+      key: Slash,
+      mods: Control,
+      mode: ~Search,
+      action: ToggleViMode
+    }
+  - {
+      key: K,
+      mods: Shift,
+      mode: Vi,
+      action: ScrollHalfPageUp
+    }
+  - {
+      key: J,
+      mods: Shift,
+      mode: Vi,
+      action: ScrollHalfPageDown
+    }
   - { key: Escape, mode: Vi, action: ToggleViMode }
   - { key: Return, mods: Alt, action: ToggleSimpleFullscreen }
+
+colors:
+  # Default colors
+  primary:
+    background: '#1A1A19'
+    foreground: '#E3CA9A'
+
+  # Normal colors
+  normal:
+    black: '#1A1A19'
+    red: '#d5695c'
+    green: '#979764'
+    yellow: '#E3A138'
+    blue: '#799173'
+    magenta: '#DB8747'
+    cyan: '#799173'
+    white: '#DCBB7E'
+  bright:
+    black: '#2D2C2B'
+    red: '#d5695c'
+    green: '#979764'
+    yellow: '#E3A138'
+    blue: '#799173'
+    magenta: '#DB8747'
+    cyan: '#799173'
+    white: '#E3CA9A'
+  dim:
+    green: "#4A482C"
+    yellow: "#D2A860"
+    magenta: '#C67C38'
+    red: "#c48b6d"
+    white: '#C6AA77'
