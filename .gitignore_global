@@ -1,7 +1,12 @@
 # copy to .private/.gitignore_global if required
 .DS_Store
 .vimspector.json
+.git/
 /dist/
 *.pb.go
 node_modules
 build
+.nvimsocket
+Session.vim
+.idea
+.*_idea

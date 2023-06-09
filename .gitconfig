@@ -37,13 +37,15 @@
 [pull]
   rebase = false
 
+[status]
+  relativePaths = true
+
 ; [interactive]
 ;   diffFilter = delta --color-only --features=interactive
 
 [delta]
- navigate = true
- features = side-by-side line-numbers decorations
- syntax-theme =  gruvbox-dark
+   navigate = true
+   features = side-by-side line-numbers decorations
 ; map-styles = bold purple => syntax magenta, bold cyan => syntax blue
 
 [delta "decorations"]
@@ -63,30 +65,35 @@
 [merge]
   tool = vim_mergetool
   conflictStyle = diff3
+
 [mergetool "vim_mergetool"]
   cmd = vim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"
   trustExitCode = true
 
 [alias]
   pdiff = difftool --tool=prettierdiff --no-symlinks --dir-diff origin/master...
+  fp = merge-base --fork-point origin/master HEAD
+  dp = !"git diff "$(git merge-base --fork-point origin/master HEAD)""
   difft = difftool --tool=difftastic
   diffs = difftool --no-symlinks --tool=diffsitter
   undo = !"git reset --soft HEAD~1; git reset HEAD ."
   o = !"gh repo view --web --branch "$(git rev-parse --abbrev-ref HEAD)""
   c = commit --no-verify
+  cop = !"f() { git checkout "$(git merge-base --fork-point origin/master HEAD)" -- $@; }; f $@"
   com = checkout origin/master --
+  dom = diff origin/master
   cc = !"echo $(git rev-parse HEAD) | tee /dev/tty | pbcopy"
   ca = commit -a
-  dm = "!f() { \
+  d = diff --ignore-all-space
+  dd = "!f() { \
     merge_base=$(git merge-base origin/master HEAD); \
     git diff --relative $merge_base $@; \
   }; f $@"
-  d = diff --ignore-all-space
   do = diff --ignore-all-space origin/master
   dw = diff --ignore-all-space --word-diff
   dc = diff --cached --ignore-all-space
   ds = diff --ignore-all-space --compact-summary
-  rb = rebase
+  rb = rebase -i $(git merge-base --fork-point master)
   rbc = rebase --continue
   p = push -u origin head
   pn = push -u origin head --no-verify
@@ -95,9 +102,19 @@
   a = add
   b = git rev-parse --abbrev-ref HEAD
   aa = add --all
-  am = commit -a --amend --no-edit
+  am = commit --amend --no-edit
   rh = reset HEAD
-  s = !"git status --short --branch -uall;"
+  untracked = !"git status --porcelain | grep -E '^\\?\\?' | awk '{print $2}'"
+  modified = !"git status --porcelain | grep -E '^ M' | awk '{print $2}'"
+  added = !"git status --porcelain | grep -E '^A ' | awk '{print $2}'"
+  unmerged = !"git status --porcelain | grep -E '^UU' | awk '{print $2}'"
+  fuzzy = "!f() { \
+    files="$(git status --porcelain | grep "$2" | awk '{print $2}')"; \
+    echo "git $1 $files"; \
+    git "$1" $files; \
+  }; f $@"
+  s = -c color.ui=always status --short
+  sc = diff --name-only --cached
   co = checkout
   g = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
   l = diff HEAD^ HEAD
