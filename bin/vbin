@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+main(){
+  local self
+  self="$(basename "$0")"
+  log() { debug_log "$self" "$*" ; }
+
+  local script="$HOME/.local/bin/${1}"
+  if [[ -f "${script}" ]]; then
+    $EDITOR "${script}"
+    return 0
+  fi
+
+  # shellcheck disable=SC2016
+  echo '#!/usr/bin/env bash
+set -euo pipefail
+_self="$(basename "$0")"
+log() { debug_log "$_self" "$*" ; }
+
+main() {
+  #
+  # TODO: script here
+  #
+}
+
+main "$@"
+' > "${script}"
+
+  chmod +x "${script}"
+  $EDITOR "${script}"
+}
+
+main "$@"
+

@@ -1,0 +1,111 @@
+#!/usr/bin/env zsh
+# REQUIREMENTS
+#     git >= 2.23
+#     delta (brew install git-delta)
+#     prettier (installed globally / in $PATH)
+#
+# USAGE
+#     prettierdiff
+#     prettierdiff [refs...]
+#
+#     NOTE: origin/master...HEAD (merge-base for current branch) is used as the
+#     default range if no arguments are provided
+#
+set -eo pipefail
+
+# ignore user / global git config to make script deterministic / portable
+export GIT_CONFIG_GLOBAL=''
+export GIT_CONFIG_SYSTEM=''
+
+# flags for smarter git diff
+declare -a GIT_DIFF_COMMON_FLAGS=(
+  --ignore-blank-lines              # ignore whitespace
+  --ignore-all-space                # ^
+  --diff-algorithm=patience         # group hunks more intelligently
+  --find-renames=10%                # more exhaustive copy/rename search
+  --find-copies=10%                 # ^
+  --find-copies-harder              # ^
+  -l0                               # ^
+  --color-moved=default             # highlight moved lines instead of showing them as deleted/added
+  --color-moved-ws=ignore-all-space # dont highlight moved lines if only whitespace changed
+)
+
+# format files with prettier before performing the git diff
+prettier_format(){
+  cd "${1}"
+  prettier \
+    --write \
+    --single-quote=true \
+    --trailing-comma=all \
+    --ignore-unknown \
+    --no-plugin-search \
+    --no-config \
+    .
+}
+
+# use delta to syntax highlight the diff. install with `brew install git-delta`
+# lines that are moved somewhere else unchanged are considered "uninteresting"
+# and are highlihgted as dimmed syntax, purple/cyan/yellow are used for
+# https://github.com/dandavison/delta/blob/master/themes.gitconfig#L279-L283
+delta_highlight(){
+  delta \
+    --relative-paths \
+    --no-gitconfig \
+    --hyperlinks \
+    --line-buffer-size=5000 \
+    --max-line-distance=1.0 \
+    --width="$(tput cols)-8" \
+    --features='navigate side-by-side line-numbers decorations dark zebra-dark' \
+    --zero-style='dim syntax' \
+    --syntax-theme='gruvbox-dark' \
+    --map-styles='bold purple => dim syntax "#330f29", bold blue => dim syntax "#271344", bold cyan => dim syntax "#0d3531", bold yellow => dim syntax "#222f14"'
+}
+
+# function to be called by git difftool via GIT_EXTERNAL_DIFF env var
+difftool(){
+  # git difftool provides a temporary folder for diffing, which contains
+  # symlinks to files in the git repo.
+  local left="${1}"
+  local right="${2}"
+  local git_tmp
+  git_tmp="$(dirname "${left}" || dirname "${right}" || exit 1)"
+
+  # copy the files to a tmp folder so we can prettier format them without
+  # writing the originals via symlink
+  local tmp_dir
+  tmp_dir="$(mktemp -d /tmp/prettierdiff.XXXXXX)"
+  trap "rm -rf ${tmp_dir}" EXIT # cleanup on exit
+  cp -RL "${git_tmp}"/* "${tmp_dir}"
+
+  prettier_format "${tmp_dir}"
+
+  cd "${tmp_dir}"
+  git diff \
+     --no-index \
+    "${GIT_DIFF_COMMON_FLAGS[@]}" \
+    ./left ./right | \
+    delta_highlight
+}
+
+main(){
+  local args=("${@:-origin/master...HEAD}")
+  env PRETTIERDIFF_DIFFTOOL=1 git \
+    -c core.pager=delta \
+    -c diff.context=5 \
+    -c pager.difftool=true \
+    -c difftool.prompt=false \
+    -c difftool.prettierdiff.cmd="prettierdiff \"\${LOCAL}\" \"\${REMOTE}\"" \
+    difftool \
+    --dir-diff \
+    "${GIT_DIFF_COMMON_FLAGS[@]}" \
+    --tool=prettierdiff \
+    "${args[@]}"
+}
+
+# This script calls itself recursively via git difftool, which is indicated by
+# the PRETTIERDIFF_DIFFTOOL env var
+if [[ -n "${PRETTIERDIFF_DIFFTOOL:-}" ]]; then
+  difftool "${@}"
+else
+  main "${@}"
+fi

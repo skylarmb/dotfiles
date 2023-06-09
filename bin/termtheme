@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# makebin generated script: toggledark, Thu May 11 10:51:59 PDT 2023
+# Toggle the current window (all panes) between light and dark themes.
+set -e
+
+if ! command -v tmux>/dev/null; then
+  echo "no tmux!"
+  exit 1
+fi
+
+theme="dark" # default
+tmux_curr="$(tmux show-environment -g THEME 2>/dev/null | sed 's/THEME=//g')"
+[[ -n "$1" ]] && theme="$1"
+[[ -z "$1" ]] && [[ "$tmux_curr" = "light" ]] && theme="dark"
+[[ -z "$1" ]] && [[ "$tmux_curr" = "dark" ]] && theme="light"
+
+# Exit early if already using specified mode
+tmux_new="THEME=$theme"
+echo "tmux_new: $tmux_new"
+echo "tmux_curr: $tmux_curr"
+if [ "$tmux_new" = "$tmux_curr" ]; then
+  echo "Already in $theme mode..."
+  exit 0
+fi
+
+# Set system dark mode (also controls nvim)
+osascript -l JavaScript \
+  -e "Application('System Events').appearancePreferences.darkMode = $([[ "$theme" == "light" ]] && echo false || echo true)"
+
+# Set tmux theme
+echo "Setting tmux environment: THEME=$theme..."
+tmux set-environment -g THEME "$theme"
+tmux source-file ~/tmux-colorscheme.conf
+
+echo "Setting shell environment: THEME=$theme..."
+export THEME="$theme"
+
+# Set Alacritty theme
+# shellcheck disable=SC2034
+# alacritty_theme="Darktooth"
+# [[ "$theme" == "light" ]] && alacritty_theme="Gruvbox-Light"
+# echo "Setting alacritty theme: $alacritty_theme..."
+# alacritty-themes "$alacritty_theme"

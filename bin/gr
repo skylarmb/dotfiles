@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+_self="$(basename "$0")"
+log() { debug_log "$_self" "$*" ; }
+
+main() {
+  rg --no-config -nH "$*"
+  rg --no-config -nH "$*" | while IFS= read -r line; do
+    debug "line: $line"
+    file="$(echo "$line" | cut -d: -f1)"
+    debug "file: $file"
+    line_nr="$(echo "$line" | cut -d: -f2)"
+    debug "line_nr: $line_nr"
+    range="$((line_nr-1)):$((line_nr+1))"
+    debug "range: $range"
+      # --highlight-line ${line} \
+    bat \
+      --theme=base16-256 \
+      --color=always \
+      --style="header,rule" \
+      --chop-long-lines \
+      --terminal-width=$COLUMNS \
+      --line-range ${range} ${file} | \
+    rg \
+      --no-config \
+      --passthru \
+      --colors 'match:bg:yellow' \
+      --colors 'match:fg:black' \
+      "$*"
+    echo
+  done
+}
+
+main "$@"
+
