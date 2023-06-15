@@ -3,32 +3,50 @@ set -euo pipefail
 _self="$(basename "$0")"
 log() { debug_log "$_self" "$*" ; }
 
+# print_highlighted() {
+#   # local start end line line_nr
+#   line="$1"
+#   line_nr="$(echo "$line" | sed -E 's/.*:([0-9]+):.*/\1/')"
+#   ((start = line_nr - 2 < 0 ? 0 : line_nr - 2))
+#   ((end = line_nr + 2))
+#   bat \
+#     --color=always \
+#     --terminal-width=120 \
+#     --chop-long-lines \
+#     --paging=never \
+#     --style=header,numbers \
+#     --decorations=always \
+#     --theme=base16 \
+#     "${line%%:*}"
+# }
+
+export BAT_CONFIG_PATH="$HOME/.config/bat/config-rg"
+
 main() {
-  rg --no-config -nH "$*"
-  rg --no-config -nH "$*" | while IFS= read -r line; do
-    debug "line: $line"
-    file="$(echo "$line" | cut -d: -f1)"
-    debug "file: $file"
-    line_nr="$(echo "$line" | cut -d: -f2)"
-    debug "line_nr: $line_nr"
-    range="$((line_nr-1)):$((line_nr+1))"
-    debug "range: $range"
-      # --highlight-line ${line} \
-    bat \
-      --theme=base16-256 \
-      --color=always \
-      --style="header,rule" \
-      --chop-long-lines \
-      --terminal-width=$COLUMNS \
-      --line-range ${range} ${file} | \
-    rg \
-      --no-config \
-      --passthru \
-      --colors 'match:bg:yellow' \
-      --colors 'match:fg:black' \
-      "$*"
-    echo
-  done
+  # local files
+  # files="$(rg \
+  #   --no-config \
+  #   --fixed-strings \
+  #   --hidden \
+  #   --follow \
+  #   --files-with-matches \
+  #   "$*" | xargs)"
+  # echo "$files"
+  rg \
+    --no-config \
+    --fixed-strings \
+    --hidden \
+    --follow \
+    --files-with-matches \
+    "$*" | xargs rg --stats --pre bat "$*"
+  return 0
+  # | \
+  # rg \
+  #   --no-config \
+  #   --passthru \
+  #   --colors 'match:bg:yellow' \
+  #   --colors 'match:fg:black' \
+  #   "$*"
 }
 
 main "$@"

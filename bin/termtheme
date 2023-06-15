@@ -30,7 +30,7 @@ osascript -l JavaScript \
 # Set tmux theme
 echo "Setting tmux environment: THEME=$theme..."
 tmux set-environment -g THEME "$theme"
-tmux source-file ~/tmux-colorscheme.conf
+tmux source-file ~/.tmux-colorscheme.conf
 
 echo "Setting shell environment: THEME=$theme..."
 export THEME="$theme"

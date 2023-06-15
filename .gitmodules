@@ -7,3 +7,6 @@
 [submodule ".config/alacritty/base-16"]
 	path = .config/alacritty/base-16
 	url = https://github.com/aarowill/base16-alacritty
+[submodule "src/noeol"]
+	path = src/noeol
+	url = git@github.com:s4y/noeol.git

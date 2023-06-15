@@ -12,15 +12,15 @@ scrolling:
   history: 100000
 
 font:
-  size: 18
+  size: 14
 
   normal:
     family: RobotoMono Nerd Font Mono
-    style: Medium
+    style: Regular
 
   bold:
     family: RobotoMono Nerd Font Mono
-    style: Bold
+    style: Medium
 
   italic:
     family: RobotoMono Nerd Font Mono
@@ -28,7 +28,7 @@ font:
 
   bold_italic:
     family: RobotoMono Nerd Font Mono
-    style: Bold Italic
+    style: Medium Italic
 
   offset:
     x: 0
@@ -146,31 +146,35 @@ key_bindings:
 colors:
   # Default colors
   primary:
-    background: '#1A1A19'
+    background: '#131312'
     foreground: '#E3CA9A'
+    bright_foreground: '#E8D2A9'
 
   # Normal colors
   normal:
-    black: '#1A1A19'
-    red: '#d5695c'
-    green: '#979764'
-    yellow: '#E3A138'
-    blue: '#799173'
-    magenta: '#DB8747'
-    cyan: '#799173'
-    white: '#DCBB7E'
-  bright:
     black: '#2D2C2B'
-    red: '#d5695c'
-    green: '#979764'
-    yellow: '#E3A138'
     blue: '#799173'
-    magenta: '#DB8747'
     cyan: '#799173'
+    green: '#979764'
+    magenta: '#DB8747'
+    red: '#d5695c'
+    white: '#DCBB7E'
+    yellow: '#E3A138'
+  bright:
+    black: '#414035'
+    blue: '#799173'
+    cyan: '#799173'
+    green: '#979764'
+    magenta: '#DB8747'
+    red: '#d5695c'
     white: '#E3CA9A'
+    yellow: '#E3A138'
   dim:
-    green: "#4A482C"
-    yellow: "#D2A860"
-    magenta: '#C67C38'
-    red: "#c48b6d"
-    white: '#C6AA77'
+    black: '#6c6b58'
+    blue: '#799173'
+    cyan: '#799173'
+    green: '#979764'
+    magenta: '#DB8747'
+    red: '#d5695c'
+    white: '#DCBB7E'
+    yellow: '#E3A138'

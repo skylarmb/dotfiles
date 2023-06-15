@@ -78,7 +78,7 @@
   diffs = difftool --no-symlinks --tool=diffsitter
   undo = !"git reset --soft HEAD~1; git reset HEAD ."
   o = !"gh repo view --web --branch "$(git rev-parse --abbrev-ref HEAD)""
-  c = commit --no-verify
+  c = commit
   cop = !"f() { git checkout "$(git merge-base --fork-point origin/master HEAD)" -- $@; }; f $@"
   com = checkout origin/master --
   dom = diff origin/master

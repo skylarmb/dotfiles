@@ -16,6 +16,9 @@ main(){
   echo '#!/usr/bin/env bash
 set -euo pipefail
 _self="$(basename "$0")"
+# uncomment to enable debug logs for script
+# export DEBUG="$_self"
+
 log() { debug_log "$_self" "$*" ; }
 
 main() {

@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# pre-commit hook to check for banned terms and secrets
+
+set -eo pipefail
+_self="$(basename "$0")"
+# uncomment to enable debug logs for script
+# export DEBUG="$_self"
+
+log() { debug_log "$_self" "$*" ; }
+
+main() {
+  declare -a banned_strings=(
+    "$GITHUB_USERNAME"
+    "$GITHUB_EMAIL"
+    "$USER"
+    "$LDAP_USERNAME"
+    "$GITHUB_TOKEN"
+    "$OPENAI_API_KEY"
+    "$GOPRIVATE"
+    "$BANNED_GIT_TERMS" # set in .private/.zshrc
+  )
+  declare -a banned_strings_names=(
+    'GITHUB_USERNAME'
+    'GITHUB_EMAIL'
+    'USER'
+    'LDAP_USERNAME'
+    'GITHUB_TOKEN'
+    'OPENAI_API_KEY'
+    'GOPRIVATE'
+    'BANNED_GIT_STRINGS' # set in .private/.zshrc
+  )
+  # if an argument was passed, add that to the banned strings
+  if [[ -z "$*" ]]; then
+    for i in "$!@"; do
+      banned_strings+=("${@:$i]}")
+      banned_strings_names+=("args[$i]")
+    done
+  fi
+
+  for index in "${!banned_strings[@]}"; do
+    local s="${banned_strings[$index]}"
+    if [[ -z "$s" ]]; then
+      continue
+    fi
+    local name="${banned_strings_names[$index]}"
+    local masked
+    masked="${s:0:2}$(printf '%s' "${s:2}" | tr '[:print:]' '*')"
+
+    log "Checking for $name"
+    if git diff --cached | grep -qi "$s"; then
+      echo "ERROR: Banned string $name found in git diff: $masked"
+      exit 1
+    fi
+  done
+}
+
+main "$@"

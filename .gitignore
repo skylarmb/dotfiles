@@ -1,2 +1,13 @@
-# ignore everything, only specific files added with `git add -f` will be tracked
+# ignore everything, only specific files will be tracked
 *
+
+# list all files that will be tracked
+!.config
+!.config/alacritty
+!.config/alacritty/**/*
+
+!btt
+!btt/**/*
+
+!scripts
+!scripts/**/*

@@ -10,3 +10,4 @@ build
 Session.vim
 .idea
 .*_idea
+nohup.out
