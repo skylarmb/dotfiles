@@ -98,7 +98,7 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
 
 # pnpm
-export PNPM_HOME="/Users/sbrown/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -139,7 +139,8 @@ export DEFAULT_USER="$(whoami)"
 alias v='nvim'
 alias vi='v' # dont open mega-broken vi/vim
 alias vim='v' # dont open mega-broken vi/vim
-alias vo='fzf_edit_file'
+alias vo='FZF_DEFAULT_COMMAND="git ls-files | sort -nr" fzf_edit_file'
+alias voo='fzf_edit_file'
 alias vc='fzf_edit_grep'
 alias q='exit'
 alias qq='q'
@@ -158,7 +159,7 @@ alias zc='v ~/.zshrc && exec zsh'
 alias gitc='v ~/.gitconfig'
 alias zcp='v ~/.private/.zshrc && exec zsh'
 alias alc='v ~/.config/alacritty/alacritty.yml'
-alias tc='v ~/.tmux.conf'
+alias tc='v ~/.config/tmux/tmux.conf'
 alias tcc='v ~/.config/tmux/colorscheme.conf'
 alias zu='exec zsh'
 alias dka='docker kill $(docker ps -q)'
@@ -312,7 +313,7 @@ tmux-window-name() {
   if [[ -z "$TMUX" ]] || [[ -z "$TMUX_PLUGIN_MANAGER_PATH" ]]; then
     return
   fi
-  ($TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py &)
+  ($TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py >/dev/null 2>&1 || true &)
 }
 
 # tmux light/dark mode env

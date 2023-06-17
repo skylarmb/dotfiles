@@ -1,5 +1,5 @@
 env:
-  TERM: xterm-256color
+  TERM: alacritty
   PATH: "$PATH:/opt/homebrew/bin"
 
 window:
@@ -12,31 +12,22 @@ scrolling:
   history: 100000
 
 font:
-  size: 14
-
+  size: 16
   normal:
-    family: RobotoMono Nerd Font Mono
+    family: DankMono Nerd Font Mono
     style: Regular
 
   bold:
-    family: RobotoMono Nerd Font Mono
-    style: Medium
+    family: DankMono Nerd Font Mono
+    style: Bold
 
-  italic:
-    family: RobotoMono Nerd Font Mono
-    style: Medium Italic
+  italics:
+    family: DankMono Nerd Font Mono
+    style: Italic
 
   bold_italic:
-    family: RobotoMono Nerd Font Mono
-    style: Medium Italic
-
-  offset:
-    x: 0
-    y: 0
-
-  glyph_offset:
-    x: 0
-    y: 0
+    family: DankMono Nerd Font Mono
+    style: Italic
 
   builtin_box_drawing: true
 
@@ -146,7 +137,7 @@ key_bindings:
 colors:
   # Default colors
   primary:
-    background: '#131312'
+    background: '#1E1D1D'
     foreground: '#E3CA9A'
     bright_foreground: '#E8D2A9'
 
@@ -178,3 +169,37 @@ colors:
     red: '#d5695c'
     white: '#DCBB7E'
     yellow: '#E3A138'
+  # Light mode WIP
+  # primary:
+  #   bright_foreground: '#1E1D1D'
+  #   foreground: '#2D2C2B'
+  #   background: '#E8D2A9'
+  #
+  # # Normal colors
+  # normal:
+  #   white: '#2D2C2B'
+  #   blue: '#3c4939'
+  #   cyan: '#3c4939'
+  #   green: '#4a482c'
+  #   magenta: '#794218'
+  #   red: '#9C3428'
+  #   black: '#DCBB7E'
+  #   yellow: '#7b5212'
+  # bright:
+  #   white: '#414035'
+  #   blue: '#3c4939'
+  #   cyan: '#3c4939'
+  #   green: '#4a482c'
+  #   magenta: '#794218'
+  #   red: '#9C3428'
+  #   black: '#E3CA9A'
+  #   yellow: '#7b5212'
+  # dim:
+  #   white: '#6c6b58'
+  #   blue: '#3c4939'
+  #   cyan: '#3c4939'
+  #   green: '#4a482c'
+  #   magenta: '#794218'
+  #   red: '#9C3428'
+  #   black: '#DCBB7E'
+  #   yellow: '#7b5212'

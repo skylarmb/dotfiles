@@ -107,7 +107,7 @@
   untracked = !"git status --porcelain | grep -E '^\\?\\?' | awk '{print $2}'"
   modified = !"git status --porcelain | grep -E '^ M' | awk '{print $2}'"
   added = !"git status --porcelain | grep -E '^A ' | awk '{print $2}'"
-  unmerged = !"git status --porcelain | grep -E '^UU' | awk '{print $2}'"
+  unmerged = !"git status --porcelain | grep -E '^UU|^DU' | awk '{print $2}'"
   fuzzy = "!f() { \
     files="$(git status --porcelain | grep "$2" | awk '{print $2}')"; \
     echo "git $1 $files"; \
