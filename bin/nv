@@ -1,0 +1,95 @@
+#!/bin/zsh
+# Open file in Neovide GUI
+
+set -euo pipefail
+
+# focus Neovide
+show() {
+  osascript \
+    -e 'tell application "Neovide"' \
+    -e 'activate' \
+    -e 'end tell'
+}
+
+main() {
+  cd "$PWD"
+
+  local socket="/tmp/nvimsocket"
+  local local_socket="$PWD/.nvimsocket"
+  local server_id="nvim --listen"
+  local tmux_session="nvim_$(echo $PWD | tr '/.' '_')"
+  echo "tmux session: $tmux_session"
+
+
+  if [[ -z "$*" ]]; then
+    show
+    return 0
+  fi
+
+  if [[ "$1" == "server" ]] && [[ "${2:-}" == "stop" ]]; then
+    echo "killing session: $tmux_session"
+    tmux kill-session -t "$tmux_session"
+    pgrep -l -f "$server_id $local_socket" || true
+    rm -f "$local_socket"
+    echo "Neovim server at $local_socket stopped."
+    return 0
+  fi
+
+  # if first argument is 'start', run neovim server
+  if [[ "$1" == "server" ]]; then
+    tmux new -d -s "$tmux_session" "nvim --listen $local_socket --headless --embed"
+    pgrep -l -f "$server_id $local_socket"
+    # tmux list-session | grep "$tmux_session"
+    echo "Neovim server started on $local_socket."
+    return 0
+  fi
+
+
+  # if first argument is 'start', run neovim server
+  if [[ "$1" == "start" ]]; then
+    rm -f "$socket"
+    tmux new -d -s nvim "nvim --listen $socket --headless --embed"
+    pgrep -l -f "$server_id"
+    echo "Neovim server started."
+    return 0
+  fi
+
+  # if first argument is 'gui', run neoide gui
+  if [[ "$1" == "gui" ]]; then
+    tmux new -d -s neovide "neovide --multigrid $PWD --server $socket"
+    sleep 1
+    show
+    return 0
+  fi
+
+  if [[ "$1" == "stop" ]]; then
+    pgrep -l -f "$server_id"
+    pgrep -f "$server_id" | xargs kill
+    rm -f "$socket"
+    echo "Neovim server stopped."
+    return 0
+  fi
+
+  # if first argument is 'gui', open Neovide GUI
+  if [[ "$1" == "show" ]]; then
+    show
+    return 0
+  fi
+
+  if [[ "$1" == "ps" ]]; then
+    pgrep -l -f "$server_id"
+    return 0
+  fi
+
+  nvim --server "$local_socket" --remote-tab "$@"
+  nvim --server "$local_socket" --remote-ui
+
+  # nvr --nostart -p "$@"
+  # nvr --nostart --remote-send "<cmd>silent cd $PWD<cr><cmd>NvimTreeFind<cr><cmd>wincmd l<cr>"
+
+  # show
+
+  return 0
+}
+
+main "$@"

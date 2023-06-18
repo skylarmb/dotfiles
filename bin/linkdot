@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+ln -s "$HOME/dotfiles/${1}" "$HOME/${2}"
