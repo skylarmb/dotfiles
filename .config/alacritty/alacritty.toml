@@ -1,0 +1,246 @@
+live_config_reload = true
+  # bg_dim = '#131312',
+  # bg0 = '#1E1D1D',
+  # bg1 = '#212120',
+  # bg2 = '#252424',
+  # bg3 = '#292827',
+  # bg4 = '#2D2C2B',
+  # bg5 = '#302F2E',
+  #
+  # fg0 = '#E3CA9A',
+  # fg1 = '#DCBB7E',
+  # fg2 = '#D5AF67',
+  # fg3 = '#CFA351',
+  # fg4 = '#C9973A',
+  # fg5 = '#C49138',
+  # fg_bright = '#E8D2A9',
+  # fg_dim = '#C6AA77',
+  #
+  # debug = '#FF00FF',
+  #
+  # blue = '#848A68',
+  # cyan = '#799173',
+  # green = '#979764',
+  # green_dim = '#7E7B4C',
+  # grey0 = '#414035',
+  # grey1 = '#575547',
+  # grey2 = '#6c6b58',
+  # orange = '#D97E4A',
+  # orange_dim = '#8C5627',
+  # red = '#c48b6d',
+  # red_dim = '#B5412C',
+  # red_bright = '#D0654B',
+  # yellow_light = '#D2A860',
+  # yellow = '#E3A138',
+  # yellow_bright = '#E3A138',
+  # yellow_dim = '#D9923B',
+
+[colors.bright]
+black = "#302F2E"
+white = "#E8D2A9"
+blue = "#848A68"
+cyan = "#799173"
+green = "#979764"
+magenta = "#D97E4A"
+red = "#D0654B"
+yellow = "#E3A138"
+
+[colors.dim]
+black = "#131312"
+white = "#E3CA9A"
+blue = "#848A68"
+cyan = "#799173"
+green = "#979764"
+magenta = "#D97E4A"
+red = "#D0654B"
+yellow = "#E3A138"
+
+[colors.normal]
+black = "#131312"
+white = "#E3CA9A"
+blue = "#848A68"
+cyan = "#799173"
+green = "#979764"
+magenta = "#D97E4A"
+red = "#D0654B"
+yellow = "#E3A138"
+
+[colors.primary]
+background = "#131312"
+bright_foreground = "#E8D2A9"
+foreground = "#E3CA9A"
+
+[env]
+PATH = "$PATH:/opt/homebrew/bin"
+TERM = "alacritty"
+
+[font]
+builtin_box_drawing = true
+size = 19
+
+[font.bold]
+family = "DankMono Nerd Font Mono"
+style = "Bold"
+
+[font.bold_italic]
+family = "DankMono Nerd Font Mono"
+style = "Italic"
+
+[font.italic]
+family = "DankMono Nerd Font Mono"
+style = "Italic"
+
+[font.normal]
+family = "DankMono Nerd Font Mono"
+style = "Regular"
+
+[hints]
+alphabet = "jfkdls;ahgurieowpq"
+
+[[hints.enabled]]
+binding = { key = "U", mods = "Control|Shift" }
+command = "/usr/bin/open"
+hyperlinks = true
+mouse.enabled = true
+mouse.mods = "Shift"
+post_processing = true
+persist = false
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩‘]+"
+
+[[keyboard.bindings]]
+chars = "\u00011"
+key = "Key1"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u00012"
+key = "Key2"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u00013"
+key = "Key3"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u00014"
+key = "Key4"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u00015"
+key = "Key5"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u00016"
+key = "Key6"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u00017"
+key = "Key7"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u00018"
+key = "Key8"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u00019"
+key = "Key9"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0001z"
+key = "Return"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u00010"
+key = "Key0"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0001w"
+key = "W"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0001b"
+key = "B"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0001g"
+key = "G"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0015"
+key = "Back"
+mods = "Super"
+
+[[keyboard.bindings]]
+chars = "\u001Bb"
+key = "Left"
+mods = "Alt"
+
+[[keyboard.bindings]]
+chars = "\u001Bf"
+key = "Right"
+mods = "Alt"
+
+[[keyboard.bindings]]
+chars = "\u001BOH"
+key = "Left"
+mode = "AppCursor"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001BOF"
+key = "Right"
+mode = "AppCursor"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "ToggleViMode"
+key = "Slash"
+mode = "~Search"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "ScrollHalfPageUp"
+key = "K"
+mode = "Vi"
+mods = "Shift"
+
+[[keyboard.bindings]]
+action = "ScrollHalfPageDown"
+key = "J"
+mode = "Vi"
+mods = "Shift"
+
+[[keyboard.bindings]]
+action = "ToggleViMode"
+key = "Escape"
+mode = "Vi"
+
+[[keyboard.bindings]]
+action = "ToggleSimpleFullscreen"
+key = "Return"
+mods = "Alt"
+
+[scrolling]
+history = 100000
+
+[shell]
+args = ["--login", "-c", "tmux new-session -A -s main -t main && /bin/zsh --login"]
+program = "/bin/zsh"
+
+[window]
+decorations = "buttonless"
+dynamic_padding = true
+option_as_alt = "Both"
+startup_mode = "Maximized"

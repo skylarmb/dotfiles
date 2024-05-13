@@ -45,37 +45,6 @@ shell:
 hints:
   alphabet: 'jfkdls;ahgurieowpq'
   enabled:
-    - regex: "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|g\
-        it:|ssh:|ftp:)[^\0-\x1f-<>\"\\s{-}\\^⟨⟩`]+"
-      hyperlinks: true
-      command:
-        program: /usr/bin/open
-        args:
-          - --url
-      post_processing: true
-      mouse:
-        enabled: true
-        mods: Shift
-    - regex: '@plaid/(.*)@'
-      command: cd
-      mouse:
-        enabled: true
-        mods: Shift
-    - regex: "(~/|/|(src|services|lib)/|\\.\\./)+[a-zA-Z0-9\\.\\-_@/]*\\.(m?tsx?|m?js\
-        x?(on)?|ya?ml|lua|md)(:[0-9]+)?(:[0-9]+)?"
-      hyperlinks: true
-      command:
-        program: /bin/bash
-        args:
-          - --login
-          - -c
-          - 'tmux run "nvim --server #{pane_current_path}/.nvimsocket --remote
-            $*"'
-          - --
-      post_processing: true
-      mouse:
-        enabled: true
-        mods: Shift
 
 # find key hexcodes with:  echo -n "k" | xxd -g 1
 key_bindings:

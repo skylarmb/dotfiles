@@ -166,8 +166,8 @@
 
 [rerere]
 	enabled = true
-[commit]
-	gpgsign = false
+; [commit]
+; 	gpgSign = true
 [gpg]
 	program = gpg
 [filter "lfs"]
@@ -175,3 +175,7 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[commit]
+	gpgsign = true
+[url "git@github.com:"]
+	insteadOf = https://github.com/

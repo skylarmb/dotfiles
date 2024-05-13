@@ -96,6 +96,7 @@ export PATH="$PATH:/Applications/Sublime Text.app/Contents/SharedSupport/bin"
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
+export PATH="$PATH:$HOME/dotfiles/bin"
 
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
@@ -158,7 +159,7 @@ alias vimcd='cd ~/.config/nvim && v .'
 alias zc='v ~/.zshrc && exec zsh'
 alias gitc='v ~/.gitconfig'
 alias zcp='v ~/.private/.zshrc && exec zsh'
-alias alc='v ~/.config/alacritty/alacritty.yml'
+alias alc='v ~/.config/alacritty/alacritty.toml'
 alias tc='v ~/.config/tmux/tmux.conf'
 alias tcc='v ~/.config/tmux/colorscheme.conf'
 alias zu='exec zsh'
@@ -280,8 +281,8 @@ switch_to_app() {
 }
 
 alias ff='fd'
-alias _exa='exa --all --oneline --group-directories-first'
-alias ls='_exa'
+# alias _exa='exa --all --oneline --group-directories-first'
+# alias ls='_exa'
 alias cls='clear;_exa'
 alias clsa='clear;_exa -a'
 alias lsa='_exa -lah'
@@ -602,3 +603,18 @@ gs(){
 if [[ -n "$DEBUG_ZPROF" ]]; then
   zprof
 fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Add Kurtosis command-line completion
+alias kt='kurtosis'
+source <(kurtosis completion zsh)
+compdef _kurtosis kurtosis
+# Add command-line completion to Kurtosis alias
+compdef __start_kurtosis kt
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
