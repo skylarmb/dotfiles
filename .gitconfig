@@ -95,9 +95,9 @@
   ds = diff --ignore-all-space --compact-summary
   rb = rebase -i $(git merge-base --fork-point master)
   rbc = rebase --continue
-  p = push -u origin head
-  pn = push -u origin head --no-verify
-  pf = push -f origin head
+  p = push -u origin HEAD
+  pn = push -u origin HEAD --no-verify
+  pf = push -f origin HEAD
   f = fetch --no-tags --prune
   a = add
   b = git rev-parse --abbrev-ref HEAD
@@ -179,3 +179,5 @@
 	gpgsign = true
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+[init]
+	defaultbranch = main

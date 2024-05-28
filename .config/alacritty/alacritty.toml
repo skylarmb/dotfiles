@@ -71,35 +71,41 @@ bright_foreground = "#E8D2A9"
 foreground = "#E3CA9A"
 
 [env]
-PATH = "$PATH:/opt/homebrew/bin"
 TERM = "alacritty"
-
+# # PATH = "$PATH:/opt/homebrew/bin"
+#
 [font]
 builtin_box_drawing = true
-size = 19
+size = 24
+offset = { x = 0, y = 0 }
 
 [font.bold]
-family = "DankMono Nerd Font Mono"
+# family = "DankMono Nerd Font Mono"
+family = "Ubuntu Mono Nerd Font"
 style = "Bold"
-
+#
 [font.bold_italic]
-family = "DankMono Nerd Font Mono"
-style = "Italic"
-
+# family = "DankMono Nerd Font Mono"
+family = "Ubuntu Mono Nerd Font"
+style = "Bold Italic"
+#
 [font.italic]
-family = "DankMono Nerd Font Mono"
+# family = "DankMono Nerd Font Mono"
+family = "Ubuntu Mono Nerd Font"
 style = "Italic"
-
+# #
 [font.normal]
-family = "DankMono Nerd Font Mono"
-style = "Regular"
-
+# family = "DankMono Nerd Font Mono"
+# family = "Monospace"
+family = "Ubuntu Mono Nerd Font"
+# style = "Regular"
+#
 [hints]
 alphabet = "jfkdls;ahgurieowpq"
-
+#
 [[hints.enabled]]
 binding = { key = "U", mods = "Control|Shift" }
-command = "/usr/bin/open"
+command = "/bin/xdg-open"
 hyperlinks = true
 mouse.enabled = true
 mouse.mods = "Shift"
@@ -234,13 +240,13 @@ mods = "Alt"
 
 [scrolling]
 history = 100000
-
+#
 [shell]
 args = ["--login", "-c", "tmux new-session -A -s main -t main && /bin/zsh --login"]
 program = "/bin/zsh"
-
-[window]
-decorations = "buttonless"
-dynamic_padding = true
-option_as_alt = "Both"
-startup_mode = "Maximized"
+#
+# [window]
+# decorations = "buttonless"
+# dynamic_padding = true
+# option_as_alt = "Both"
+# startup_mode = "Maximized"

@@ -7,7 +7,6 @@ zmodload zsh/parameter
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-export POWERLEVEL9K_INSTANT_PROMPT=quiet
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -64,7 +63,7 @@ if [ -d "$HOME/.private" ]; then
 fi
 
 # ---------------- ENV ----------------
-fpath=($fpath "$HOME/.zfunctions")
+# fpath=($fpath "$HOME/.zfunctions")
 
 # shell
 export GPG_TTY=$(tty)
@@ -107,13 +106,13 @@ esac
 # pnpm end
 
 # brew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# pyenv
-export PATH="$HOME/.pyenv/bin:$PATH"
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
+# # pyenv
+# export PATH="$HOME/.pyenv/bin:$PATH"
+# if command -v pyenv 1>/dev/null 2>&1; then
+#   eval "$(pyenv init -)"
+# fi
 
 # config
 export BAT_PAGER="less -F -x4"
@@ -128,7 +127,7 @@ export FZF_DEFAULT_OPTS="--ansi --no-mouse --inline-info --border --multi"
 export TMUX_FZF_OPTIONS="-p -w 75% -h 75% -m"
 export TMUX_FZF_WINDOW_FORMAT="[#{window_name}] #{pane_current_command}"
 export TMUX_PLUGIN_MANAGER_PATH="$HOME/.tmux/plugins"
-export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+# export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
 # custom vars
 # export NVIM_DAEMON_SOCK=~/.cache/nvim/server.sock
@@ -157,6 +156,7 @@ alias dotfiles='cd ~/dotfiles'
 alias vimc='v ~/.config/nvim'
 alias vimcd='cd ~/.config/nvim && v .'
 alias zc='v ~/.zshrc && exec zsh'
+alias hyc='v ~/.config/hypr/hyprland.conf'
 alias gitc='v ~/.gitconfig'
 alias zcp='v ~/.private/.zshrc && exec zsh'
 alias alc='v ~/.config/alacritty/alacritty.toml'
@@ -192,9 +192,10 @@ alias psg='ps aux | grep'
 alias tl="export THEME=light; tmux set-environment THEME 'light'; tmux source-file ~/.tmux.conf; alacritty-themes Atelierdune.light;"
 alias td="export THEME=dark; tmux set-environment THEME 'dark'; tmux source-file ~/.tmux.conf; alacritty-themes Atelierdune.dark;"
 alias tm="tmux select-layout main-horizontal; tmux resize-pane -y80% -t 1;"
-alias python="$(pyenv which python3)"
-alias pip="$(pyenv which pip3)"
+# alias python="$(pyenv which python3)"
+# alias pip="$(pyenv which pip3)"
 alias brewfast='HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew'
+# alias docker="podman"
 
 # ---------------- PLUGINS ----------------
 export NVM_LAZY_LOAD=true
@@ -213,18 +214,20 @@ export PATH="$NVM_BIN:$PATH"
 #   cat $ANTIGEN_LOG
 # fi
 # If there is cache available
-if [[ -f ${ADOTDIR:-$HOME/.antigen}/.cache/.zcache-payload ]]; then
-    # Load bundles statically
-    source ${ADOTDIR:-$HOME/.antigen}/.cache/.zcache-payload
-    # You will need to call compinit
-    # autoload -Uz compinit
-    # compinit -d ${HOME}/.zcompdump
-else
-    # If there is no cache available, load normally and create cache
+# if [[ -f ${ADOTDIR:-$HOME/.antigen}/.cache/.zcache-payload ]]; then
+#     # Load bundles statically
+#     source ${ADOTDIR:-$HOME/.antigen}/.cache/.zcache-payload
+#     # You will need to call compinit
+#     # autoload -Uz compinit
+#     # compinit -d ${HOME}/.zcompdump
+# else
+#     # If there is no cache available, load normally and create cache
+#     source $HOME/antigen.zsh
+#     antigen init $HOME/.antigenrc
+# fi
+
     source $HOME/antigen.zsh
     antigen init $HOME/.antigenrc
-fi
-
 bindkey '^Xh' _complete_help
 # bindkey '\t' autosuggest-accept
 
@@ -413,10 +416,10 @@ fzf_checkout_pr() {
 
 alias vlf='fzf_last_commit'
 fzf_last_commit() {
-  v "$(git rev-parse --show-toplevel)/$(git diff HEAD^ HEAD --name-only | fzf)"
+  nvim "$(git rev-parse --show-toplevel)/$(git diff HEAD^ HEAD --name-only | fzf)"
 }
 
-alias vpr='v $(fzf_all_pr_files)'
+alias vpr='nvim $(fzf_all_pr_files)'
 fzf_all_pr_files() {
   echo "$(git rev-parse --show-toplevel)/$(git diff master...HEAD --name-only | fzf)"
 }
@@ -570,12 +573,12 @@ toggle_tmux_popup() {
   fi
 }
 
-_nvr="$(which nvr)"
-nvr_socket="/tmp/nvimsocket"
-nvrd() {
-  nohup nvim --listen ${nvr_socket} --headless >/dev/null &
-  nvim --server ${nvr_socket} --remote-send ":e /tmp/.KEEPALIVE<CR>:call KeepAlive()<CR>"
-}
+# _nvr="$(which nvr)"
+# nvr_socket="/tmp/nvimsocket"
+# nvrd() {
+#   nohup nvim --listen ${nvr_socket} --headless >/dev/null &
+#   nvim --server ${nvr_socket} --remote-send ":e /tmp/.KEEPALIVE<CR>:call KeepAlive()<CR>"
+# }
 
 # get the hex bytes of a string, e.g. for getting tmux/alacritty key codes
 gethex(){
@@ -609,12 +612,12 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Add Kurtosis command-line completion
-alias kt='kurtosis'
 source <(kurtosis completion zsh)
 compdef _kurtosis kurtosis
-# Add command-line completion to Kurtosis alias
-compdef __start_kurtosis kt
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# bun completions
+[ -s "/home/skylar/.bun/_bun" ] && source "/home/skylar/.bun/_bun"
