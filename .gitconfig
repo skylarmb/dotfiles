@@ -181,3 +181,7 @@
 	insteadOf = https://github.com/
 [init]
 	defaultbranch = main
+[user]
+	email = skylar.brown@kurtosistech.com
+	name = Skylar Brown
+	signingkey = E7EF108EA17E65540B8C3FF2220607381B56A4C2

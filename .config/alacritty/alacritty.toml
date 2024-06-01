@@ -72,11 +72,11 @@ foreground = "#E3CA9A"
 
 [env]
 TERM = "alacritty"
-# # PATH = "$PATH:/opt/homebrew/bin"
+PATH = "$PATH:/run/current-system/sw/bin"
 #
 [font]
 builtin_box_drawing = true
-size = 24
+size = 16
 offset = { x = 0, y = 0 }
 
 [font.bold]
@@ -105,7 +105,7 @@ alphabet = "jfkdls;ahgurieowpq"
 #
 [[hints.enabled]]
 binding = { key = "U", mods = "Control|Shift" }
-command = "/bin/xdg-open"
+command = "xdg-open"
 hyperlinks = true
 mouse.enabled = true
 mouse.mods = "Shift"
@@ -242,8 +242,8 @@ mods = "Alt"
 history = 100000
 #
 [shell]
-args = ["--login", "-c", "tmux new-session -A -s main -t main && /bin/zsh --login"]
-program = "/bin/zsh"
+args = ["--login", "-c", "tmux new-session -A -s main -t main && /run/current-system/sw/bin/zsh --login"]
+program = "/run/current-system/sw/bin/zsh"
 #
 # [window]
 # decorations = "buttonless"

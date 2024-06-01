@@ -53,7 +53,6 @@ bindkey "^X^X" expand-all
 
 ## Private
 # .private should define:
-# - $WORKSPACE
 # - $GITHUB_TOKEN
 # - $GITHUB_EMAIL
 # - $TMUX_DEFAULT_PATH
@@ -81,6 +80,8 @@ export BAT_THEME="base16"
 # fi
 
 # PATH
+
+export WORKSPACE="$HOME/workspace"
 export ANDROID_HOME="~/Library/Android/sdk"
 export GIT_EDITOR="$EDITOR"
 export GO111MODULE=on
@@ -89,7 +90,9 @@ export GOBIN="$GOPATH/bin";
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
 export MANPATH="/usr/local/man:$MANPATH"
 export PATH="$HOME/.gem/bin:$PATH"
-export PATH="$HOME/bin:/usr/local/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
+export PATH="/usr/local/bin:$PATH"
+export PATH="/run/wrappers/bin:$PATH"
 export PATH="$PATH:$GOBIN";
 export PATH="$PATH:/Applications/Sublime Text.app/Contents/SharedSupport/bin"
 export PATH="$PATH:/usr/local/go/bin"
@@ -157,6 +160,11 @@ alias vimc='v ~/.config/nvim'
 alias vimcd='cd ~/.config/nvim && v .'
 alias zc='v ~/.zshrc && exec zsh'
 alias hyc='v ~/.config/hypr/hyprland.conf'
+alias nxc='sudo nvim /etc/nixos/configuration.nix'
+alias nxb='sudo nixos-rebuild switch'
+alias nxl='sudo nix-env --profile /nix/var/nix/profiles/system --list-generations'
+alias nxd='sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations'
+alias hyc='v ~/.config/hypr/hyprland.conf'
 alias gitc='v ~/.gitconfig'
 alias zcp='v ~/.private/.zshrc && exec zsh'
 alias alc='v ~/.config/alacritty/alacritty.toml'
@@ -196,17 +204,18 @@ alias tm="tmux select-layout main-horizontal; tmux resize-pane -y80% -t 1;"
 # alias pip="$(pyenv which pip3)"
 alias brewfast='HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew'
 # alias docker="podman"
-
+alias dnd='makoctl mode -a do-not-disturb'
+alias dndoff='makoctl mode -r do-not-disturb'
 # ---------------- PLUGINS ----------------
-export NVM_LAZY_LOAD=true
-export NVM_COMPLETION=true
-export NVM_AUTO_USE=true
-export NVM_LAZY_LOAD_EXTRA_COMMANDS=('vim', 'nvim', 'v')
-export NVM_DIR="$HOME/.nvm"
-# this is overwritten later by nvm lazy load
-export NVM_DEFAULT="$(cat $NVM_DIR/alias/default)"
-export NVM_BIN="$NVM_DIR/versions/node/v$NVM_DEFAULT/bin"
-export PATH="$NVM_BIN:$PATH"
+# export NVM_LAZY_LOAD=true
+# export NVM_COMPLETION=true
+# export NVM_AUTO_USE=true
+# export NVM_LAZY_LOAD_EXTRA_COMMANDS=('vim', 'nvim', 'v')
+# export NVM_DIR="$HOME/.nvm"
+# # this is overwritten later by nvm lazy load
+# export NVM_DEFAULT="$(cat $NVM_DIR/alias/default)"
+# export NVM_BIN="$NVM_DIR/versions/node/v$NVM_DEFAULT/bin"
+# export PATH="$NVM_BIN:$PATH"
 
 # source $HOME/antigen.zsh
 #
@@ -284,8 +293,8 @@ switch_to_app() {
 }
 
 alias ff='fd'
-# alias _exa='exa --all --oneline --group-directories-first'
-# alias ls='_exa'
+alias _exa='eza --all --oneline --group-directories-first'
+alias ls='_exa'
 alias cls='clear;_exa'
 alias clsa='clear;_exa -a'
 alias lsa='_exa -lah'
@@ -607,13 +616,13 @@ if [[ -n "$DEBUG_ZPROF" ]]; then
   zprof
 fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Add Kurtosis command-line completion
-source <(kurtosis completion zsh)
-compdef _kurtosis kurtosis
+# source <(kurtosis completion zsh)
+# compdef _kurtosis kurtosis
 
 # bun
 export BUN_INSTALL="$HOME/.bun"

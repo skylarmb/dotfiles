@@ -3,14 +3,12 @@
 {
 	"layer": "top",
 	"position": "top",
+  "height": 32,
 
 	"modules-left": [
 		"hyprland/workspaces",
 	],
 	"modules-center": [
-		"clock#1",
-		"clock#2",
-		"clock#3",
 	],
 	"modules-right": [
 		"pulseaudio",
@@ -20,6 +18,10 @@
 		"cpu",
 		"custom/divider",
 		"battery",
+		"custom/divider",
+		"clock#1",
+		"clock#3",
+		"clock#2",
 		"tray"
 	],
 
@@ -72,8 +74,8 @@
 	"battery": {
 		"states": {
 			"good": 95,
-			"warning": 30,
-			"critical": 15
+			"warning": 20,
+			"critical": 10
 		},
 		"format": "{icon} {capacity}%",
 		"format-icons": [
@@ -90,6 +92,6 @@
 		"path": "/"
 	},
 	"tray": {
-		"icon-size": 20
+		"icon-size": 24
 	}
 }
